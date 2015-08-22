@@ -1,0 +1,146 @@
+#set( $ContextPath = ${request.contextPath} )
+
+<script type="text/javascript">
+
+	$(function(){
+	
+		$("#CONFIG-NO").change(function(){
+		
+			var no = $(this).val();
+			var url = "${ContextPath}/rest/service/command/config/" + no;
+			$.ajax({
+			    url : url,
+    			type: 'GET',
+				contentType: 'application/json;charset=utf-8;',
+				error: function(msg) { alert("error"); },
+				complete: function(msg) { console.log("complete"); },
+				success: function(msg) {
+				
+					$('#CONFIG-NO').val(msg.no);
+					$('#CONFIG-PASS').val(msg.passwd);
+					$('#CONFIG-PID').val(msg.pid);
+					$('#CONFIG-PNAME').val(msg.pname);
+				}     
+			});
+		});
+		
+		$("button[toggle='SAVE']").click(function(){
+			
+			var host = $(this).attr("host");
+			var config = {
+				'no'     : $('#CONFIG-NO').val(),
+				'passwd' : $('#CONFIG-PASS').val(),
+				'pid'    : $('#CONFIG-PID').val(),
+				'pname'  : $('#CONFIG-PNAME').val()
+			};
+			$.ajax({
+			    url : '${ContextPath}/rest/service/command/client/' + host,
+    			type: 'PUT',
+    			data:JSON.stringify(config),
+				contentType: 'application/json;charset=utf-8;',
+				error: function(msg) { alert("error"); },
+				complete: function(msg) { console.log("complete"); },
+				success: function(msg) { 
+				
+					alert("保存成功");
+					console.log("complete");
+				}     
+			});
+		});
+		
+		$("button[toggle='REMOVE']").click(function(){
+			
+			var host = $(this).attr("host");
+			var opsID = $(this).attr("opsID");
+			
+			$.ajax({
+			    url : '${ContextPath}/rest/service/command/client/' + host + '/operation/' + opsID,
+    			type: 'DELETE',
+				contentType: 'application/json;charset=utf-8;',
+				error: function(msg) { alert("error"); },
+				complete: function(msg) { console.log("complete"); },
+				success: function(msg) { 
+				
+					alert("删除成功");
+					console.log("complete");
+				}     
+			});
+		});
+	});
+</script>
+
+<div class="form-horizontal" onsubmit="return false;">
+	<fieldset>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="HOST">HOST/IP</label>
+			<div class="controls col-sm-10">
+				<div class="input-group">
+					<span class="input-group-addon">#</span>
+					<input id="HOST" class="form-control input-xlarge uneditable-input" disabled style="width:170px;height:30px;" type="text" value="${client.ip}"></input>
+				</div>
+			</div>
+		</div>
+		<!--BEGIN CONFIG-->
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="CONFIG-NO">投标号</label>
+			<div class="controls col-sm-10">
+				<div class="input-group">
+					<span class="input-group-addon">#</span>
+					<input id="CONFIG-NO" class="form-control input-xlarge" style="width:170px;height:30px;" type="text" placeholder="投标号" value="$!{client.config.no}"></input>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="CONFIG-PASS">密码</label>
+			<div class="controls col-sm-10">
+				<div class="input-group">
+					<span class="input-group-addon">#</span>
+					<input id="CONFIG-PASS" class="form-control input-xlarge" style="width:170px;height:30px;" type="text" placeholder="密码" value="$!{client.config.passwd}"></input>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="CONFIG-PID">身份证</label>
+			<div class="controls col-sm-10">
+				<div class="input-group">
+					<span class="input-group-addon">#</span>
+					<input id="CONFIG-PID" class="form-control input-xlarge" style="width:170px;height:30px;" type="text" placeholder="身份证" value="$!{client.config.pid}"></input>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="CONFIG-PNAME">姓名</label>
+			<div class="controls col-sm-6">
+				<div class="controls form-inline">
+					<div class="input-group">
+						<span class="input-group-addon">#</span>
+						<input id="CONFIG-PNAME" class="form-control input-xlarge" style="width:170px;height:30px;" type="text" placeholder="姓名" value="$!{client.config.pname}"></input>
+					</div>
+				</div>
+			</div>
+			<div class="controls col-sm-4">
+				<button type="submit" class="btn btn-primary btn-sm" toggle="SAVE" host="${client.ip}">SAVE</button>
+			</div>
+		</div>
+		<!--END   CONFIG-->
+		<!--BEGIN OPERATIONs-->		
+		#foreach(${operation} in ${client.operation})
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="startTimeInput">操作-${operation.id}</label>
+			<div class="controls form-inline col-sm-10">
+				<div class="input-group">
+					<span class="input-group-addon" style="width:50px;">${operation.type}</span>
+					<input id="startTimeInput" class="form-control" style="width:210px;height:30px;" type="text" placeholder="startTime" value="${operation.tips}"></input>
+				</div>
+				<button type="submit" class="btn btn-danger btn-xs" toggle="REMOVE" host="${client.ip}" opsID="${operation.id}">REMOVE</button>
+			</div>
+		</div>
+		#end
+		<!--
+		<div class="form-actions">
+			<button class="btn btn-primary" type="submit" id="MODIFY">保存修改</button>
+			<button class="btn">取消</button>
+		</div>
+		-->
+	</fieldset>
+</div>

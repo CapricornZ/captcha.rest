@@ -1,0 +1,4 @@
+<label class="control-label col-sm-2" for="price">出价</label>
+<div class="controls col-sm-2">
+	<input type="text" id="price" class="form-control" style="width:200px;height:30px;"></input>
+</div>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xmlns:jaxws="http://cxf.apache.org/jaxws"
+    xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+    xmlns:cxf="http://cxf.apache.org/core"
+    xsi:schemaLocation="
+    	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    	http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+    	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+    	http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+    	
+    <!--<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+  		<property name="locations" value="classpath:application.properties"/> 
+	</bean>-->
+    
+    <import resource="classpath:META-INF/cxf/cxf.xml"/>
+    <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml"/>
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
+
+    <cxf:bus>
+        <cxf:outInterceptors>
+        	<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxf:outInterceptors>
+        <cxf:inInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxf:inInterceptors>
+    </cxf:bus> 
+
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+    <!-- RESTFUL CXF SERVER -->
+    <jaxrs:server id="serviceContainer" address="/service">
+        <jaxrs:serviceBeans>
+        	<bean class="demo.captcha.rs.impl.ScreenService">
+        		<property name="screenConfigService" ref="screenConfigService"/>
+        	</bean>
+        	<bean class="demo.captcha.rs.impl.OperationService">
+        		<property name="operationService" ref="operationService"/>
+        		<property name="clientService" ref="clientService"/>
+        	</bean>
+        	<bean class="demo.captcha.rs.impl.ClientService">
+        		<property name="clientService" ref="clientService"/>
+        	</bean>
+        	<bean class="demo.captcha.rs.impl.ConfigService">
+        		<property name="configService" ref="configService"/>
+        		<property name="clientService" ref="clientService"/>
+        	</bean>
+        	<bean class="demo.captcha.rs.impl.CommandService">
+        		<property name="clientService" ref="clientService"/>
+        		<property name="globalConfig" ref="GLOBAL"/>
+        	</bean>
+        	<bean class="demo.captcha.rs.impl.ResourceService"/>
+        </jaxrs:serviceBeans>
+        <jaxrs:providers>
+			<bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+        </jaxrs:providers>
+    </jaxrs:server>
+</beans>

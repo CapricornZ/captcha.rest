@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+  		<property name="locations" value="classpath:app.properties"/> 
+	</bean>
+	
+	<bean id="GLOBAL" class="demo.captcha.rs.model.GlobalConfig">
+		<property name="tag" value="${global.tag}"/>
+		<property name="repository" value="/resource.zip"/>
+		<property name="orcConfigs">
+			<list>
+				<ref bean="PRICE"/>
+				<ref bean="TIPS0"/>
+				<ref bean="TIPS1"/>
+				<ref bean="LOADING"/>
+				<ref bean="CAPTCHA"/>
+				<ref bean="LOGIN"/>
+			</list>
+		</property>
+	</bean>
+        
+	<bean id="PRICE" class="demo.captcha.rs.model.OrcConfig">
+		<property name="width" value="${global.price.width}"/>
+		<property name="height" value="${global.price.height}"/>
+		<property name="offsetY" value="${global.price.offsetY}"/>
+		<property name="offsetX">
+			<value>${global.price.offsetX}</value>
+		</property>
+	</bean>
+	
+	<bean id="TIPS0" class="demo.captcha.rs.model.OrcTipConfig">
+		<property name="configTip">
+			<bean class="demo.captcha.rs.model.OrcConfig">
+				<property name="width" value="${global.tips.width}"/>
+				<property name="height" value="${global.tips.height}"/>
+				<property name="offsetY" value="${global.tips.offsetY}"/>
+				<property name="offsetX">
+					<value>${global.tips0.offsetX}</value>
+				</property>
+			</bean>
+		</property>
+		<property name="configNo">
+			<bean class="demo.captcha.rs.model.OrcConfig">
+				<property name="width" value="${global.tips.no.width}"/>
+				<property name="height" value="${global.tips.no.height}"/>
+				<property name="offsetY" value="${global.tips.no.offsetY}"/>
+				<property name="offsetX">
+					<value>${global.tips.no0.offsetX}</value>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="TIPS1" class="demo.captcha.rs.model.OrcTipConfig">
+		<property name="configTip">
+			<bean class="demo.captcha.rs.model.OrcConfig">
+				<property name="width" value="${global.tips.width}"/>
+				<property name="height" value="${global.tips.height}"/>
+				<property name="offsetY" value="${global.tips.offsetY}"/>
+				<property name="offsetX">
+					<value>${global.tips1.offsetX}</value>
+				</property>
+			</bean>
+		</property>
+		<property name="configNo">
+			<bean class="demo.captcha.rs.model.OrcConfig">
+				<property name="width" value="${global.tips.no.width}"/>
+				<property name="height" value="${global.tips.no.height}"/>
+				<property name="offsetY" value="${global.tips.no.offsetY}"/>
+				<property name="offsetX">
+					<value>${global.tips.no1.offsetX}</value>
+				</property>
+			</bean>
+		</property>
+	</bean>
+		
+	<bean id="LOADING" class="demo.captcha.rs.model.OrcConfig">
+		<property name="width" value="${global.loading.width}"/>
+		<property name="height" value="${global.loading.height}"/>
+		<property name="offsetY" value="${global.loading.offsetY}"/>
+		<property name="offsetX">
+			<value>${global.loading.offsetX}</value>
+		</property>
+	</bean>
+	
+	<!-- 校验码出价 -->
+	<bean id="CAPTCHA" class="demo.captcha.rs.model.OrcConfig">
+		<property name="minNearSpots" value="${captchaSubmit.minNearSpots}"/>
+		<property name="width" value="${captchaSubmit.width}"/>
+		<property name="height" value="${captchaSubmit.height}"/>
+		<property name="offsetY" value="${captchaSubmit.offsetY}"/>
+		<property name="offsetX">
+			<value>${captchaSubmit.offsetX}</value>
+		</property>
+	</bean>
+	
+	<!-- 校验码登录 -->
+	<bean id="LOGIN" class="demo.captcha.rs.model.OrcConfig">
+		<property name="minNearSpots" value="${captchaLogin.minNearSpots}"/>
+		<property name="width" value="${captchaLogin.width}"/>
+		<property name="height" value="${captchaLogin.height}"/>
+		<property name="offsetY" value="${captchaLogin.offsetY}"/>
+		<property name="offsetX">
+			<value>${captchaLogin.offsetX}</value>
+		</property>
+	</bean>
+</beans>
