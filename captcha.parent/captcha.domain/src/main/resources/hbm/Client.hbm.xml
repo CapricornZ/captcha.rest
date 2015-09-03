@@ -13,11 +13,10 @@
         <many-to-one name="config" class="demo.captcha.model.Config" lazy="false" column="config_id"/>
         
         <!-- <set sort="demo.chapta.model.OperationSort"></set> -->
-        <bag inverse="true" name="operation" table="client_operation" 
-        	cascade="all" lazy="false">
+        <bag inverse="true" name="operation" table="client_operation" cascade="all" lazy="false">
         	
         	<key column="client_id"/>
-        	<many-to-many class="demo.captcha.model.Operation" column="operation_id"/>
+        	<many-to-many class="demo.captcha.model.Operation" column="operation_id" order-by="startTime"/>
         </bag>
     </class>
 </hibernate-mapping>

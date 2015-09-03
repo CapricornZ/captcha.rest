@@ -21,6 +21,25 @@
 		var strNow = yyyy + '-' + mm + '-' + dd;
 		$("#startTimeInput").mask(strNow + " 99:99:99",{placeholder:"yyyy-mm-dd hh:MM:ss"});
 		$("#expireTimeInput").mask(strNow + " 99:99:99",{placeholder:"yyyy-mm-dd hh:MM:ss"});
+		
+		$('#startTimeInput').blur(function(){
+		
+			var start = $(this).val();
+			var date = start.split(' ')[0];
+			var time = start.split(' ')[1];
+			var array = time.split(':');
+			
+			var hour = parseInt(array[0]);
+			var minute = (parseInt(array[1])+1);
+			if(minute > 59){
+				hour += 1;
+				minute = minute % 60;
+			}
+			hour = hour > 9 ? hour : '0' + hour;
+			minute = minute > 9 ? minute : '0' + minute;
+			var expire = date + ' ' + hour + ':' + minute + ':00';
+			$('#expireTimeInput').val(expire);
+		});
 	
 		var action = $(this).find("option:selected").attr('url');
 		$("div[toggle='subForm']").load(action);

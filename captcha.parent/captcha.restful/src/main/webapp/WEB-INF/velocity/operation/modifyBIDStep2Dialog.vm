@@ -7,6 +7,25 @@
 
 		$("#startTimeInput").mask("9999-99-99 99:99:99",{placeholder:"yyyy-mm-dd hh:MM:ss"});
 		$("#expireTimeInput").mask("9999-99-99 99:99:99",{placeholder:"yyyy-mm-dd hh:MM:ss"});
+		
+		$("#startTimeInput").blur(function(){
+			
+			var start = $(this).val();
+			var date = start.split(' ')[0];
+			var time = start.split(' ')[1];
+			var array = time.split(':');
+			
+			var hour = parseInt(array[0]);
+			var minute = (parseInt(array[1])+1);
+			if(minute > 59){
+				hour += 1;
+				minute = minute % 60;
+			}
+			hour = hour > 9 ? hour : '0' + hour;
+			minute = minute > 9 ? minute : '0' + minute;
+			var expire = date + ' ' + hour + ':' + minute + ':00';
+			$('#expireTimeInput').val(expire);
+		});
 	});
 </script>
 
@@ -47,6 +66,9 @@
 					<option value="400" #if(${operation.price}==400)SELECTED#end>+400</option>
 					<option value="500" #if(${operation.price}==500)SELECTED#end>+500</option>
 					<option value="600" #if(${operation.price}==600)SELECTED#end>+600</option>
+					<option value="700" #if(${operation.price}==700)SELECTED#end>+700</option>
+					<option value="800" #if(${operation.price}==800)SELECTED#end>+800</option>
+					<option value="900" #if(${operation.price}==900)SELECTED#end>+900</option>
 				</select>
 			</div>
 		</div>
