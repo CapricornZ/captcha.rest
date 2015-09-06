@@ -7,6 +7,10 @@ public class GlobalConfig {
 	private List<IOrcConfig> orcConfigs;
 	private String url;
 	private String tag;
+	private Boolean dynamic;
+	
+	public void setDynamic(Boolean value){ this.dynamic = value; }
+	public Boolean getDynamic(){return this.dynamic;}
 	
 	public void setTag(String val){ this.tag = val; }
 	public String getTag(){ return this.tag; }

@@ -27,6 +27,7 @@
         	<property name="price"/>
         </subclass>
         <subclass name="demo.captcha.model.LoginOperation" discriminator-value="LOGIN">
+        	<property name="url"/>
         </subclass> 
     </class>
 </hibernate-mapping>

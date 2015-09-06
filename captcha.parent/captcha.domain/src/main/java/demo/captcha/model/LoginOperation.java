@@ -2,7 +2,11 @@ package demo.captcha.model;
 
 public class LoginOperation extends Operation{
 
+	private String url;
 	public LoginOperation(){ this.setType("LOGIN"); }
+	
+	public void setUrl(String url){ this.url = url; }
+	public String getUrl() { return this.url; }
 	
 	@Override
 	public String getTips() {

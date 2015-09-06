@@ -19,12 +19,14 @@ public class ResourceService implements IResourceService, ApplicationContextAwar
 
 		OrcTipConfig obj = (OrcTipConfig)this.context.getBean(id);
 		
+		obj.getConfigTip().setIndex(config.getConfigTip().getIndex());
 		obj.getConfigTip().setOffsetX(config.getConfigTip().getOffsetX());
 		obj.getConfigTip().setOffsetY(config.getConfigTip().getOffsetY());
 		obj.getConfigTip().setWidth(config.getConfigTip().getWidth());
 		obj.getConfigTip().setHeight(config.getConfigTip().getHeight());
 		obj.getConfigTip().setMinNearSpots(config.getConfigTip().getMinNearSpots());
 		
+		obj.getConfigNo().setIndex(config.getConfigNo().getIndex());
 		obj.getConfigNo().setOffsetX(config.getConfigNo().getOffsetX());
 		obj.getConfigNo().setOffsetY(config.getConfigNo().getOffsetY());
 		obj.getConfigNo().setWidth(config.getConfigNo().getWidth());
@@ -37,6 +39,7 @@ public class ResourceService implements IResourceService, ApplicationContextAwar
 
 		OrcConfig obj = (OrcConfig)this.context.getBean(id);
 		
+		obj.setIndex(config.getIndex());
 		obj.setOffsetX(config.getOffsetX());
 		obj.setOffsetY(config.getOffsetY());
 		obj.setWidth(config.getWidth());

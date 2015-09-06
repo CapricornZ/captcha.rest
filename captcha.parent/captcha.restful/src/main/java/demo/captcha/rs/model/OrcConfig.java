@@ -2,21 +2,25 @@ package demo.captcha.rs.model;
 
 public class OrcConfig implements IOrcConfig {
 	
-	private int[] offsetX;
+	private int[] index;
 	private int offsetY;
+	private int offsetX;
 	private int width, height;
 	private int minNearSpots;
-	
-	public int[] getOffsetX() { return offsetX; }
-	public void setOffsetX(int[] offsetX) { this.offsetX = offsetX; }
-	public String getOffsetXText(){
+
+	public int[] getIndex() { return index; }
+	public void setIndex(int[] offsetX) { this.index = offsetX; }
+	public String getRenderIndex(){
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.offsetX[0]);
-		for(int i=1; i<this.offsetX.length; i++)
-			sb.append(String.format(",%d", this.offsetX[i]));
+		sb.append(this.index[0]);
+		for(int i=1; i<this.index.length; i++)
+			sb.append(String.format(",%d", this.index[i]));
 		return sb.toString();
 	}
+	
+	public int getOffsetX() { return offsetX; }
+	public void setOffsetX(int offsetX) { this.offsetX = offsetX; }
 	
 	public int getOffsetY() { return offsetY; }
 	public void setOffsetY(int offsetY) { this.offsetY = offsetY; }

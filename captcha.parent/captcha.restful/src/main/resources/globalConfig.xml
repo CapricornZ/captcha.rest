@@ -15,6 +15,7 @@
 	<bean id="GLOBAL" class="demo.captcha.rs.model.GlobalConfig">
 		<property name="tag" value="${global.tag}"/>
 		<property name="repository" value="/resource.zip"/>
+		<property name="dynamic" value="${global.dynamic}"/>
 		<property name="orcConfigs">
 			<list>
 				<ref bean="PRICE"/>
@@ -31,8 +32,9 @@
 		<property name="width" value="${global.price.width}"/>
 		<property name="height" value="${global.price.height}"/>
 		<property name="offsetY" value="${global.price.offsetY}"/>
-		<property name="offsetX">
-			<value>${global.price.offsetX}</value>
+		<property name="offsetX" value="${global.price.offsetX}"/>
+		<property name="index">
+			<value>${global.price.index}</value>
 		</property>
 	</bean>
 	
@@ -42,8 +44,9 @@
 				<property name="width" value="${global.tips.width}"/>
 				<property name="height" value="${global.tips.height}"/>
 				<property name="offsetY" value="${global.tips.offsetY}"/>
-				<property name="offsetX">
-					<value>${global.tips0.offsetX}</value>
+				<property name="offsetX" value="${global.tips.offsetX}"/>
+				<property name="index">
+					<value>${global.tips0.index}</value>
 				</property>
 			</bean>
 		</property>
@@ -52,8 +55,9 @@
 				<property name="width" value="${global.tips.no.width}"/>
 				<property name="height" value="${global.tips.no.height}"/>
 				<property name="offsetY" value="${global.tips.no.offsetY}"/>
-				<property name="offsetX">
-					<value>${global.tips.no0.offsetX}</value>
+				<property name="offsetX" value="${global.tips.no.offsetX}"/>
+				<property name="index">
+					<value>${global.tips.no0.index}</value>
 				</property>
 			</bean>
 		</property>
@@ -65,8 +69,9 @@
 				<property name="width" value="${global.tips.width}"/>
 				<property name="height" value="${global.tips.height}"/>
 				<property name="offsetY" value="${global.tips.offsetY}"/>
-				<property name="offsetX">
-					<value>${global.tips1.offsetX}</value>
+				<property name="offsetX" value="${global.tips.offsetX}"/>
+				<property name="index">
+					<value>${global.tips1.index}</value>
 				</property>
 			</bean>
 		</property>
@@ -75,8 +80,9 @@
 				<property name="width" value="${global.tips.no.width}"/>
 				<property name="height" value="${global.tips.no.height}"/>
 				<property name="offsetY" value="${global.tips.no.offsetY}"/>
-				<property name="offsetX">
-					<value>${global.tips.no1.offsetX}</value>
+				<property name="offsetX" value="${global.tips.no.offsetX}"/>
+				<property name="index">
+					<value>${global.tips.no1.index}</value>
 				</property>
 			</bean>
 		</property>
@@ -86,8 +92,9 @@
 		<property name="width" value="${global.loading.width}"/>
 		<property name="height" value="${global.loading.height}"/>
 		<property name="offsetY" value="${global.loading.offsetY}"/>
-		<property name="offsetX">
-			<value>${global.loading.offsetX}</value>
+		<property name="offsetX" value="${global.loading.offsetX}"/>
+		<property name="index">
+			<value>${global.loading.index}</value>
 		</property>
 	</bean>
 	
@@ -97,8 +104,9 @@
 		<property name="width" value="${captchaSubmit.width}"/>
 		<property name="height" value="${captchaSubmit.height}"/>
 		<property name="offsetY" value="${captchaSubmit.offsetY}"/>
-		<property name="offsetX">
-			<value>${captchaSubmit.offsetX}</value>
+		<property name="offsetX" value="${captchaSubmit.offsetX}"/>
+		<property name="index">
+			<value>${captchaSubmit.index}</value>
 		</property>
 	</bean>
 	
@@ -108,8 +116,9 @@
 		<property name="width" value="${captchaLogin.width}"/>
 		<property name="height" value="${captchaLogin.height}"/>
 		<property name="offsetY" value="${captchaLogin.offsetY}"/>
-		<property name="offsetX">
-			<value>${captchaLogin.offsetX}</value>
+		<property name="offsetX" value="${captchaLogin.offsetX}"/>
+		<property name="index">
+			<value>${captchaLogin.index}</value>
 		</property>
 	</bean>
 </beans>
