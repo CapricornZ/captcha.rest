@@ -110,6 +110,8 @@
 						var endPoint = '${ContextPath}/rest/service/command/operation/' + opsType + '/' + $('#operationID').val();
 						if(opsType=="BIDStep1" || opsType=="BIDStep2")
 							opsParam.price = $('#price').val();
+						if(opsType="LOGIN")
+							opsParam.url = $('#loginURLInput').val();
 						
 						$.ajax({
 						    url : endPoint,

@@ -20,5 +20,6 @@ public class LoginOperation extends Operation{
 		LoginOperation other = (LoginOperation)ops;
 		this.setStartTime(other.getStartTime());
 		this.setExpireTime(other.getExpireTime());
+		this.setUrl(other.getUrl());
 	}
 }

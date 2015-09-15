@@ -39,7 +39,7 @@ public interface IOperationService {
 	void modifyBidStep2(@PathParam("operationID")int opsID, BidStep2Operation bid);
 	
 	@PUT
-	@Path("/Login/{operationID}")
+	@Path("/LOGIN/{operationID}")
 	@Consumes({MediaType.APPLICATION_JSON})
 	void modifyLogin(@PathParam("operationID")int opsID, LoginOperation login);
 	
