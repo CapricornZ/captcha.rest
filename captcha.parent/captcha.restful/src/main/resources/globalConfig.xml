@@ -24,6 +24,7 @@
 				<ref bean="LOADING"/>
 				<ref bean="CAPTCHA"/>
 				<ref bean="LOGIN"/>
+				<ref bean="TITLE"/>
 			</list>
 		</property>
 	</bean>
@@ -119,6 +120,18 @@
 		<property name="offsetX" value="${captchaLogin.offsetX}"/>
 		<property name="index">
 			<value>${captchaLogin.index}</value>
+		</property>
+	</bean>
+	
+	<!--  -->
+	<bean id="TITLE" class="demo.captcha.rs.model.OrcConfig">
+		<property name="minNearSpots" value="1"/>
+		<property name="width" value="33"/>
+		<property name="height" value="33"/>
+		<property name="offsetY" value="0"/>
+		<property name="offsetX" value="0"/>
+		<property name="index">
+			<value>0,35,70,105</value>
 		</property>
 	</bean>
 </beans>
