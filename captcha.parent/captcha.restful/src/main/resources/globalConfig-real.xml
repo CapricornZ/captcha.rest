@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<context:property-placeholder location="classpath:real.properties"/>
+	
+	<bean id="GLOBAL-REAL" class="demo.captcha.rs.model.GlobalConfig">
+		<property name="tag" value="${real.tag}"/>
+		<property name="repository" value="/real.zip"/>
+		<property name="dynamic" value="${real.dynamic}"/>
+		<property name="orcConfigs">
+			<list>
+				<ref bean="PRICE-real"/>
+				<ref bean="TIPS0-real"/>
+				<ref bean="TIPS1-real"/>
+				<ref bean="LOADING-real"/>
+				<ref bean="CAPTCHA-real"/>
+				<ref bean="LOGIN-real"/>
+				<ref bean="TITLE-real"/>
+			</list>
+		</property>
+	</bean>
+        
+	<bean id="PRICE-real" class="demo.captcha.rs.model.OrcConfig">
+		<property name="width" value="${real.price.width}"/>
+		<property name="height" value="${real.price.height}"/>
+		<property name="offsetY" value="${real.price.offsetY}"/>
+		<property name="offsetX" value="${real.price.offsetX}"/>
+		<property name="index">
+			<value>${real.price.index}</value>
+		</property>
+	</bean>
+	
+	<bean id="TIPS0-real" class="demo.captcha.rs.model.OrcTipConfig">
+		<property name="configTip">
+			<bean class="demo.captcha.rs.model.OrcConfig">
+				<property name="width" value="${real.tips.width}"/>
+				<property name="height" value="${real.tips.height}"/>
+				<property name="offsetY" value="${real.tips.offsetY}"/>
+				<property name="offsetX" value="${real.tips.offsetX}"/>
+				<property name="index">
+					<value>${real.tips0.index}</value>
+				</property>
+			</bean>
+		</property>
+		<property name="configNo">
+			<bean class="demo.captcha.rs.model.OrcConfig">
+				<property name="width" value="${real.tips.no.width}"/>
+				<property name="height" value="${real.tips.no.height}"/>
+				<property name="offsetY" value="${real.tips.no.offsetY}"/>
+				<property name="offsetX" value="${real.tips.no.offsetX}"/>
+				<property name="index">
+					<value>${real.tips.no0.index}</value>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="TIPS1-real" class="demo.captcha.rs.model.OrcTipConfig">
+		<property name="configTip">
+			<bean class="demo.captcha.rs.model.OrcConfig">
+				<property name="width" value="${real.tips.width}"/>
+				<property name="height" value="${real.tips.height}"/>
+				<property name="offsetY" value="${real.tips.offsetY}"/>
+				<property name="offsetX" value="${real.tips.offsetX}"/>
+				<property name="index">
+					<value>${real.tips1.index}</value>
+				</property>
+			</bean>
+		</property>
+		<property name="configNo">
+			<bean class="demo.captcha.rs.model.OrcConfig">
+				<property name="width" value="${real.tips.no.width}"/>
+				<property name="height" value="${real.tips.no.height}"/>
+				<property name="offsetY" value="${real.tips.no.offsetY}"/>
+				<property name="offsetX" value="${real.tips.no.offsetX}"/>
+				<property name="index">
+					<value>${real.tips.no1.index}</value>
+				</property>
+			</bean>
+		</property>
+	</bean>
+		
+	<bean id="LOADING-real" class="demo.captcha.rs.model.OrcConfig">
+		<property name="width" value="${real.loading.width}"/>
+		<property name="height" value="${real.loading.height}"/>
+		<property name="offsetY" value="${real.loading.offsetY}"/>
+		<property name="offsetX" value="${real.loading.offsetX}"/>
+		<property name="index">
+			<value>${real.loading.index}</value>
+		</property>
+	</bean>
+	
+	<!-- 校验码出价 -->
+	<bean id="CAPTCHA-real" class="demo.captcha.rs.model.OrcConfig">
+		<property name="minNearSpots" value="${real.captchaSubmit.minNearSpots}"/>
+		<property name="width" value="${real.captchaSubmit.width}"/>
+		<property name="height" value="${real.captchaSubmit.height}"/>
+		<property name="offsetY" value="${real.captchaSubmit.offsetY}"/>
+		<property name="offsetX" value="${real.captchaSubmit.offsetX}"/>
+		<property name="index">
+			<value>${real.captchaSubmit.index}</value>
+		</property>
+	</bean>
+	
+	<!-- 校验码登录 -->
+	<bean id="LOGIN-real" class="demo.captcha.rs.model.OrcConfig">
+		<property name="minNearSpots" value="${real.captchaLogin.minNearSpots}"/>
+		<property name="width" value="${real.captchaLogin.width}"/>
+		<property name="height" value="${real.captchaLogin.height}"/>
+		<property name="offsetY" value="${real.captchaLogin.offsetY}"/>
+		<property name="offsetX" value="${real.captchaLogin.offsetX}"/>
+		<property name="index">
+			<value>${real.captchaLogin.index}</value>
+		</property>
+	</bean>
+	
+	<!--  -->
+	<bean id="TITLE-real" class="demo.captcha.rs.model.OrcConfig">
+		<property name="minNearSpots" value="1"/>
+		<property name="width" value="33"/>
+		<property name="height" value="33"/>
+		<property name="offsetY" value="0"/>
+		<property name="offsetX" value="0"/>
+		<property name="index">
+			<value>0,35,70,105</value>
+		</property>
+	</bean>
+</beans>

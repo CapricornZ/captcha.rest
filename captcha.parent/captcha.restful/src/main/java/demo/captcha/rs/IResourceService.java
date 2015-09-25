@@ -13,10 +13,10 @@ import demo.captcha.rs.model.OrcTipConfig;
 public interface IResourceService {
 
 	@PUT
-	@Path("/orc/tip/{ID}")
-	void modifyTipConfig(OrcTipConfig config, @PathParam("ID")String id);
+	@Path("/{CATEGORY}/orc/tip/{ID}")
+	void modifyTipConfig(OrcTipConfig config, @PathParam("CATEGORY")String category, @PathParam("ID")String id);
 	
 	@PUT
-	@Path("/orc/{ID}")
-	void modifyConfig(OrcConfig config, @PathParam("ID")String id);
+	@Path("/{CATEGORY}/orc/{ID}")
+	void modifyConfig(OrcConfig config, @PathParam("CATEGORY")String category, @PathParam("ID")String id);
 }

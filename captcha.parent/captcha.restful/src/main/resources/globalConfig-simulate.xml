@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<bean id="GLOBAL-SIMULATE" class="demo.captcha.rs.model.GlobalConfig">
+		<property name="tag" value="${simulate.tag}"/>
+		<property name="repository" value="/simulate.zip"/>
+		<property name="dynamic" value="${simulate.dynamic}"/>
+		<property name="orcConfigs">
+			<list>
+				<ref bean="PRICE-simulate"/>
+				<ref bean="TIPS0-simulate"/>
+				<ref bean="TIPS1-simulate"/>
+				<ref bean="LOADING-simulate"/>
+				<ref bean="CAPTCHA-simulate"/>
+				<ref bean="LOGIN-simulate"/>
+				<ref bean="TITLE-simulate"/>
+			</list>
+		</property>
+	</bean>
+        
+	<bean id="PRICE-simulate" class="demo.captcha.rs.model.OrcConfig">
+		<property name="width" value="${simulate.price.width}"/>
+		<property name="height" value="${simulate.price.height}"/>
+		<property name="offsetY" value="${simulate.price.offsetY}"/>
+		<property name="offsetX" value="${simulate.price.offsetX}"/>
+		<property name="index">
+			<value>${simulate.price.index}</value>
+		</property>
+	</bean>
+	
+	<bean id="TIPS0-simulate" class="demo.captcha.rs.model.OrcTipConfig">
+		<property name="configTip">
+			<bean class="demo.captcha.rs.model.OrcConfig">
+				<property name="width" value="${simulate.tips.width}"/>
+				<property name="height" value="${simulate.tips.height}"/>
+				<property name="offsetY" value="${simulate.tips.offsetY}"/>
+				<property name="offsetX" value="${simulate.tips.offsetX}"/>
+				<property name="index">
+					<value>${simulate.tips0.index}</value>
+				</property>
+			</bean>
+		</property>
+		<property name="configNo">
+			<bean class="demo.captcha.rs.model.OrcConfig">
+				<property name="width" value="${simulate.tips.no.width}"/>
+				<property name="height" value="${simulate.tips.no.height}"/>
+				<property name="offsetY" value="${simulate.tips.no.offsetY}"/>
+				<property name="offsetX" value="${simulate.tips.no.offsetX}"/>
+				<property name="index">
+					<value>${simulate.tips.no0.index}</value>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="TIPS1-simulate" class="demo.captcha.rs.model.OrcTipConfig">
+		<property name="configTip">
+			<bean class="demo.captcha.rs.model.OrcConfig">
+				<property name="width" value="${simulate.tips.width}"/>
+				<property name="height" value="${simulate.tips.height}"/>
+				<property name="offsetY" value="${simulate.tips.offsetY}"/>
+				<property name="offsetX" value="${simulate.tips.offsetX}"/>
+				<property name="index">
+					<value>${simulate.tips1.index}</value>
+				</property>
+			</bean>
+		</property>
+		<property name="configNo">
+			<bean class="demo.captcha.rs.model.OrcConfig">
+				<property name="width" value="${simulate.tips.no.width}"/>
+				<property name="height" value="${simulate.tips.no.height}"/>
+				<property name="offsetY" value="${simulate.tips.no.offsetY}"/>
+				<property name="offsetX" value="${simulate.tips.no.offsetX}"/>
+				<property name="index">
+					<value>${simulate.tips.no1.index}</value>
+				</property>
+			</bean>
+		</property>
+	</bean>
+		
+	<bean id="LOADING-simulate" class="demo.captcha.rs.model.OrcConfig">
+		<property name="width" value="${simulate.loading.width}"/>
+		<property name="height" value="${simulate.loading.height}"/>
+		<property name="offsetY" value="${simulate.loading.offsetY}"/>
+		<property name="offsetX" value="${simulate.loading.offsetX}"/>
+		<property name="index">
+			<value>${simulate.loading.index}</value>
+		</property>
+	</bean>
+	
+	<!-- 校验码出价 -->
+	<bean id="CAPTCHA-simulate" class="demo.captcha.rs.model.OrcConfig">
+		<property name="minNearSpots" value="${simulate.captchaSubmit.minNearSpots}"/>
+		<property name="width" value="${simulate.captchaSubmit.width}"/>
+		<property name="height" value="${simulate.captchaSubmit.height}"/>
+		<property name="offsetY" value="${simulate.captchaSubmit.offsetY}"/>
+		<property name="offsetX" value="${simulate.captchaSubmit.offsetX}"/>
+		<property name="index">
+			<value>${simulate.captchaSubmit.index}</value>
+		</property>
+	</bean>
+	
+	<!-- 校验码登录 -->
+	<bean id="LOGIN-simulate" class="demo.captcha.rs.model.OrcConfig">
+		<property name="minNearSpots" value="${simulate.captchaLogin.minNearSpots}"/>
+		<property name="width" value="${simulate.captchaLogin.width}"/>
+		<property name="height" value="${simulate.captchaLogin.height}"/>
+		<property name="offsetY" value="${simulate.captchaLogin.offsetY}"/>
+		<property name="offsetX" value="${simulate.captchaLogin.offsetX}"/>
+		<property name="index">
+			<value>${simulate.captchaLogin.index}</value>
+		</property>
+	</bean>
+	
+	<!--  -->
+	<bean id="TITLE-simulate" class="demo.captcha.rs.model.OrcConfig">
+		<property name="minNearSpots" value="1"/>
+		<property name="width" value="33"/>
+		<property name="height" value="33"/>
+		<property name="offsetY" value="0"/>
+		<property name="offsetX" value="0"/>
+		<property name="index">
+			<value>0,35,70,105</value>
+		</property>
+	</bean>
+</beans>

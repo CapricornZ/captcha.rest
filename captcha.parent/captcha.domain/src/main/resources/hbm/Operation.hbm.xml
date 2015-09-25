@@ -10,7 +10,7 @@
             <generator class="identity"/>
         </id>
         <discriminator column="type" />
-        <property name="content" column="jsonContent"/>
+        <property name="content" column="jsonContent" length="512"/>
         <property name="startTime" type="java.sql.Timestamp" column="startTime"/>
         <property name="expireTime" type="java.sql.Timestamp" column="expireTime"/>
         <property name="updateTime" type="java.sql.Timestamp" column="updateTime"/>

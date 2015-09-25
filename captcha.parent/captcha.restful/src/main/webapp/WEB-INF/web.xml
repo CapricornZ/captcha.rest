@@ -9,7 +9,8 @@
 		<param-value>
 			classpath:applicationContext-cxf.xml,
 			classpath:applicationContext-hibernate.xml,
-			classpath:globalConfig.xml
+			classpath:globalConfig-simulate.xml,
+			classpath:globalConfig-real.xml
 		</param-value>
 	</context-param>
 	<context-param>

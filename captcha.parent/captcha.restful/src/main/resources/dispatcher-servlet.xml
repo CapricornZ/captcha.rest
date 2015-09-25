@@ -12,7 +12,7 @@
 		http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 		
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-  		<property name="locations" value="classpath:app.properties"/> 
+  		<property name="locations" value="classpath:security.properties"/> 
 	</bean>
 	<!-- Enables the Spring MVC @Controller programming model -->  
     <mvc:annotation-driven />
@@ -104,6 +104,7 @@
 	</bean>
 	
 	<bean class="demo.captcha.controller.CommandController">
-		<property name="globalConfig" ref="GLOBAL"/>
+		<property name="globalConfigREAL" ref="GLOBAL-REAL"/>
+		<property name="globalConfigSIMULATE" ref="GLOBAL-SIMULATE"/>
 	</bean>
 </beans>

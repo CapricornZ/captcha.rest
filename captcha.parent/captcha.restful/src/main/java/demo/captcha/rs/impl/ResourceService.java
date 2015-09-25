@@ -1,5 +1,7 @@
 package demo.captcha.rs.impl;
 
+import javax.ws.rs.PathParam;
+
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -15,9 +17,10 @@ public class ResourceService implements IResourceService, ApplicationContextAwar
 	public void setApplicationContext(ApplicationContext context) throws BeansException { this.context = context; }
 	
 	@Override
-	public void modifyTipConfig(OrcTipConfig config, String id) {
+	public void modifyTipConfig(OrcTipConfig config, String category, String id) {
 
-		OrcTipConfig obj = (OrcTipConfig)this.context.getBean(id);
+		String beanID = String.format("%s-%s", id, category);
+		OrcTipConfig obj = (OrcTipConfig)this.context.getBean(beanID);
 		
 		obj.getConfigTip().setIndex(config.getConfigTip().getIndex());
 		obj.getConfigTip().setOffsetX(config.getConfigTip().getOffsetX());
@@ -35,9 +38,10 @@ public class ResourceService implements IResourceService, ApplicationContextAwar
 	}
 
 	@Override
-	public void modifyConfig(OrcConfig config, String id) {
+	public void modifyConfig(OrcConfig config, String category, String id) {
 
-		OrcConfig obj = (OrcConfig)this.context.getBean(id);
+		String beanID = String.format("%s-%s", id, category);
+		OrcConfig obj = (OrcConfig)this.context.getBean(beanID);
 		
 		obj.setIndex(config.getIndex());
 		obj.setOffsetX(config.getOffsetX());

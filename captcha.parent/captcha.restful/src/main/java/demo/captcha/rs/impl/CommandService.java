@@ -16,8 +16,11 @@ public class CommandService implements ICommandService {
 	private IClientService clientService;
 	public void setClientService(IClientService clientServ){ this.clientService = clientServ; }
 	
-	private GlobalConfig globalConfig;
-	public void setGlobalConfig(GlobalConfig resource){ this.globalConfig = resource; }
+	private GlobalConfig globalConfigREAL;
+	public void setGlobalConfigREAL(GlobalConfig resource){ this.globalConfigREAL = resource; }
+	
+	private GlobalConfig globalConfigSIMULATE;
+	public void setGlobalConfigSIMULATE(GlobalConfig resource){ this.globalConfigSIMULATE = resource; }
 
 	@Override
 	public Client keepAlive(String fromHost) {
@@ -33,10 +36,13 @@ public class CommandService implements ICommandService {
 	}
 
 	@Override
-	public GlobalConfig queryResource(String fromHost) {
+	public GlobalConfig queryResource(String fromHost, String category) {
 		
-		logger.info("init Global Config from 【{}】", fromHost);
-		return this.globalConfig;
+		logger.info("init Global Config({}) from 【{}】", category, fromHost);
+		if("simulate".equals(category))
+			return this.globalConfigSIMULATE;
+		else
+			return this.globalConfigREAL;
 	}
 
 }

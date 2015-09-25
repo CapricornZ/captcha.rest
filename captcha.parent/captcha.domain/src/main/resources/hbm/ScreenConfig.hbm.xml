@@ -11,7 +11,7 @@
         </id>
         <property name="category" type="java.lang.String" column="category"/>
         <property name="fromHost" type="java.lang.String" column="fromHost"/>
-        <property name="jsonContent" type="java.lang.String" column="jsonContent" length="255"/>
+        <property name="jsonContent" type="java.lang.String" column="jsonContent" length="512"/>
         <property name="createTime" type="java.sql.Timestamp" column="createTime"/>
     </class>
 </hibernate-mapping>
