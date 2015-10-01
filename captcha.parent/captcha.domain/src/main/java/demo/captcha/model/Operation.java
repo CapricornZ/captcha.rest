@@ -1,7 +1,7 @@
 package demo.captcha.model;
 
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
@@ -18,11 +18,12 @@ public abstract class Operation {
 	private Date expireTime;
 	private String content;
 	private Date updateTime;
+	private String tag;
 	
 	@JsonIgnore
-	private Set<Client> clients;
-	public void setClients(Set<Client> clients){ this.clients = clients; }
-	public Set<Client> getClients(){ return this.clients; }
+	private List<Client> clients;
+	public void setClients(List<Client> clients){ this.clients = clients; }
+	public List<Client> getClients(){ return this.clients; }
 	
 	public int getId() { return id; }
 	public void setId(int id) { this.id = id; }
@@ -47,6 +48,9 @@ public abstract class Operation {
 	public Date getExpireTime() { return expireTime; }
 	@JsonDeserialize(using = CustomDateDeserializer.class)
 	public void setExpireTime(Date expireTime) { this.expireTime = expireTime; }
+	
+	public String getTag() { return tag; }
+	public void setTag(String tag) { this.tag = tag; }
 	
 	@JsonIgnore
 	public String getTips(){

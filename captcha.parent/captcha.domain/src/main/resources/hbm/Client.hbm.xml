@@ -4,6 +4,9 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
+	<filter-def name="tagFilter">
+		<filter-param name="tagParam" type="string"/>
+	</filter-def>
     <class name="demo.captcha.model.Client" table="Clients"> 
         <id name="ip" type="java.lang.String" length="15">
             <column name="IP"/>
@@ -14,9 +17,10 @@
         
         <!-- <set sort="demo.chapta.model.OperationSort"></set> -->
         <bag inverse="true" name="operation" table="client_operation" cascade="all" lazy="false">
-        	
         	<key column="client_id"/>
-        	<many-to-many class="demo.captcha.model.Operation" column="operation_id" order-by="startTime"/>
+        	<many-to-many class="demo.captcha.model.Operation" column="operation_id" order-by="startTime">
+        		<filter name="tagFilter" condition=":tagParam = tag"/>
+        	</many-to-many>
         </bag>
     </class>
 </hibernate-mapping>

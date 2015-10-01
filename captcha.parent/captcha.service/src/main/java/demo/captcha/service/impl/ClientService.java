@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Query;
+import org.hibernate.Session;
 
 import demo.captcha.model.Client;
 import demo.captcha.model.Config;
@@ -63,8 +64,23 @@ public class ClientService extends Service implements IClientService {
 	@Override
 	public List<Client> list() {
 		
-		String hql = "from Client";
+		String hql = "from Client order by updateTime desc";
+		Session _session = this.getSession();
+		_session.disableFilter("tagFilter");
     	Query query = this.getSession().createQuery(hql);
+    	
+    	@SuppressWarnings("unchecked")
+    	List<Client> list = query.list();
+		return list;
+	}
+	
+	@Override
+	public List<Client> listByFilter(String tag){
+		
+		String hql = "from Client";
+		Session _session = this.getSession();
+		_session.enableFilter("tagFilter").setParameter("tagParam", tag);
+    	Query query = _session.createQuery(hql);
     	
     	@SuppressWarnings("unchecked")
     	List<Client> list = query.list();

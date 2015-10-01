@@ -12,6 +12,7 @@ public interface IClientService {
 	void update(Client record);
 	Client queryByIP(String ip);
 	List<Client> list();
+	List<Client> listByFilter(String tag);
 	List<Client> listByIPs(String[] hosts);
 	
 	void removeOperation(String host, int OperationID);
