@@ -144,4 +144,18 @@ public class ClientService extends Service implements IClientService {
     	}
 	}
 
+	@Override
+	public List<Client> listFilterByHost(String host) {
+		
+		String hql = "from Client where ip like :host order by updateTime desc";
+		Session _session = this.getSession();
+		_session.disableFilter("tagFilter");
+    	Query query = this.getSession().createQuery(hql);
+    	query.setParameter("host", "%"+host+"%");
+    	
+    	@SuppressWarnings("unchecked")
+    	List<Client> list = query.list();
+		return list;
+	}
+
 }

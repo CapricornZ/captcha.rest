@@ -31,4 +31,10 @@ public class ClientService implements IClientService {
 		return this.clientService.list();
 	}
 
+	@Override
+	public List<Client> listClientFilter(String host) {
+
+		return this.clientService.listFilterByHost(host);
+	}
+
 }

@@ -50,57 +50,12 @@
 			});
 		});
 		
-		$.get("${ContextPath}/rest/service/command/client",
-			function(result){
-
-				var table = $('#hostTable');
-				for(var i=0; i<result.length; i++){
-				
-					var row = "<tr>";
-					row += "<td><input name='checkHost' type='checkbox' value='" + result[i].ip + "'/>" + result[i].ip + "</td>";
-					if(result[i].operation.length > 0){
-						var ops = "";
-						for(var j=0; j<result[i].operation.length; j++){
-							//ops += "[" + result[i].operation[j].id + "]" + result[i].operation[j].type + " @" + result[i].operation[j].startTime + "<br/>"
-							var button = "<button class='btn btn-danger btn-xs' toggle='REMOVE' host='" + result[i].ip + "' opsID='" + result[i].operation[j].id + "'>X</button>";
-							ops += "<div>【" + result[i].operation[j].id + "】";
-							if(result[i].operation[j].tag == "real")
-								ops += "<span class='label label-primary'>国拍</span>";
-							else if(result[i].operation[j].tag == "simulate")
-								ops += "<span class='label label-info'>模拟</span>";
-							else
-								ops += "<span class='label label-warning'>未知</span>";
-							ops += "<span class='label label-default'>" + result[i].operation[j].type + "</span>";
-							ops += "@" + result[i].operation[j].startTime;
-							ops += button + "</div>";
-						}
-						row += "<td>"+ops+"</td>";
-					} else
-						row += "<td></td>";
-					row += "</tr>";
-					table.append(row);
-				}
-				
-				$("button[toggle='REMOVE']").click(function(){
-			
-					var host = $(this).attr("host");
-					var opsID = $(this).attr("opsID");
-					
-					$.ajax({
-					    url : '${ContextPath}/rest/service/command/client/' + host + '/operation/' + opsID,
-		    			type: 'DELETE',
-						contentType: 'application/json;charset=utf-8;',
-						error: function(msg) { alert("error"); },
-						complete: function(msg) { console.log("complete"); },
-						success: function(msg) { 
-						
-							alert("删除成功");
-							console.log("complete");
-						}     
-					});
-				});
-			}
-		);
+		$('#filter').blur(function(){
+		
+			loadHosts($(this).val());
+		});
+		
+		loadHosts();
 		
 		$("button[toggle='DELETE']").click(function(){
 			var operationID = $(this).attr("opsID");
@@ -117,18 +72,18 @@
 				}     
 			});
 		});
-
+		
 		$("button[toggle='MODIFY']").click(function(){
 
 			var opsID = $(this).attr("opsID");
 			var opsType = $(this).attr("opsType");
 			BootstrapDialog.show({
 				cssClass: 'login-dialog',
-				title:"修改Operation",
-	            message: $('<div></div>').load('${ContextPath}/web/command/operation/' + opsID + '.do'),
-	            buttons:[{
-	            	label:"保存",
-	            	action:function(dialogItself){
+				title   : "修改Operation",
+	            message : $('<div></div>').load('${ContextPath}/web/command/operation/' + opsID + '.do'),
+	            buttons : [{
+	            	label : "保存",
+	            	action: function(dialogItself){
 	            		var opsParam = {
 							id  : $('#operationID').val(),
 							type: opsType,
@@ -166,6 +121,100 @@
 	        });
 		});
 	});
+	
+	function detailClient(client){
+		
+		var clientID = $(client).attr('host');
+		BootstrapDialog.show({
+				cssClass: 'login-dialog',
+				title   : "Client详细信息",
+	            message : $('<div></div>').load('${ContextPath}/web/command/client/' + clientID + '/detail.do'),
+	            buttons : [{
+	            	label:"关闭",
+	            	action: function(dialogItself){
+	                    dialogItself.close();
+	                }
+	            }]
+	        });
+	}
+	
+	function loadHosts(host){
+		
+		$("tr[toggle='HOST']").remove();
+		
+		var endPoint = "${ContextPath}/rest/service/command/client";
+		if(host != null && host != "")
+			endPoint += "/filter/" + host;
+
+		$.get(endPoint,
+			function(result){
+
+				var table = $('#hostTable tbody');
+				for(var i=0; i<result.length; i++){
+				
+					var row = "<tr toggle='HOST'>";
+					row += "<td><input name='checkHost' type='checkbox' value='" + result[i].ip + "'/>" + result[i].ip + "</td>";
+					if(result[i].operation.length > 0){
+						var ops = "";
+						for(var j=0; j<result[i].operation.length; j++){
+							//ops += "[" + result[i].operation[j].id + "]" + result[i].operation[j].type + " @" + result[i].operation[j].startTime + "<br/>"
+							var button = "<button class='btn btn-danger btn-xs' toggle='REMOVE' host='" + result[i].ip + "' opsID='" + result[i].operation[j].id + "'>X</button>";
+							ops += "<div>【" + result[i].operation[j].id + "】";
+							if(result[i].operation[j].tag == "real")
+								ops += "<span class='label label-primary'>国拍</span>";
+							else if(result[i].operation[j].tag == "simulate")
+								ops += "<span class='label label-info'>模拟</span>";
+							else
+								ops += "<span class='label label-warning'>未知</span>";
+							ops += "<span class='label label-default'>" + result[i].operation[j].type + "</span>";
+							ops += "@" + result[i].operation[j].startTime;
+							ops += button + "</div>";
+						}
+						row += "<td host='" + result[i].ip + "'onclick='return detailClient(this);'>"+ops+"</td>";
+					} else
+						row += "<td host='" + result[i].ip + "'onclick='return detailClient(this);'></td>";
+					row += "</tr>";
+					table.append(row);
+				}
+				
+				$("button[toggle='REMOVE']").click(function(){
+			
+					var host = $(this).attr("host");
+					var opsID = $(this).attr("opsID");
+					var div = $(this).parent();
+					
+					$.ajax({
+					    url : '${ContextPath}/rest/service/command/client/' + host + '/operation/' + opsID,
+		    			type: 'DELETE',
+						contentType: 'application/json;charset=utf-8;',
+						error: function(msg) { alert("error"); },
+						complete: function(msg) { console.log("complete"); },
+						success: function(msg) { 
+						
+							alert("删除成功");
+							div.remove();
+							console.log("complete");
+						}     
+					});
+				});
+			}
+		);
+	}
+	
+	function checkAll(){
+		$("tr[toggle='HOST']").each(function(){
+
+			var checkBox = $(this).find("input:first");
+			checkBox.prop("checked", true);
+		});
+	}
+	
+	function unCheckAll(){
+		
+		$("tr[toggle='HOST']").each(function(){
+			$(this).find("input:first").prop("checked", false);
+		});
+	}
 	
 </script>
 
@@ -208,11 +257,23 @@
 		<div class="col-sm-6"><!--Sidebar content-->
 			<form class="form-horizontal" onsubmit="return false;">
 				<fieldset>
-	        		<legend>客户端列表</legend>
+	        		<legend>
+	        		<div class="input-group">
+						<span class="input-group-addon">客户端列表（FILTER）</span>
+						<input type="text" placeholder="客户端名称" style="width:200px;height:30px;" class="form-control" id="filter">
+					</div>
+	        		</legend>
 	        		<div class="control-group">
 	        			<table id="hostTable" class="table table-striped table-bordered table-hover">
-							<tr>
-								<th>HOST/IP</th>
+							<tr toggle="THREAD">
+								<th>
+									<label class="radio-inline">
+								  		<input type="radio" name="all" id="inlineRadio1" value="option1" onclick='return checkAll();'>全选
+									</label>
+									<label class="radio-inline">
+										<input type="radio" name="all" id="inlineRadio2" value="option2"  onclick='return unCheckAll();'>不选
+									</label>
+								</th>
 								<th>已分配の操作</th>
 							</tr>
 						</table>
