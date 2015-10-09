@@ -153,7 +153,8 @@
 				for(var i=0; i<result.length; i++){
 				
 					var row = "<tr toggle='HOST'>";
-					row += "<td><input name='checkHost' type='checkbox' value='" + result[i].ip + "'/>" + result[i].ip + "</td>";
+					row += "<td><input name='checkHost' type='checkbox' value='" + result[i].ip + "'/>"
+					row += "<a href='#' host='" + result[i].ip + "' onclick='return detailClient(this);'>" + result[i].ip + "</a></td>";
 					if(result[i].operation.length > 0){
 						var ops = "";
 						for(var j=0; j<result[i].operation.length; j++){
@@ -170,9 +171,9 @@
 							ops += "@" + result[i].operation[j].startTime;
 							ops += button + "</div>";
 						}
-						row += "<td host='" + result[i].ip + "'onclick='return detailClient(this);'>"+ops+"</td>";
+						row += "<td>"+ops+"</td>";
 					} else
-						row += "<td host='" + result[i].ip + "'onclick='return detailClient(this);'></td>";
+						row += "<td></td>";
 					row += "</tr>";
 					table.append(row);
 				}

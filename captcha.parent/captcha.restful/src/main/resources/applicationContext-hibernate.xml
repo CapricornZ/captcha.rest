@@ -12,7 +12,7 @@
 	<bean id="org.h2.tools.Server-WebServer" class="org.h2.tools.Server"
 		depends-on="dataSource" factory-method="createWebServer" init-method="start"
 		lazy-init="false">
-		<constructor-arg value="-web,-webPort,11111" />
+		<constructor-arg value="-web,-webAllowOthers,-webPort,11111" />
 	</bean>
 	
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
