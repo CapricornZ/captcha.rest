@@ -23,10 +23,21 @@
 				<ref bean="CAPTCHA-real"/>
 				<ref bean="LOGIN-real"/>
 				<ref bean="TITLE-real"/>
+				<ref bean="PRICE-sm-real"/>
 			</list>
 		</property>
 	</bean>
-        
+	
+	<bean id="PRICE-sm-real" class="demo.captcha.rs.model.OrcConfig">
+		<property name="width" value="${real.price.sm.width}"/>
+		<property name="height" value="${real.price.sm.height}"/>
+		<property name="offsetY" value="${real.price.sm.offsetY}"/>
+		<property name="offsetX" value="${real.price.sm.offsetX}"/>
+		<property name="index">
+			<value>${real.price.sm.index}</value>
+		</property>
+	</bean>
+	
 	<bean id="PRICE-real" class="demo.captcha.rs.model.OrcConfig">
 		<property name="width" value="${real.price.width}"/>
 		<property name="height" value="${real.price.height}"/>

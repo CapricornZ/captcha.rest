@@ -4,6 +4,8 @@
 <link rel="stylesheet" type="text/css" href="${ContextPath}/css/jquery.datetimepicker.css"/>
 
 <script type="text/javascript" src="${ContextPath}/js/jquery/jquery-1.11.2.min.js"></script>
+<script src="${ContextPath}/js/bootstrap.js"></script>
+<script src="${ContextPath}/js/bootstrap-dialog.min.js"></script>
 
 <script type="text/javascript">
 	$(function(){
@@ -13,6 +15,33 @@
 				var option = $("<option>").val(result[i].ip).text(result[i].ip);
 				$('#client').append(option);
 			}
+  		});
+  		
+  		$("button[toggle='MODIFY']").click(function(){
+  		
+  			var configID = $(this).attr("config");
+  			BootstrapDialog.show({
+				title   : "修改标书信息",
+	            message : $('<div></div>').load('${ContextPath}/web/command/config/detail/' + configID + '.do'),
+	            buttons : [{
+	            	label : "保存",
+	            	action: function(dialogItself){
+	            	
+	            		var config = {
+	            			'no'     : $('#configID').val(),
+	            			'passwd' : $('#password').val(),
+	            			'pid'    : $('#pid').val(),
+	            			'pname'  : $('#pname').val()
+	            		};
+	            		var endPoint = '${ContextPath}/rest/service/command/config/' + opsType + '/' + $('#operationID').val();
+	            	}
+	            },{
+	            	label:"取消",
+	            	action: function(dialogItself){
+	                    dialogItself.close();
+	                }
+	            }]
+	        });
   		});
   		
   		$("button[toggle='DEL']").click(function(){
@@ -76,6 +105,7 @@
 					<td>${config.pname}</td>
 					<td>
 						<button class="btn btn-primary" type="submit" toggle="DEL" >删除</button>
+						<!--<button class="btn btn-info" toggle="MODIFY" config="${config.no}">修改</button>-->
 					</td>
 				</tr>
 				#end

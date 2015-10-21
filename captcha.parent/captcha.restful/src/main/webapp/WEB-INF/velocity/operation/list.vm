@@ -6,7 +6,7 @@
 <script type="text/javascript" src="${ContextPath}/js/jquery/jquery-1.11.2.min.js"></script>
 <script src="${ContextPath}/js/bootstrap.js"></script>
 <script src="${ContextPath}/js/bootstrap-dialog.min.js"></script>
-<script src="${ContextPath}/js/bootstrap.min.js"></script>
+<!--<script src="${ContextPath}/js/bootstrap.min.js"></script>-->
 
 <style>
    .login-dialog .modal-dialog .modal-body .modal-header .modal-footer{
