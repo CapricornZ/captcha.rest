@@ -1,6 +1,8 @@
 package demo.captcha.service.impl;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,6 +12,7 @@ import org.hibernate.Session;
 import demo.captcha.model.Client;
 import demo.captcha.model.Config;
 import demo.captcha.model.Operation;
+import demo.captcha.model.Warrant;
 import demo.captcha.service.IClientService;
 import demo.captcha.service.Service;
 
@@ -108,9 +111,9 @@ public class ClientService extends Service implements IClientService {
 			
 			Operation operation = ops.get(0);
 			boolean bFound = false;
-			for (Iterator iter = operation.getClients().iterator(); !bFound && iter.hasNext();) {
+			for (Iterator<Client> iter = operation.getClients().iterator(); !bFound && iter.hasNext();) {
 				
-				Client client = (Client)iter.next();
+				Client client = iter.next();
 				if(client.getIp().equals(host)){
 					operation.getClients().remove(client);
 					bFound = true;
@@ -158,4 +161,64 @@ public class ClientService extends Service implements IClientService {
 		return list;
 	}
 
+	@Override
+	public Client register(String host, Warrant warrant) {
+		
+		String hql = "from Warrant where code=:code";
+		Query query = this.getSession().createQuery(hql);
+		List<Warrant> warrants = query.setParameter("code", warrant.getCode()).list();
+		if(null != warrants && warrants.size() > 0){
+			if(!warrants.get(0).getCode().equals(warrant.getCode()))
+				return null;
+		} else 
+			return null;
+		
+		Warrant pWarrant = warrants.get(0);
+		//Warrant pWarrant = (Warrant) this.getSession().get(Warrant.class, warrant.getId());
+		//if(warrant.getCode() == null || !pWarrant.getCode().equals(warrant.getCode()))
+		//	return null;
+
+		Client pClient = (Client) this.getSession().get(Client.class, host);
+		if( null != pWarrant ){
+			
+			if( null == pClient ){
+				
+				Client client = new Client();
+				client.setCode(pWarrant.getCode());
+				client.setIp(host);
+				Date now = new Date();
+				client.setUpdateTime(now);
+				Calendar calendar = new GregorianCalendar();
+				calendar.setTime(now);
+				calendar.add(calendar.MONTH, pWarrant.getValidate());
+				client.setExpireTime(calendar.getTime());
+	
+				Operation ops1 = (Operation) this.getSession().get(Operation.class, 317);
+				if( null != ops1)
+					ops1.getClients().add(client);
+				Operation ops2 = (Operation) this.getSession().get(Operation.class, 318);
+				if(null != ops2)
+					ops2.getClients().add(client);
+				
+				this.getSession().delete(pWarrant);
+				this.getSession().save(client);
+				this.getSession().merge(ops1);
+				this.getSession().merge(ops2);
+				return client;
+			} else {
+				
+				pClient.setCode(pWarrant.getCode());
+				pClient.setUpdateTime(new Date());
+				Calendar calendar = new GregorianCalendar();
+				calendar.setTime(pClient.getExpireTime());
+				calendar.add(calendar.MONTH, pWarrant.getValidate());
+				pClient.setExpireTime(calendar.getTime());
+				
+				this.getSession().delete(pWarrant);
+				this.getSession().update(pClient);
+				return pClient;
+			}
+		} else
+			return null;
+	}
 }

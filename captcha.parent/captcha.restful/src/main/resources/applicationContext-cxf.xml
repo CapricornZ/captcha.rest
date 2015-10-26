@@ -30,10 +30,12 @@
         </cxf:outInterceptors>
         <cxf:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+            <!--
             <bean class="demo.captcha.rs.impl.InInterceptor">
             	<property name="certificatePath" value="${security.CERT}"/>
         		<property name="licencePath" value="${security.LICENCE}"/>
             </bean>
+            -->
         </cxf:inInterceptors>
     </cxf:bus> 
 
@@ -57,6 +59,7 @@
         	</bean>
         	<bean class="demo.captcha.rs.impl.CommandService">
         		<property name="clientService" ref="clientService"/>
+        		<property name="warrantService" ref="warrantService"/>
         		<property name="globalConfigREAL" ref="GLOBAL-REAL"/>
         		<property name="globalConfigSIMULATE" ref="GLOBAL-SIMULATE"/>
         	</bean>

@@ -154,7 +154,8 @@
 				
 					var row = "<tr toggle='HOST'>";
 					row += "<td><input name='checkHost' type='checkbox' value='" + result[i].ip + "'/>"
-					row += "<a href='#' host='" + result[i].ip + "' onclick='return detailClient(this);'>" + result[i].ip + "</a></td>";
+					row += "<a href='#' data-toggle='popover' title='update time' data-content='" + result[i].updateTime + "' host='" + result[i].ip + "' onclick='return detailClient(this);'>" + result[i].ip + "</a></td>";
+
 					if(result[i].operation.length > 0){
 						var ops = "";
 						for(var j=0; j<result[i].operation.length; j++){
@@ -177,6 +178,10 @@
 					row += "</tr>";
 					table.append(row);
 				}
+				
+				$("a[data-toggle='popover']").popover({
+					'trigger':'hover'
+				});
 				
 				$("button[toggle='REMOVE']").click(function(){
 			
@@ -254,6 +259,10 @@
 					<td><button class="btn btn-primary" toggle="CREATE" href="#newOperationFrom">创建</button></td>
 				</tr>-->
 			</table>
+			<div class="form-actions">
+				<button class="btn btn-primary" type="submit" id="ASSIGN">分配操作</button>
+				<button class="btn">取消</button>
+			</div>
 		</div>
 		<div class="col-sm-6"><!--Sidebar content-->
 			<form class="form-horizontal" onsubmit="return false;">
@@ -279,10 +288,6 @@
 							</tr>
 						</table>
 	        		</div>
-	        		<div class="form-actions">
-						<button class="btn btn-primary" type="submit" id="ASSIGN">分配操作</button>
-						<button class="btn">取消</button>
-					</div>
 				</fieldset>
 			</form>
 		</div>

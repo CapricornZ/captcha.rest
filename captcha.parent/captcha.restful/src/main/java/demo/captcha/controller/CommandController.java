@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import demo.captcha.model.Warrant;
 import demo.captcha.rs.model.GlobalConfig;
+import demo.captcha.service.IWarrantService;
+import demo.captcha.service.Page;
 
 @RequestMapping(value = "/command")
 @Controller
@@ -28,6 +31,19 @@ public class CommandController implements ApplicationContextAware {
 	
 	private GlobalConfig globalConfigSimulate;
 	public void setGlobalConfigSIMULATE(GlobalConfig resource){ this.globalConfigSimulate = resource; }
+	
+	private IWarrantService warrantService;
+	public void setWarrantService(IWarrantService service){
+		this.warrantService = service;
+	}
+	
+	@RequestMapping(value = "/warrant/preview", method={RequestMethod.GET})
+	public String previewWarrant(Model model, @RequestParam("pageNumber")int pageNumber){
+		
+		Page<Warrant> page = this.warrantService.findWithPage(pageNumber);
+		model.addAttribute("page", page);
+		return "warrant/preview";
+	}
 	
 	@RequestMapping(value = "/resource/preview", method={RequestMethod.GET})
 	public String previewResource(Model model, @RequestParam("category")String category){

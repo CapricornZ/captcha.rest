@@ -1,7 +1,5 @@
 package demo.captcha.rs.impl;
 
-import javax.ws.rs.PathParam;
-
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

@@ -12,6 +12,8 @@ import demo.captcha.util.CustomDateSerializer;
 public class Client {
 
 	private String ip;
+	private String code;
+	private Date expireTime;
 	private Date updateTime;
 	private Config config;
 	
@@ -56,4 +58,10 @@ public class Client {
 	public List<Operation> getOperation(){
 		return this.operation;
 	}
+
+	public String getCode() { return code; }
+	public void setCode(String code) { this.code = code; }
+
+	public Date getExpireTime() { return expireTime; }
+	public void setExpireTime(Date expireTime) { this.expireTime = expireTime; }
 }

@@ -38,7 +38,7 @@
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.show_sql">false</prop>
 				<prop key="hiberante.format_sql">true</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 				<prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext</prop>
@@ -78,5 +78,7 @@
 	<bean id="screenConfigService" class="demo.captcha.service.impl.ScreenConfigService">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	
+	<bean id="warrantService" class="demo.captcha.service.impl.WarrantService">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>	
 </beans>

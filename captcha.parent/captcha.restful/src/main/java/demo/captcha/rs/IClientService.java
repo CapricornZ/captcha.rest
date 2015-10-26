@@ -34,5 +34,5 @@ public interface IClientService {
 	@GET
 	@Path("/filter/{HOST}")
 	@Produces({MediaType.APPLICATION_JSON})
-	public List<Client> listClientFilter(@PathParam("HOST")String host);
+	public List<Client> listClientFilter(@PathParam("HOST")String host);	
 }

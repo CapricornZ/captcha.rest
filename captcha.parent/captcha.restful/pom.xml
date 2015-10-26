@@ -13,8 +13,6 @@
 	<name>captcha.restful Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
-	
-		
 
 		<!-- CXF -->
 		<dependency>
