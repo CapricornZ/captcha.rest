@@ -26,6 +26,30 @@
 				<ref bean="PRICE-sm-real"/>
 			</list>
 		</property>
+		<property name="entries">
+			<list>
+				<ref bean="ENTRY0-real"/>
+				<ref bean="ENTRY1-real"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!--
+	<bean id="ENTRIES-real" class="java.util.ArrayList">  
+	    <constructor-arg type="java.util.Collection">  
+	        <list>
+			</list>  
+	    </constructor-arg>  
+	</bean>
+	-->
+	
+	<bean class="demo.captcha.rs.model.Entry" id="ENTRY0-real">
+		<property name="description" value="电信线路"/>
+		<property name="url" value="https://paimai2.alltobid.com/pubbid/2015102601/login.htm"/>
+	</bean>
+	<bean class="demo.captcha.rs.model.Entry" id="ENTRY1-real">
+		<property name="description" value="非电信线路"/>
+		<property name="url" value="https://paimai.alltobid.com/pubbid/2015102601/login.htm"/>
 	</bean>
 	
 	<bean id="PRICE-sm-real" class="demo.captcha.rs.model.OrcConfig">

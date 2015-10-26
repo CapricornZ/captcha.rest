@@ -1,10 +1,13 @@
 package demo.captcha.rs;
 
+import java.util.List;
+
 import javax.jws.WebService;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
+import demo.captcha.rs.model.Entry;
 import demo.captcha.rs.model.OrcConfig;
 import demo.captcha.rs.model.OrcTipConfig;
 
@@ -19,4 +22,8 @@ public interface IResourceService {
 	@PUT
 	@Path("/{CATEGORY}/orc/{ID}")
 	void modifyConfig(OrcConfig config, @PathParam("CATEGORY")String category, @PathParam("ID")String id);
+	
+	@PUT
+	@Path("/{CATEGORY}/entries")
+	void modifyEntries(List<Entry> entries, @PathParam("CATEGORY")String category);
 }

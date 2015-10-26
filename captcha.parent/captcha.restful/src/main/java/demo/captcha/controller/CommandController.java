@@ -1,7 +1,5 @@
 package demo.captcha.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -20,7 +18,7 @@ import demo.captcha.service.Page;
 @Controller
 public class CommandController implements ApplicationContextAware {
 	
-	private static final Logger logger = LoggerFactory.getLogger(CommandController.class);
+	//private static final Logger logger = LoggerFactory.getLogger(CommandController.class);
 
 	private ApplicationContext context;
 	@Override
@@ -58,6 +56,8 @@ public class CommandController implements ApplicationContextAware {
 			model.addAttribute("LOADING", this.context.getBean("LOADING-real"));
 			model.addAttribute("CAPTCHA", this.context.getBean("CAPTCHA-real"));
 			model.addAttribute("LOGIN", this.context.getBean("LOGIN-real"));
+			model.addAttribute("PRICE-SM", this.context.getBean("PRICE-sm-real"));
+			model.addAttribute("ENTRIES", this.globalConfigReal.getEntries());
 		} else {
 			
 			model.addAttribute("TAG", this.globalConfigSimulate.getTag());
@@ -67,6 +67,8 @@ public class CommandController implements ApplicationContextAware {
 			model.addAttribute("LOADING", this.context.getBean("LOADING-simulate"));
 			model.addAttribute("CAPTCHA", this.context.getBean("CAPTCHA-simulate"));
 			model.addAttribute("LOGIN", this.context.getBean("LOGIN-simulate"));
+			model.addAttribute("PRICE-SM", this.context.getBean("PRICE-sm-simulate"));
+			model.addAttribute("ENTRIES", this.globalConfigSimulate.getEntries());
 		}
 		
 		return "resource/preview";

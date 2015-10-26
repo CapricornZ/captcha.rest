@@ -1,10 +1,13 @@
 package demo.captcha.rs.impl;
 
+import java.util.List;
+
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import demo.captcha.rs.IResourceService;
+import demo.captcha.rs.model.Entry;
 import demo.captcha.rs.model.OrcConfig;
 import demo.captcha.rs.model.OrcTipConfig;
 
@@ -47,6 +50,18 @@ public class ResourceService implements IResourceService, ApplicationContextAwar
 		obj.setWidth(config.getWidth());
 		obj.setHeight(config.getHeight());
 		obj.setMinNearSpots(config.getMinNearSpots());
+	}
+
+	@Override
+	public void modifyEntries(List<Entry> entries, String category) {
+
+		for(int i=0; i<entries.size(); i++){
+			
+			String beanID = String.format("ENTRY%d-%s", i, category);
+			Entry entry = (Entry)this.context.getBean(beanID);
+			entry.setDescription(entries.get(i).getDescription());
+			entry.setUrl(entries.get(i).getUrl());
+		}
 	}
 
 }

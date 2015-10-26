@@ -9,8 +9,9 @@
 
 <script type="text/javascript">
 	$(function(){
-	
-		$.get("../client/list.do", function(result){
+		
+		var url = "${ContextPath}/rest/service/command/client";
+		$.get(url, function(result){
 			for(var i=0; i<result.length; i++){
 				var option = $("<option>").val(result[i].ip).text(result[i].ip);
 				$('#client').append(option);

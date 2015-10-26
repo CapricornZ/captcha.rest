@@ -244,11 +244,11 @@
 					<td>${operation.type}</td>
 					<td>$!{operation.tips}</td>
 					<td>
-						<button class="btn btn-primary" toggle="MODIFY" opsID="${operation.id}" opsType="${operation.type}"><i class="icon-edit icon-white"></i>修改</button>
+						<button class="btn btn-primary btn-sm" toggle="MODIFY" opsID="${operation.id}" opsType="${operation.type}"><i class="icon-edit icon-white"></i>修改</button>
 						#if(${operation.clients.size()} == 0)
-						<button class="btn btn-primary" toggle="DELETE" opsID="${operation.id}"><i class="icon-trash icon-white"></i>删除</button>
+						<button class="btn btn-primary btn-sm" toggle="DELETE" opsID="${operation.id}"><i class="icon-trash icon-white"></i>删除</button>
 						#else
-						<button class="btn btn-primary disabled" toggle="DELETE" opsID="${operation.id}"><i class="icon-trash icon-white"></i>删除</button>
+						<button class="btn btn-primary btn-sm disabled" toggle="DELETE" opsID="${operation.id}"><i class="icon-trash icon-white"></i>删除</button>
 						#end
 					</td>
 					<td><input type="radio" name="operation" value="${operation.id}"></input></td>
