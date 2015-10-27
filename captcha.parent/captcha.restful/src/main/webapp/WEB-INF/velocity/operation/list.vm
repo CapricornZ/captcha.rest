@@ -152,14 +152,18 @@
 				var table = $('#hostTable tbody');
 				for(var i=0; i<result.length; i++){
 				
+					var detail = "UPDATE:" + result[i].updateTime;
 					var row = "<tr toggle='HOST'>";
 					row += "<td><input name='checkHost' type='checkbox' value='" + result[i].ip + "'/>"
-					row += "<a href='#' data-toggle='popover' title='update time' data-content='" + result[i].updateTime + "' host='" + result[i].ip + "' onclick='return detailClient(this);'>" + result[i].ip + "</a></td>";
+					row += "<a href='#' data-toggle='popover' title='DETAIL' data-content='" + detail + "' host='" + result[i].ip + "' onclick='return detailClient(this);'>" + result[i].ip + "</a>";
+					if(result[i].config != null)
+						row += "<br/>[" + result[i].config.no + "," + result[i].config.pname + "]";
+					row += "</td>";
 
 					if(result[i].operation.length > 0){
 						var ops = "";
 						for(var j=0; j<result[i].operation.length; j++){
-							//ops += "[" + result[i].operation[j].id + "]" + result[i].operation[j].type + " @" + result[i].operation[j].startTime + "<br/>"
+						
 							var button = "<button class='btn btn-danger btn-xs' toggle='REMOVE' host='" + result[i].ip + "' opsID='" + result[i].operation[j].id + "'>X</button>";
 							ops += "<div>【" + result[i].operation[j].id + "】";
 							if(result[i].operation[j].tag == "real")

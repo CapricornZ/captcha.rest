@@ -131,16 +131,22 @@ public class ClientService extends Service implements IClientService {
     	query.setParameter("ip", host);
     	
     	@SuppressWarnings("unchecked")
-		List<Client> list = query.list();
-    	if(list.size()>0){
+		List<Client> clients = query.list();
+    	if(clients.size()>0){
     		
-    		Client tmpClient = list.get(0);
+    		Client tmpClient = clients.get(0);
     		tmpClient.setUpdateTime(new Date());
     		
     		if(null == tmpClient.getConfig() || !tmpClient.getConfig().equals(config)){
     			
+    			config.setClient(tmpClient);
     			config.setUpdateTime(new Date());
     			this.getSession().merge(config);
+    			
+    			if(tmpClient.getConfig() != null){
+    				tmpClient.getConfig().setClient(null);
+    				this.getSession().update(tmpClient.getConfig());
+    			}
     			tmpClient.setConfig(config);
     			this.getSession().update(tmpClient);
     		}

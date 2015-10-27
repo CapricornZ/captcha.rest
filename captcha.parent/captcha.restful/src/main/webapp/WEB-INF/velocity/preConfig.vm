@@ -9,7 +9,7 @@
 
 <script type="text/javascript">
 	$(function(){
-		
+
 		var url = "${ContextPath}/rest/service/command/client";
 		$.get(url, function(result){
 			for(var i=0; i<result.length; i++){
@@ -18,7 +18,7 @@
 			}
   		});
   		
-  		$("button[toggle='MODIFY']").click(function(){
+  		$("a[toggle='MODIFY']").click(function(){
   		
   			var configID = $(this).attr("config");
   			BootstrapDialog.show({
@@ -34,7 +34,19 @@
 	            			'pid'    : $('#pid').val(),
 	            			'pname'  : $('#pname').val()
 	            		};
-	            		var endPoint = '${ContextPath}/rest/service/command/config/' + opsType + '/' + $('#operationID').val();
+	            		var endPoint = "${ContextPath}/rest/service/command/config?client=" + $("#clientEdit").val();
+	            		$.ajax({
+			  				url :endPoint,
+			  				type:'PUT',
+			  				cache:false,
+							data:JSON.stringify(config),
+							contentType: 'application/json; charset=utf-8',
+							success: function(json) {
+								alert("SUCCESS");
+								console.log(" reponse :"+ json);
+			                },
+			                error: function(msg) { alert("error"); },
+			  			});
 	            	}
 	            },{
 	            	label:"取消",
@@ -95,17 +107,19 @@
 					<td>密码</td>
 					<td>身份证号</td>
 					<td>姓名</td>
+					<td>HOST</td>
 					<td></td>
 				</tr>
 				#foreach(${config} in ${configs})
 				<tr config="${config.no}">
 					<td>×</td>
-					<td>${config.no}</td>
+					<td><a href='#' config='${config.no}' toggle='MODIFY'>${config.no}</a></td>
 					<td>${config.passwd}</td>
 					<td>${config.pid}</td>
 					<td>${config.pname}</td>
+					<td>${config.renderClient}</td>
 					<td>
-						<button class="btn btn-primary" type="submit" toggle="DEL" >删除</button>
+						<button class="btn btn-primary btn-sm" type="submit" toggle="DEL" >删除</button>
 						<!--<button class="btn btn-info" toggle="MODIFY" config="${config.no}">修改</button>-->
 					</td>
 				</tr>

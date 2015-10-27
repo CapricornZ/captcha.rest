@@ -92,6 +92,7 @@
 	-->
 	<bean class="demo.captcha.controller.ConfigController">
 		<property name="configService" ref="configService"/>
+		<property name="clientService" ref="clientService"/>
 	</bean>
 	
 	<bean class="demo.captcha.controller.ClientController">

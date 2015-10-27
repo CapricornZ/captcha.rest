@@ -37,10 +37,25 @@ public class ConfigService extends Service implements IConfigService {
 	@Override
 	public Config saveOrUpdate(Config config, Client client) {
 
-		config = this.saveOrUpdate(config);
-		client.setConfig(config);
-		client.setUpdateTime(new Date());
-		this.getSession().update(client);
+		if(null == client){
+			
+			config = (Config) this.getSession().get(Config.class, config.getNo());
+			if( null != config.getClient() ){
+				config.getClient().setConfig(null);
+				this.getSession().update(config.getClient());
+			}
+			
+			config.setClient(null);
+			this.getSession().saveOrUpdate(config);
+		} else {
+
+			client.setConfig(config);
+			client.setUpdateTime(new Date());
+			this.getSession().update(client);
+			
+			config.setClient(client);
+			this.getSession().saveOrUpdate(config);
+		}
 		return config;
 	}
 
@@ -54,8 +69,12 @@ public class ConfigService extends Service implements IConfigService {
 	@Override
 	public void delete(String config) {
 		
-		Config cfg = new Config();
-		cfg.setNo(config);
+		Config cfg = (Config) this.getSession().get(Config.class, config);
+		if(null != cfg.getClient()){
+			
+			cfg.getClient().setConfig(null);
+			this.getSession().update(cfg.getClient());
+		}
 		this.getSession().delete(cfg);
 	}
 

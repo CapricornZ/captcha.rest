@@ -39,4 +39,15 @@ public class ConfigService implements IConfigService {
 			this.configService.saveOrUpdate(config, client);
 		}
 	}
+
+	@Override
+	public void modify(Config config, String host) {
+		
+		if("".equals(host)){
+			this.configService.saveOrUpdate(config, null);
+		} else {
+			Client client = this.clientService.queryByIP(host);
+			this.configService.saveOrUpdate(config, client);
+		}
+	}
 }
