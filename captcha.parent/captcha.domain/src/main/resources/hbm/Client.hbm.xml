@@ -15,7 +15,7 @@
         <property name="code" column="code"/>
         <property name="expireTime" type="java.sql.Timestamp" column="expireTime"/>
         <property name="updateTime" type="java.sql.Timestamp" column="updateTime"/>
-        <many-to-one name="config" class="demo.captcha.model.Config" lazy="false" column="config_id"/>
+        <many-to-one name="config" class="demo.captcha.model.Config" lazy="false" column="config_id" unique="true"/>
         
         <!-- <set sort="demo.chapta.model.OperationSort"></set> -->
         <bag inverse="true" name="operation" table="client_operation" cascade="all" lazy="false">
