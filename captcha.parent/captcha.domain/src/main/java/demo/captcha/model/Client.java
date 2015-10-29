@@ -16,6 +16,13 @@ public class Client {
 	private Date expireTime;
 	private Date updateTime;
 	private Config config;
+	private String memo;
+	
+	public String getHover(){
+		
+		String s = String.format("UPDATE:%s<br/>MEMO:%s", new java.text.SimpleDateFormat("hh:mm:ss").format(this.updateTime), this.memo);
+		return s;
+	}
 	
 	@Override
 	public int hashCode() {
@@ -64,4 +71,8 @@ public class Client {
 
 	public Date getExpireTime() { return expireTime; }
 	public void setExpireTime(Date expireTime) { this.expireTime = expireTime; }
+
+	public String getMemo() { return memo; }
+	public void setMemo(String memo) { this.memo = memo; }
+	
 }

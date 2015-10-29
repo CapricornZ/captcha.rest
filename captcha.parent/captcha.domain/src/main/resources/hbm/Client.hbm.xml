@@ -13,6 +13,7 @@
             <generator class="assigned"/>
         </id>
         <property name="code" column="code"/>
+        <property name="memo" column="memo"/>
         <property name="expireTime" type="java.sql.Timestamp" column="expireTime"/>
         <property name="updateTime" type="java.sql.Timestamp" column="updateTime"/>
         <many-to-one name="config" class="demo.captcha.model.Config" lazy="false" column="config_id" unique="true"/>

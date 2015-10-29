@@ -33,6 +33,7 @@ public class ClientService extends Service implements IClientService {
     		this.getSession().update(tmpClient);
     		return tmpClient;
     	} else {
+    		
     		client.setUpdateTime(new Date());
     		this.getSession().saveOrUpdate(client);
     		return client;
@@ -122,6 +123,23 @@ public class ClientService extends Service implements IClientService {
 			this.getSession().update(operation);
 		}
 	}
+	
+	@Override
+	public void removeConfig(String host) {
+		
+		Client client = (Client) this.getSession().get(Client.class, host);
+		if(null != client){
+			
+			Config config = client.getConfig();
+			if(null != config){
+				config.setClient(null);
+				this.getSession().update(config);
+				
+				client.setConfig(null);
+				this.getSession().update(client);
+			}
+		}
+	}
 
 	@Override
 	public void modifyConfig(String host, Config config) {
@@ -135,7 +153,7 @@ public class ClientService extends Service implements IClientService {
     	if(clients.size()>0){
     		
     		Client tmpClient = clients.get(0);
-    		tmpClient.setUpdateTime(new Date());
+    		//tmpClient.setUpdateTime(new Date());
     		
     		if(null == tmpClient.getConfig() || !tmpClient.getConfig().equals(config)){
     			
@@ -172,6 +190,7 @@ public class ClientService extends Service implements IClientService {
 		
 		String hql = "from Warrant where code=:code";
 		Query query = this.getSession().createQuery(hql);
+		@SuppressWarnings("unchecked")
 		List<Warrant> warrants = query.setParameter("code", warrant.getCode()).list();
 		if(null != warrants && warrants.size() > 0){
 			if(!warrants.get(0).getCode().equals(warrant.getCode()))
@@ -193,10 +212,10 @@ public class ClientService extends Service implements IClientService {
 				client.setCode(pWarrant.getCode());
 				client.setIp(host);
 				Date now = new Date();
-				client.setUpdateTime(now);
+				//client.setUpdateTime(now);
 				Calendar calendar = new GregorianCalendar();
 				calendar.setTime(now);
-				calendar.add(calendar.MONTH, pWarrant.getValidate());
+				calendar.add(Calendar.MONTH, pWarrant.getValidate());
 				client.setExpireTime(calendar.getTime());
 	
 				Operation ops1 = (Operation) this.getSession().get(Operation.class, 317);
@@ -216,8 +235,11 @@ public class ClientService extends Service implements IClientService {
 				pClient.setCode(pWarrant.getCode());
 				pClient.setUpdateTime(new Date());
 				Calendar calendar = new GregorianCalendar();
-				calendar.setTime(pClient.getExpireTime());
-				calendar.add(calendar.MONTH, pWarrant.getValidate());
+				if( null != pClient.getExpireTime())
+					calendar.setTime(pClient.getExpireTime());
+				else
+					calendar.setTime(new Date());
+				calendar.add(Calendar.MONTH, pWarrant.getValidate());
 				pClient.setExpireTime(calendar.getTime());
 				
 				this.getSession().delete(pWarrant);
@@ -227,4 +249,15 @@ public class ClientService extends Service implements IClientService {
 		} else
 			return null;
 	}
+
+	@Override
+	public void modifyMemo(String[] hosts, String memo) {
+		
+		List<Client> clients = this.listByIPs(hosts);
+		for(Client client : clients){
+			client.setMemo(memo);
+			this.getSession().update(client);
+		}
+	}
+
 }

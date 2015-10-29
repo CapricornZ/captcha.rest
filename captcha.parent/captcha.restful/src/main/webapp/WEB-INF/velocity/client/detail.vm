@@ -24,9 +24,30 @@
 			});
 		});
 		
-		$("button[toggle='SAVE']").click(function(){
+		$("button[toggle='UNBIND']").click(function(){
 			
-			var host = $(this).attr("host");
+			var host = $('#HOST').val();
+			var no = $(this).attr("no");
+			$.ajax({
+			    url : '${ContextPath}/rest/service/command/client/' + host + '/config',
+    			type: 'DELETE',
+				error: function(msg) { alert("error"); },
+				complete: function(msg) { console.log("complete"); },
+				success: function(msg) { 
+				
+					alert("成功");
+					$('#CONFIG-NO').val("");
+					$('#CONFIG-PASS').val("");
+					$('#CONFIG-PID').val("");
+					$('#CONFIG-PNAME').val("");
+					console.log("complete");
+				}     
+			});
+		});
+		
+		$("button[toggle='BIND']").click(function(){
+			
+			var host = $('#HOST').val();
 			var config = {
 				'no'     : $('#CONFIG-NO').val(),
 				'passwd' : $('#CONFIG-PASS').val(),
@@ -119,7 +140,8 @@
 				</div>
 			</div>
 			<div class="controls col-sm-4">
-				<button type="submit" class="btn btn-primary btn-sm" toggle="SAVE" host="${client.ip}">SAVE</button>
+				<button type="submit" class="btn btn-primary btn-sm" toggle="BIND" host="${client.ip}">BIND</button>
+				<button class="btn btn-danger btn-sm" toggle="UNBIND" host="${client.ip}" no="${client.config.no}">UNBIND</button>
 			</div>
 		</div>
 		<!--END   CONFIG-->

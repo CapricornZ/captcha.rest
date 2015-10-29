@@ -3,6 +3,7 @@ package demo.captcha.rs;
 import java.util.List;
 
 import javax.jws.WebService;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -22,9 +23,18 @@ public interface IClientService {
 	@Path("/{HOST}")
 	void modify(@PathParam("HOST")String host, Config config);
 	
+	@PUT
+	@Path("/memo/{memo}")
+	@Consumes({MediaType.APPLICATION_JSON})
+	void modify(String[] host, @PathParam("memo")String memo);
+	
 	@DELETE
 	@Path("/{HOST}/operation/{OPSID}")
 	void removeOperation(@PathParam("HOST")String host, @PathParam("OPSID")int opsID);
+	
+	@DELETE
+	@Path("/{HOST}/config")
+	void removeConfig(@PathParam("HOST")String host);
 	
 	@GET
 	@Path("/")

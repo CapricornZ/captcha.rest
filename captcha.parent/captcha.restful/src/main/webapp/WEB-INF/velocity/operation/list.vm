@@ -122,6 +122,42 @@
 		});
 	});
 	
+	function setMemo(){
+	
+		var hosts = new Array();
+		$("input[type='checkbox']:checked").each(function(){
+			hosts.push($(this).val());
+		});
+		if(hosts.length == 0){
+			alert("选择HOST先");return;
+		}
+		var memo = $('#memo').val();
+		$.ajax({
+		    url : '${ContextPath}/rest/service/command/client/memo/' + memo,
+			type: 'PUT',
+			contentType: 'application/json;charset=utf-8;',
+			data:JSON.stringify(hosts),
+			error: function(msg) { alert("error"); },
+			complete: function(msg) { console.log("complete"); },
+			success: function(msg) { 
+				console.log("success");
+				alert("操作成功");
+			}     
+		});
+	}
+	
+	function toggleEdit(element){
+		if($(element).html() == '-'){
+			
+			$(element).html('+');
+			$('#memoDiv').hide();
+		} else {
+		
+			$(element).html('-');
+			$('#memoDiv').show();
+		}
+	}
+	
 	function detailClient(client){
 		
 		var clientID = $(client).attr('host');
@@ -152,10 +188,12 @@
 				var table = $('#hostTable tbody');
 				for(var i=0; i<result.length; i++){
 				
-					var detail = "UPDATE:" + result[i].updateTime;
+					var detail = result[i].hover;
+					var x = "data-content='" + detail + "'"; 
 					var row = "<tr toggle='HOST'>";
 					row += "<td><input name='checkHost' type='checkbox' value='" + result[i].ip + "'/>"
 					row += "<a href='#' data-toggle='popover' title='DETAIL' data-content='" + detail + "' host='" + result[i].ip + "' onclick='return detailClient(this);'>" + result[i].ip + "</a>";
+					row += "<img src='$ContextPath/img/offline.ico'/>";
 					if(result[i].config != null)
 						row += "<br/>[" + result[i].config.no + "," + result[i].config.pname + "]";
 					row += "</td>";
@@ -184,7 +222,8 @@
 				}
 				
 				$("a[data-toggle='popover']").popover({
-					'trigger':'hover'
+					'trigger':'hover',
+					'html' : 'true'
 				});
 				
 				$("button[toggle='REMOVE']").click(function(){
@@ -278,6 +317,17 @@
 					</div>
 	        		</legend>
 	        		<div class="control-group">
+	        			<div>
+	        				<label>操作提示板<button class="btn btn-xs" onclick="return toggleEdit(this);">+</button></label>
+	        				<div class="row" id="memoDiv" style="display:none;">
+	        					<div class="col-md-6">
+						    		<textarea class="form-control" id="memo" rows="2"></textarea>
+						    	</div>
+						    	<div class="col-md-6">
+						    		<button class="btn btn-xs" onclick="return setMemo();">设定</button>
+						    	</div>
+						    </div>
+						</div>
 	        			<table id="hostTable" class="table table-striped table-bordered table-hover">
 							<tr toggle="THREAD">
 								<th>

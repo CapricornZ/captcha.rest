@@ -18,11 +18,23 @@ public class ClientService implements IClientService {
 		
 		this.clientService.modifyConfig(host, config);
 	}
-
+	
+	@Override
+	public void modify(String[] hosts, String memo){
+		
+		this.clientService.modifyMemo(hosts, memo);
+	}
+	
 	@Override
 	public void removeOperation(String host, int opsID) {
 		
 		this.clientService.removeOperation(host, opsID);
+	}
+	
+	@Override
+	public void removeConfig(String host) {
+		
+		this.clientService.removeConfig(host);
 	}
 
 	@Override
@@ -36,5 +48,4 @@ public class ClientService implements IClientService {
 
 		return this.clientService.listFilterByHost(host);
 	}
-
 }

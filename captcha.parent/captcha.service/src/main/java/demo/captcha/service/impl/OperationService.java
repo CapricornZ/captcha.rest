@@ -40,7 +40,7 @@ public class OperationService extends Service implements IOperationService {
 	public Operation saveOrUpdate(Operation operation, Client client) {
 		
 		operation = this.saveOrUpdate(operation);
-		client.setUpdateTime(new Date());
+		//client.setUpdateTime(new Date());
 		this.getSession().update(client);
 		return operation;
 	}
@@ -52,7 +52,7 @@ public class OperationService extends Service implements IOperationService {
 		for(Client client : clients){
 			client.getOperation().clear();
 			client.getOperation().add(operation);
-			client.setUpdateTime(new Date());
+			//client.setUpdateTime(new Date());
 			this.getSession().update(client);
 		}
 	}

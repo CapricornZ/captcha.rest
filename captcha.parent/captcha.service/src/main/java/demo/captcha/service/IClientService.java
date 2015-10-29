@@ -20,5 +20,7 @@ public interface IClientService {
 	Client register(String host, Warrant warrant);
 	
 	void removeOperation(String host, int OperationID);
+	void removeConfig(String host);
 	void modifyConfig(String host, Config config);
+	void modifyMemo(String[] hosts, String memo);
 }
