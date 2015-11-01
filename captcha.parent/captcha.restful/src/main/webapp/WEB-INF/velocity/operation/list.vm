@@ -178,6 +178,9 @@
 		
 		$("tr[toggle='HOST']").remove();
 		
+		var now = new Date();
+		var date=Date.parse("2011-09-10 01:40:14".replace(/-/g,"/"));
+
 		var endPoint = "${ContextPath}/rest/service/command/client";
 		if(host != null && host != "")
 			endPoint += "/filter/" + host;
@@ -187,15 +190,22 @@
 
 				var table = $('#hostTable tbody');
 				for(var i=0; i<result.length; i++){
-				
+
+					var time=Date.parse(result[i].updateTime.replace(/-/g,"/"));
+					var date = new Date(time);
+					date.setHours(date.getHours()+1);
+					
 					var detail = result[i].hover;
 					var x = "data-content='" + detail + "'"; 
 					var row = "<tr toggle='HOST'>";
 					row += "<td><input name='checkHost' type='checkbox' value='" + result[i].ip + "'/>"
 					row += "<a href='#' data-toggle='popover' title='DETAIL' data-content='" + detail + "' host='" + result[i].ip + "' onclick='return detailClient(this);'>" + result[i].ip + "</a>";
-					row += "<img src='$ContextPath/img/offline.ico'/>";
+					if(date > now)
+						row += "<img src='$ContextPath/img/online.ico'/>";
+					else
+						row += "<img src='$ContextPath/img/offline.ico'/>";
 					if(result[i].config != null)
-						row += "<br/>[" + result[i].config.no + "," + result[i].config.pname + "]";
+						row += "<br/><span style='margin-left: 12px;'>[" + result[i].config.no + "," + result[i].config.pname + "]</span>";
 					row += "</td>";
 
 					if(result[i].operation.length > 0){

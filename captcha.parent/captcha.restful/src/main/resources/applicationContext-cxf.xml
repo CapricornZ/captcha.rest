@@ -26,6 +26,7 @@
 
     <cxf:bus>
         <cxf:outInterceptors>
+        	<bean class="org.apache.cxf.transport.common.gzip.GZIPOutInterceptor"/>
         	<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
         </cxf:outInterceptors>
         <cxf:inInterceptors>
