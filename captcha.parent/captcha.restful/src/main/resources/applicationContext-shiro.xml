@@ -69,9 +69,10 @@
 	    <property name="filterChainDefinitions">  
 	        <value>
 	        	/web/**=authcBasic,roles[admin]
-	        	/real.zip=authcBasic,roles[user]
-	        	/simulate.zip=authcBasic,roles[user]
+	        	<!--/real.zip=authcBasic,roles[user]
+	        	/simulate.zip=authcBasic,roles[user]-->
 
+				/rest/service/simulate/*=anon
 				/rest/service/command/register/*=anon
 	        	/rest/service/command/global/*=authcBasic,roles[user]
 	        	/rest/service/command/keepAlive=authcBasic,roles[user]
