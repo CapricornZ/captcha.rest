@@ -41,8 +41,9 @@ public class ConfigService extends Service implements IConfigService {
 			
 			Config pConfig = (Config) this.getSession().get(Config.class, config.getNo());
 			if( null != pConfig.getClient() ){
-				pConfig.getClient().setConfig(null);
-				this.getSession().update(config.getClient());
+				Client oClient = pConfig.getClient();
+				oClient.setConfig(null);
+				this.getSession().update(oClient);
 			}
 			
 			pConfig.setPasswd(config.getPasswd());
