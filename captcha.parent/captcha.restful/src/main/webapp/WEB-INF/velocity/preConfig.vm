@@ -28,13 +28,16 @@
 	            	label : "保存",
 	            	action: function(dialogItself){
 	            	
+	            		var tips = $('#tips').val();
 	            		var config = {
 	            			'no'     : $('#configID').val(),
 	            			'passwd' : $('#password').val(),
 	            			'pid'    : $('#pid').val(),
 	            			'pname'  : $('#pname').val()
 	            		};
-	            		var endPoint = "${ContextPath}/rest/service/command/config?client=" + $("#clientEdit").val();
+	            		var endPoint = "${ContextPath}/rest/service/command/config";
+	            		endPoint += "?client=" + $("#clientEdit").val();
+	            		endPoint += "&tips=" + tips;
 	            		$.ajax({
 			  				url :endPoint,
 			  				type:'PUT',
@@ -59,7 +62,8 @@
   		
   		$("button[toggle='DEL']").click(function(){
 
-  			var configID = $(this).parent().parent().attr("config");
+			var elementTR = $(this).parent().parent();
+  			var configID = elementTR.attr("config");
   			var endPoint = "${ContextPath}/rest/service/command/config/" + configID;
   			$.ajax({
   				url  : endPoint,
@@ -69,19 +73,24 @@
 				success: function(json) {
 					alert("SUCCESS");
 					console.log(" reponse :"+ json);
-                }
+					elementTR.remove();
+                },
+                error: function(msg) { alert("error"); }
   			});
   		});
   		
   		$("#OK").click(function(){
-  			
-  			var endPoint = "${ContextPath}/rest/service/command/config?client=" + $("#client").val();
+
+  			var tips = $('#tipsArea').val();
   			var reqParam = {
   				no:$("#noInput").val(),
   				passwd:$("#passwdInput").val(),
   				pid:$("#pidInput").val(),
   				pname:$("#puserInput").val()
   			};
+  			var endPoint = "${ContextPath}/rest/service/command/config?client=" + $("#client").val();
+  			endPoint += "&tips=" + tips;
+  			
   			$.ajax({
   				url:endPoint,
   				type:'POST',
@@ -91,7 +100,8 @@
 				success: function(json) {
 					alert("SUCCESS");
 					console.log(" reponse :"+ json);
-                }
+                },
+                error: function(msg) { alert("error"); }
   			});
   		});
 	});
@@ -173,6 +183,12 @@
 								<option value="">空</option>
 							</select>
 						</div>
+					</div>
+					<div class="control-group">
+						<label class="col-sm-2 control-label" for="tipsArea">操作提示</label>
+			            <div class="controls">
+			            	<textarea class="form-control" id="tipsArea" rows="3" style="width:250px;">48秒+600;52秒出价;</textarea>
+			            </div>
 					</div>
 					<div class="col-sm-offset-2 col-sm-10">
 						<button class="btn btn-primary" type="submit" id="OK">确定</button>

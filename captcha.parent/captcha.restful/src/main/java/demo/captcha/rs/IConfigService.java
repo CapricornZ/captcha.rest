@@ -30,10 +30,10 @@ public interface IConfigService {
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
-	void create(Config config, @QueryParam("client")String fromHost);
+	void create(Config config, @QueryParam("client")String fromHost, @QueryParam("tips")String tips);
 	
 	@PUT
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
-	void modify(Config config, @QueryParam("client")String fromHost);
+	void modify(Config config, @QueryParam("client")String fromHost, @QueryParam("tips")String tips);
 }

@@ -30,23 +30,31 @@ public class ConfigService implements IConfigService {
 	}
 
 	@Override
-	public void create(Config config, String host) {
+	public void create(Config config, String host, String tips) {
 		
 		if("".equals(host))
 			this.configService.saveOrUpdate(config);
 		else{
 			Client client = this.clientService.queryByIP(host);
+			if(tips != null){
+				client.setMemo(tips);
+				this.clientService.update(client);
+			}
 			this.configService.saveOrUpdate(config, client);
 		}
 	}
 
 	@Override
-	public void modify(Config config, String host) {
+	public void modify(Config config, String host, String tips) {
 		
 		if("".equals(host)){
 			this.configService.saveOrUpdate(config, null);
 		} else {
 			Client client = this.clientService.queryByIP(host);
+			if(null != tips){
+				client.setMemo(tips);
+				this.clientService.update(client);
+			}
 			this.configService.saveOrUpdate(config, client);
 		}
 	}
