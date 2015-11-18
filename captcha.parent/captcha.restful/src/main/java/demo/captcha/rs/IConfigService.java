@@ -13,6 +13,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import demo.captcha.model.Config;
+import demo.captcha.rs.model.Trigger;
 
 @WebService(endpointInterface="demo.captcha.restful.ConfigService", serviceName="ConfigService")
 @Path("/command/config")
@@ -30,10 +31,19 @@ public interface IConfigService {
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
-	void create(Config config, @QueryParam("client")String fromHost, @QueryParam("tips")String tips);
+	void create(Config config, @QueryParam("client")String fromHost);
 	
 	@PUT
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
-	void modify(Config config, @QueryParam("client")String fromHost, @QueryParam("tips")String tips);
+	void modify(Config config);
+	
+	@PUT
+	@Path("/{BIDNO}/client/{client}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	void assign(Trigger trigger, @PathParam("BIDNO")String bidNo, @PathParam("client")String fromHost);
+	
+	@DELETE
+	@Path("/{BIDNO}/client")
+	void unAssign(@PathParam("BIDNO")String bidNo);
 }

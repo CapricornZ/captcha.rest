@@ -11,52 +11,19 @@
 	$(function(){
 
 		var url = "${ContextPath}/rest/service/command/client";
-		$.get(url, function(result){
-			for(var i=0; i<result.length; i++){
-				var option = $("<option>").val(result[i].ip).text(result[i].ip);
-				$('#client').append(option);
-			}
-  		});
+		//$.get(url, function(result){
+		//	for(var i=0; i<result.length; i++){
+		//		var option = $("<option>").val(result[i].ip).text(result[i].ip);
+		//		$('#client').append(option);
+		//	}
+  		//});
   		
   		$("a[toggle='MODIFY']").click(function(){
   		
   			var configID = $(this).attr("config");
   			BootstrapDialog.show({
-				title   : "修改标书信息",
-	            message : $('<div></div>').load('${ContextPath}/web/command/config/detail/' + configID + '.do'),
-	            buttons : [{
-	            	label : "保存",
-	            	action: function(dialogItself){
-	            	
-	            		var tips = $('#tips').val();
-	            		var config = {
-	            			'no'     : $('#configID').val(),
-	            			'passwd' : $('#password').val(),
-	            			'pid'    : $('#pid').val(),
-	            			'pname'  : $('#pname').val()
-	            		};
-	            		var endPoint = "${ContextPath}/rest/service/command/config";
-	            		endPoint += "?client=" + $("#clientEdit").val();
-	            		endPoint += "&tips=" + tips;
-	            		$.ajax({
-			  				url :endPoint,
-			  				type:'PUT',
-			  				cache:false,
-							data:JSON.stringify(config),
-							contentType: 'application/json; charset=utf-8',
-							success: function(json) {
-								alert("SUCCESS");
-								console.log(" reponse :"+ json);
-			                },
-			                error: function(msg) { alert("error"); },
-			  			});
-	            	}
-	            },{
-	            	label:"取消",
-	            	action: function(dialogItself){
-	                    dialogItself.close();
-	                }
-	            }]
+				title   : "修改",
+	            message : $('<div></div>').load('${ContextPath}/web/command/config/detail/' + configID + '.do')
 	        });
   		});
   		
@@ -88,9 +55,7 @@
   				pid:$("#pidInput").val(),
   				pname:$("#puserInput").val()
   			};
-  			var endPoint = "${ContextPath}/rest/service/command/config?client=" + $("#client").val();
-  			endPoint += "&tips=" + tips;
-  			
+  			var endPoint = "${ContextPath}/rest/service/command/config";
   			$.ajax({
   				url:endPoint,
   				type:'POST',
@@ -176,20 +141,22 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group">
+					<!--<div class="form-group">
 						<label class="col-sm-2 control-label" for="client">CLIENTs</label>
 						<div class="col-sm-2">
 							<select id="client" class="form-control" style="width:200px;height:40px;">
 								<option value="">空</option>
 							</select>
 						</div>
-					</div>
+					</div>-->
+					<!--
 					<div class="control-group">
 						<label class="col-sm-2 control-label" for="tipsArea">操作提示</label>
 			            <div class="controls">
 			            	<textarea class="form-control" id="tipsArea" rows="3" style="width:250px;">48秒+600;52秒出价;</textarea>
 			            </div>
 					</div>
+					-->
 					<div class="col-sm-offset-2 col-sm-10">
 						<button class="btn btn-primary" type="submit" id="OK">确定</button>
 						<button class="btn">取消</button>

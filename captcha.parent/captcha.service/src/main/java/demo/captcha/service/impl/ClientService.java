@@ -1,5 +1,6 @@
 package demo.captcha.service.impl;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -217,6 +218,7 @@ public class ClientService extends Service implements IClientService {
 				calendar.setTime(now);
 				calendar.add(Calendar.MONTH, pWarrant.getValidate());
 				client.setExpireTime(calendar.getTime());
+				client.setUpdateTime(new Date());
 	
 				Operation ops1 = (Operation) this.getSession().get(Operation.class, 317);
 				if( null != ops1)
@@ -229,6 +231,11 @@ public class ClientService extends Service implements IClientService {
 				this.getSession().save(client);
 				this.getSession().merge(ops1);
 				this.getSession().merge(ops2);
+				
+				List<Operation> ops = new ArrayList<Operation>();
+				ops.add(ops1);
+				ops.add(ops2);
+				client.setOperation(ops);
 				return client;
 			} else {
 				
@@ -241,6 +248,19 @@ public class ClientService extends Service implements IClientService {
 					calendar.setTime(new Date());
 				calendar.add(Calendar.MONTH, pWarrant.getValidate());
 				pClient.setExpireTime(calendar.getTime());
+				if(pClient.getOperation() == null || pClient.getOperation().size() == 0){
+					Operation ops1 = (Operation) this.getSession().get(Operation.class, 317);
+					if( null != ops1)
+						ops1.getClients().add(pClient);
+					Operation ops2 = (Operation) this.getSession().get(Operation.class, 318);
+					if(null != ops2)
+						ops2.getClients().add(pClient);
+					
+					List<Operation> ops = new ArrayList<Operation>();
+					ops.add(ops1);
+					ops.add(ops2);
+					pClient.setOperation(ops);
+				}
 				
 				this.getSession().delete(pWarrant);
 				this.getSession().update(pClient);

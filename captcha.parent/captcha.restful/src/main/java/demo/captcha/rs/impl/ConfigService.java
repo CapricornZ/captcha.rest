@@ -2,6 +2,7 @@ package demo.captcha.rs.impl;
 
 import demo.captcha.model.Config;
 import demo.captcha.rs.IConfigService;
+import demo.captcha.rs.model.Trigger;
 import demo.captcha.model.Client;
 import demo.captcha.service.IClientService;
 
@@ -30,32 +31,51 @@ public class ConfigService implements IConfigService {
 	}
 
 	@Override
-	public void create(Config config, String host, String tips) {
+	public void create(Config config, String host) {
 		
-		if("".equals(host))
+		if(null == host || "".equals(host))
 			this.configService.saveOrUpdate(config);
 		else{
 			Client client = this.clientService.queryByIP(host);
-			if(tips != null){
-				client.setMemo(tips);
-				this.clientService.update(client);
-			}
 			this.configService.saveOrUpdate(config, client);
 		}
 	}
 
 	@Override
-	public void modify(Config config, String host, String tips) {
+	public void modify(Config config) {
 		
-		if("".equals(host)){
-			this.configService.saveOrUpdate(config, null);
-		} else {
-			Client client = this.clientService.queryByIP(host);
-			if(null != tips){
-				client.setMemo(tips);
-				this.clientService.update(client);
-			}
-			this.configService.saveOrUpdate(config, client);
+		this.configService.saveOrUpdate(config, null);
+	}
+
+	@Override
+	public void assign(Trigger trigger, String bidNo, String fromHost) {
+
+		Config config = this.configService.queryByNo(bidNo);
+		Client client = this.clientService.queryByIP(fromHost);
+		String tips = new com.google.gson.Gson().toJson(trigger);
+		if(null != tips){
+			client.setTips(tips);
+			client.setMemo(this.format(trigger));
 		}
+		this.configService.saveOrUpdate(config, client);
+	}
+	
+	@Override
+	public void unAssign(String bidNo) {
+		
+		Config config = this.configService.queryByNo(bidNo);
+		this.configService.saveOrUpdate(config, null);
+	}
+	
+	private String format(Trigger trigger){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format("%s,价格:%s", trigger.getPriceTime(), trigger.getDeltaPrice()));
+		if(null != trigger.getCaptchaTime())
+			sb.append(";\r\n验证码触发:" + trigger.getCaptchaTime());
+		if(null != trigger.getSubmitTime())
+			sb.append(";\r\n提交触发:" + trigger.getSubmitTime());
+		
+		return sb.toString();
 	}
 }

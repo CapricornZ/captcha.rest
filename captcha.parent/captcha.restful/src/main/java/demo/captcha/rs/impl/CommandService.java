@@ -53,7 +53,7 @@ public class CommandService implements ICommandService {
 	@Override
 	public Client register(String host, Warrant warrant) {
 		
-		logger.info("WARRANT : Register from 【{}】, warrant【{}, {}】", host, warrant.getId(), warrant.getCode());
+		logger.info("WARRANT : Register from 【{}】, warrant【id:{}, code:{}】", host, warrant.getId(), warrant.getCode());
 		Client client = this.clientService.register(host, warrant);
 		return client;
 	}

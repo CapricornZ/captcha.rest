@@ -2,15 +2,157 @@
 
 <link rel="stylesheet" href="${ContextPath}/css/bootstrap.css" >
 
+<script type="text/javascript" src="${ContextPath}/js/jquery/jquery.maskedinput.js"></script>
+
+<script>
+
+	function modify(){
+		var config = {
+			'no'     : $('#configID').val(),
+			'passwd' : $('#password').val(),
+			'pid'    : $('#pid').val(),
+			'pname'  : $('#pname').val()
+		};
+		var endPoint = "${ContextPath}/rest/service/command/config";
+		endPoint += "?client=" + $("#clientEdit").val();
+		$.ajax({
+			url :endPoint,
+			type:'PUT',
+			cache:false,
+			data:JSON.stringify(config),
+			contentType: 'application/json; charset=utf-8',
+			success: function(json) {
+				alert("SUCCESS");
+				console.log(" reponse :"+ json);
+            },
+            error: function(msg) { alert("error"); },
+		});
+	}
+	
+	function assign(){
+	
+		var host = $('#clientEdit').children('option:selected').val();
+		if(host == ''){
+		
+			var endPoint = "${ContextPath}/rest/service/command/config/" + $('#configID').val() + "/client";
+			$.ajax({
+				url  : endPoint,
+				type : 'DELETE',
+				cache: false,
+				success: function(json) {
+					alert("SUCCESS");
+					console.log(" reponse :"+ json);
+	            },
+	            error: function(msg) { alert("error"); },
+			});
+		} else {
+			
+			var policy = {
+				'deltaPrice' : $('#deltaPrice').val(),
+				'priceTime'  : $('#priceTime').val(),
+			};
+	
+			if($('#checkCaptchaTime').is(':checked'))
+				policy.captchaTime = $('#captchaTime').val();
+			if($('#checkSubmitTime').is(':checked'))
+				policy.submitTime = $('#submitTime').val();
+				
+			var endPoint = "${ContextPath}/rest/service/command/config/" + $('#configID').val();
+			endPoint += "/client/" + $("#clientEdit").val();
+
+			$.ajax({
+				url  : endPoint,
+				type : 'PUT',
+				cache: false,
+				data : JSON.stringify(policy),
+				contentType: 'application/json; charset=utf-8',
+				success: function(json) {
+					alert("SUCCESS");
+					console.log(" reponse :"+ json);
+	            },
+	            error: function(msg) { alert("error"); },
+			});
+		}
+	}
+	
+	#if(${config.client.tips})
+	var tips = $!{config.client.tips};
+	#end
+	$(function(){
+		
+		$("#deltaPrice").mask("999", {placeholder:"600"});
+		$("#submitTime").mask("99:99:99",{placeholder:"hh:MM:ss"});
+		$("#priceTime").mask("99:99:99",{placeholder:"hh:MM:ss"});
+		$("#captchaTime").mask("99:99:99",{placeholder:"hh:MM:ss"});
+		
+		$('#clientEdit').change(function(){
+			
+			console.log($(this).children('option:selected').val());
+			if($(this).children('option:selected').val() != ''){
+				$("div[toggle*='TIPS']").show();//toggle包含TIPS
+			} else {
+				$("div[toggle*='TIPS']").hide();//toggle包含TIPS
+			}
+		});
+		
+		$("input[toggle*='OPS']").blur(function(){
+			
+			var memo = $('#priceTime').val(); 
+			memo += ',价格:+' + $('#deltaPrice').val();
+			if($('#checkCaptchaTime').is(':checked'))
+				memo += ';\r\n验证码时间:' + $('#captchaTime').val();
+			if($('#checkSubmitTime').is(':checked'))
+				memo += ';\r\n提交时间:' + $('#submitTime').val();
+		});
+		
+		$("#checkCaptchaTime").click(function(){
+			$('#captchaTime').attr("disabled", !$(this).is(':checked'));
+		});
+		
+		$("#checkSubmitTime").click(function(){
+			$('#submitTime').attr("disabled", !$(this).is(':checked'));
+		});
+		
+		//init UI
+		if($('#clientEdit').children('option:selected').val() != ''){
+			
+			$("[toggle*='TIPS']").show();//toggle包含TIPS
+			$('#deltaPrice').val(tips.deltaPrice);
+			$('#priceTime').val(tips.priceTime);
+			if(tips.captchaTime != null){
+				$('#checkCaptchaTime').attr('checked', true);
+				$('#captchaTime').attr('disabled', false);
+				$('#captchaTime').val(tips.captchaTime);
+			} else {
+				$('#checkCaptchaTime').attr('checked', false);
+				$('#captchaTime').attr('disabled', true);
+				$('#captchaTime').val('00:00:00');
+			}
+			
+			if(tips.submitTime != null){
+				$('#checkSubmitTime').attr('checked', true);
+				$('#submitTime').attr('disabled', false);
+				$('#submitTime').val(tips.submitTime);
+			} else {
+				$('#checkSubmitTime').attr('checked', false);
+				$('#submitTime').attr('disabled', true);
+				$('#submitTime').val('00:00:00');
+			}
+		}
+		else
+			$("[toggle*='TIPS']").hide();//toggle包含TIPS
+	});
+</script>
+
 <form class="form-horizontal" onsubmit="return false;">
-	<!--<legend>标书信息</legend>-->
+	<legend>标书信息</legend>
 	<fieldset>
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="configID">投标号</label>
 			<div class="controls col-sm-10">
 				<div class="input-group">
 					<span class="input-group-addon">#</span>
-					<input id="configID" class="input-mini uneditable-input" disabled style="width:200px;height:30px;" type="text" value="${config.no}">
+					<input id="configID" class="form-control" disabled style="width:200px;height:30px;" type="text" value="${config.no}">
 				</div>
 			</div>
 		</div>
@@ -34,16 +176,22 @@
 		</div>
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="pname">姓名</label>
-			<div class="controls col-sm-10">
+			<div class="controls col-sm-7">
 				<div class="input-group">
 					<span class="input-group-addon">#</span>
 					<input id="pname" class="form-control" style="width:200px;height:30px;" type="text" value="${config.pname}"></input>
 				</div>
 			</div>
+			<div class="controls col-sm-3">
+				<button class="btn btn-sm btn-primary" onclick="return modify();">保存</button>
+			</div>
 		</div>
+	</fieldset>
+	<fieldset>
+		<legend>操作策略</legend>
 		<div class="form-group">
-			<label class="col-sm-2 control-label" for="client">CLIENTs</label>
-			<div class="col-sm-2">
+			<label class="col-sm-3 control-label" for="client">CLIENTs</label>
+			<div class="controls col-sm-6">
 				<select id="clientEdit" class="form-control" style="width:200px;height:40px;">
 					<option value="">空</option>
 					#if(${config.client})
@@ -54,12 +202,39 @@
 					#end
 				</select>
 			</div>
+			<div class="control col-sm-3">
+				<button class="btn btn-sm btn-primary" onclick="return assign();">设置</button>
+			</div>
 		</div>
-		<div class="control-group">
-			<label class="col-sm-2 control-label" for="tips">操作提示</label>
-            <div class="controls">
-            	<textarea class="form-control" id="tips" rows="3" style="width:300px;">${config.client.memo}</textarea>
-            </div>
+		<div class="form-group" toggle='TIPS'>
+			<label class="col-sm-3 control-label" for="priceTime">触发时间</label>
+			<div class="controls col-sm-3">
+				<input class="form-control" toggle="OPS" id="priceTime" type="text" placeholder="触发时间" style="width:100px;height:30px;" value="11:29:48"/>
+			</div>
+			<label class="col-sm-3 control-label" for="deltaPrice">加价</label>
+			<div class="controls col-sm-3">
+				<input class="form-control" toggle="OPS" id="deltaPrice" type="text" placeholder="600" style="width:100px;height:30px;" value="600"/>
+			</div>
 		</div>
+		<div class="form-group" toggle='TIPS'>
+			<label class="col-sm-3 control-label" for="captchaTime">验证码触发时间<input type="checkbox" id="checkCaptchaTime"/></label>
+			<div class="controls col-sm-9">
+				<input class="form-control" id="captchaTime" disabled="disabled" type="text" placeholder="触发时间" style="width:100px;height:30px;" value="11:29:50"/>
+			</div>
+		</div>
+		<div class="form-group" toggle="TIPS">
+			<label class="col-sm-3 control-label" for="submitTime">提交触发时间<input checked="checked" type="checkbox" id="checkSubmitTime"/></label>
+			<div class="control col-sm-9">
+				<input class="form-control" toggle="OPS" id="submitTime" type="text" placeholder="触发时间" style="width:100px;height:30px;" value="11:29:52"/>
+			</div>
+		</div>
+		<!--
+		<div class="form-group" toggle="TIPS">
+			<label class="col-sm-3 control-label" for="submitTime">提示信息</label>
+			<div class="control col-sm-9">
+				<textarea style="width:300px;" rows="3" id="memo" class="form-control">$!{config.client.memo}</textarea>
+			</div>
+		</div>
+		-->
 	</fieldset>
 </form>

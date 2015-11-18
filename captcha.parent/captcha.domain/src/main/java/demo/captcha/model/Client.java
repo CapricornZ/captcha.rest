@@ -17,6 +17,7 @@ public class Client {
 	private Date updateTime;
 	private Config config;
 	private String memo;
+	private String tips;
 	
 	public String getHover(){
 		
@@ -74,5 +75,7 @@ public class Client {
 
 	public String getMemo() { return memo; }
 	public void setMemo(String memo) { this.memo = memo; }
-	
+
+	public String getTips() { return tips; }
+	public void setTips(String tips) { this.tips = tips; }
 }

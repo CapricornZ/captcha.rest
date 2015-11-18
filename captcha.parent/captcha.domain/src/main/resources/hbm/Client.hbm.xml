@@ -13,13 +13,14 @@
             <generator class="assigned"/>
         </id>
         <property name="code" column="code"/>
+        <property name="tips" column="tips"/>
         <property name="memo" column="memo"/>
         <property name="expireTime" type="java.sql.Timestamp" column="expireTime"/>
         <property name="updateTime" type="java.sql.Timestamp" column="updateTime"/>
         <many-to-one name="config" class="demo.captcha.model.Config" lazy="false" column="config_id" unique="true"/>
         
         <!-- <set sort="demo.chapta.model.OperationSort"></set> -->
-        <bag inverse="true" name="operation" table="client_operation" cascade="all" lazy="false">
+        <bag inverse="true" name="operation" table="client_operation" cascade="none" lazy="false">
         	<key column="client_id"/>
         	<many-to-many class="demo.captcha.model.Operation" column="operation_id" order-by="startTime">
         		<filter name="tagFilter" condition=":tagParam = tag"/>

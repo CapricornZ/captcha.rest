@@ -37,14 +37,11 @@ public class ConfigService extends Service implements IConfigService {
 	@Override
 	public Config saveOrUpdate(Config config, Client client) {
 
+		Client oClient = null;
 		if(null == client){
 			
 			Config pConfig = (Config) this.getSession().get(Config.class, config.getNo());
-			if( null != pConfig.getClient() ){
-				Client oClient = pConfig.getClient();
-				oClient.setConfig(null);
-				this.getSession().update(oClient);
-			}
+			oClient = pConfig.getClient();
 			
 			pConfig.setPasswd(config.getPasswd());
 			pConfig.setPid(config.getPid());
@@ -52,15 +49,35 @@ public class ConfigService extends Service implements IConfigService {
 			pConfig.setUpdateTime(new Date());
 			pConfig.setClient(null);
 			this.getSession().saveOrUpdate(pConfig);
+			
+			if( null != oClient && !oClient.equals(client)){
+				
+				oClient.setConfig(null);
+				oClient.setTips(null);
+				oClient.setMemo(null);
+				this.getSession().update(oClient);
+			}
 		} else {
 
-			client.setConfig(config);
-			this.getSession().update(client);
+			oClient = config.getClient();		
+			if( null != oClient && !oClient.equals(client)){
+				
+				oClient.setConfig(null);
+				oClient.setTips(null);
+				oClient.setMemo(null);
+				this.getSession().update(oClient);
+			}
 			
 			config.setUpdateTime(new Date());
 			config.setClient(client);
 			this.getSession().saveOrUpdate(config);
+			
+			client.setConfig(config);
+			this.getSession().update(client);
+			
+			
 		}
+				
 		return config;
 	}
 
@@ -78,6 +95,8 @@ public class ConfigService extends Service implements IConfigService {
 		if(null != cfg.getClient()){
 			
 			cfg.getClient().setConfig(null);
+			cfg.getClient().setTips(null);
+			cfg.getClient().setMemo(null);
 			this.getSession().update(cfg.getClient());
 		}
 		this.getSession().delete(cfg);
