@@ -1,7 +1,9 @@
 #set( $ContextPath = ${request.contextPath} )
 
 <link rel="stylesheet" href="${ContextPath}/css/bootstrap.css" >
+<link href="${ContextPath}/css/bootstrap-select.min.css" rel="stylesheet" />
 
+<script src="${ContextPath}/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="${ContextPath}/js/jquery/jquery.maskedinput.js"></script>
 
 <script>
@@ -141,6 +143,8 @@
 		}
 		else
 			$("[toggle*='TIPS']").hide();//toggle包含TIPS
+			
+		$('#clientEdit').selectpicker();
 	});
 </script>
 
@@ -192,7 +196,7 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label" for="client">CLIENTs</label>
 			<div class="controls col-sm-6">
-				<select id="clientEdit" class="form-control" style="width:200px;height:40px;">
+				<select id="clientEdit" data-live-search="true" class="form-control" style="width:200px;height:40px;">
 					<option value="">空</option>
 					#if(${config.client})
 						<option selected='selected' value='${config.client.ip}'>${config.client.ip}</option>
