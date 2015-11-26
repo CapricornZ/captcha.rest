@@ -22,6 +22,7 @@
 				<ref bean="LOGIN-simulate"/>
 				<ref bean="TITLE-simulate"/>
 				<ref bean="PRICE-sm-simulate"/>
+				<ref bean="TIME-simulate"/>
 			</list>
 		</property>
 		<property name="entries">
@@ -149,6 +150,17 @@
 		<property name="offsetX" value="0"/>
 		<property name="index">
 			<value>0,35,70,105</value>
+		</property>
+	</bean>
+	
+	<bean id="TIME-simulate" class="demo.captcha.rs.model.OrcConfig">
+		<property name="minNearSpots" value="0"/>
+		<property name="width" value="${simulate.time.width}"/>
+		<property name="height" value="${simulate.time.height}"/>
+		<property name="offsetY" value="${simulate.time.offsetX}"/>
+		<property name="offsetX" value="${simulate.time.offsetY}"/>
+		<property name="index">
+			<value>${simulate.time.index}</value>
 		</property>
 	</bean>
 </beans>

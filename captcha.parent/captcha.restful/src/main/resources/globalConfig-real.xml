@@ -24,6 +24,7 @@
 				<ref bean="LOGIN-real"/>
 				<ref bean="TITLE-real"/>
 				<ref bean="PRICE-sm-real"/>
+				<ref bean="TIME-real"/>
 			</list>
 		</property>
 		<property name="entries">
@@ -158,7 +159,7 @@
 	
 	<!--  -->
 	<bean id="TITLE-real" class="demo.captcha.rs.model.OrcConfig">
-		<property name="minNearSpots" value="1"/>
+		<property name="minNearSpots" value="0"/>
 		<property name="width" value="33"/>
 		<property name="height" value="33"/>
 		<property name="offsetY" value="0"/>
@@ -167,4 +168,16 @@
 			<value>0,35,70,105</value>
 		</property>
 	</bean>
+	
+	<bean id="TIME-real" class="demo.captcha.rs.model.OrcConfig">
+		<property name="minNearSpots" value="0"/>
+		<property name="width" value="${real.time.width}"/>
+		<property name="height" value="${real.time.height}"/>
+		<property name="offsetY" value="${real.time.offsetX}"/>
+		<property name="offsetX" value="${real.time.offsetY}"/>
+		<property name="index">
+			<value>${real.time.index}</value>
+		</property>
+	</bean>
+	
 </beans>

@@ -2,11 +2,9 @@ package demo.captcha.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.StringWriter;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.cxf.bus.spring.Jsr250BeanPostProcessor;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -114,6 +112,7 @@ public class CommandController implements ApplicationContextAware {
 			model.addAttribute("CAPTCHA", this.context.getBean("CAPTCHA-real"));
 			model.addAttribute("LOGIN", this.context.getBean("LOGIN-real"));
 			model.addAttribute("PRICE-SM", this.context.getBean("PRICE-sm-real"));
+			model.addAttribute("TIME", this.context.getBean("TIME-real"));
 			model.addAttribute("ENTRIES", this.globalConfigReal.getEntries());
 		} else {
 			
@@ -124,6 +123,7 @@ public class CommandController implements ApplicationContextAware {
 			model.addAttribute("LOADING", this.context.getBean("LOADING-simulate"));
 			model.addAttribute("CAPTCHA", this.context.getBean("CAPTCHA-simulate"));
 			model.addAttribute("LOGIN", this.context.getBean("LOGIN-simulate"));
+			model.addAttribute("TIME", this.context.getBean("TIME-simulate"));
 			model.addAttribute("PRICE-SM", this.context.getBean("PRICE-sm-simulate"));
 			model.addAttribute("ENTRIES", this.globalConfigSimulate.getEntries());
 		}
