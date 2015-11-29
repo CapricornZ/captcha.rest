@@ -103,10 +103,10 @@
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>javax.servlet</groupId>
-		    <artifactId>servlet-api</artifactId>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
 		</dependency>
 
 		<!-- Velocity View -->
@@ -118,16 +118,16 @@
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity-tools</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-spring</artifactId>
 		</dependency>
 		<dependency>
-      		<groupId>org.apache.shiro</groupId>
-      		<artifactId>shiro-ehcache</artifactId>
-    	</dependency>
-			
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-ehcache</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
@@ -137,12 +137,12 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
@@ -151,18 +151,18 @@
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>org.apache.httpcomponents</groupId>
-		    <artifactId>httpclient</artifactId>
-		    <version>4.5</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5</version>
 		</dependency>
 		<dependency>
-		    <groupId>com.google.code.gson</groupId>
-		    <artifactId>gson</artifactId>
-		    <version>2.4</version>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.4</version>
 		</dependency>
-			
+
 		<dependency>
 			<groupId>demo</groupId>
 			<artifactId>captcha.domain</artifactId>
@@ -174,9 +174,83 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
+	
+	<profiles>
+		<profile>
+			<id>PRD</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<host>127.0.0.1</host>
+				<port>9990</port>
+				<username>jboss</username>
+				<password>Pass2010</password>
+			</properties>
+		</profile>
+	</profiles>
 	<build>
 		<finalName>captcha.restful</finalName>
 		<plugins>
+			
+			<!--<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<version>1.4.5</version>
+				<configuration>
+					<container>
+						<containerId>tomcat7x</containerId>
+						<home>/home/martin/apache-tomcat-7.0.50</home>
+					</container>
+					<configuration>
+						<type>existing</type>
+						<home>/home/martin/apache-tomcat-7.0.50</home>
+					</configuration>
+				</configuration>
+				<executions>
+					<execution>
+						<id>tomcat-deploy</id>
+						<phase>package</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>-->
+			
+			<plugin>
+				<groupId>org.wildfly.plugins</groupId>
+				<artifactId>wildfly-maven-plugin</artifactId>
+				<version>1.0.2.Final</version>
+				<configuration>
+					
+					<hostname>${host}</hostname>
+					<port>${port}</port>
+					<username>${username}</username>
+					<password>${password}</password>
+					
+					<!--<jbossHome>/home/martin/wildfly-8.2.1.Final</jbossHome>-->
+					<filename>captcha.restful.war</filename>
+					<!--<domain>
+						<server-groups>
+							<server-group>main-server-group</server-group>
+						</server-groups>
+					</domain>-->
+				</configuration>
+				<executions>
+					<execution>
+						<id>deploy1</id>
+						<phase>install</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+						<configuration>
+						</configuration>
+					</execution>
+				</executions>
+          	</plugin>
+			
+						
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -210,7 +284,7 @@
 						</configuration>
 						<inherited></inherited>
 					</execution>
-					
+
 					<execution><!-- 处理RESOURCE.ZIP -->
 						<id>copy-resource</id>
 						<!-- 在default生命周期的 validate阶段就执行resources插件的copy-resources目标 -->

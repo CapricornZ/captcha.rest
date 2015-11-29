@@ -30,6 +30,9 @@ public class CommandController implements ApplicationContextAware {
 	@Override
 	public void setApplicationContext(ApplicationContext context) throws BeansException { this.context = context; }
 	
+	private String storePath;
+	public void setStorePath(String storePath){ this.storePath = storePath; }
+	
 	private GlobalConfig globalConfigReal;
 	public void setGlobalConfigREAL(GlobalConfig resource){ this.globalConfigReal = resource; }
 	
@@ -37,14 +40,13 @@ public class CommandController implements ApplicationContextAware {
 	public void setGlobalConfigSIMULATE(GlobalConfig resource){ this.globalConfigSimulate = resource; }
 	
 	private IWarrantService warrantService;
-	public void setWarrantService(IWarrantService service){
-		this.warrantService = service;
-	}
+	public void setWarrantService(IWarrantService service){ this.warrantService = service; }
 	
 	@RequestMapping(value="/prePublish", method={RequestMethod.GET,RequestMethod.POST})
 	public String prePublish(Model model, HttpServletRequest request){
 		
-		String path=request.getSession().getServletContext().getRealPath("/");
+		//String path=request.getSession().getServletContext().getRealPath("/");
+		String path = this.storePath;
 		String version = "DEFAULT";
 		java.io.FileInputStream fis;
 		try {
@@ -67,7 +69,8 @@ public class CommandController implements ApplicationContextAware {
 	@RequestMapping(value = "/publish", method={RequestMethod.POST})
 	public String publish(@RequestParam("dataFile")MultipartFile file, @RequestParam("version")String version, Model model, HttpServletRequest request){
 				
-		String path=request.getSession().getServletContext().getRealPath("/");
+		//String path=request.getSession().getServletContext().getRealPath("/");
+		String path = this.storePath;
 		try {
 			java.io.FileOutputStream fos = new java.io.FileOutputStream(path + "Release.zip");
 			byte[] content = file.getBytes();

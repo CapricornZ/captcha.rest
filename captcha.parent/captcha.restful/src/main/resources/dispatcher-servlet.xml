@@ -108,5 +108,6 @@
 		<property name="globalConfigREAL" ref="GLOBAL-REAL"/>
 		<property name="globalConfigSIMULATE" ref="GLOBAL-SIMULATE"/>
 		<property name="warrantService" ref="warrantService"/>
+		<property name="storePath" value="/var/www/html/"/>
 	</bean>
 </beans>
