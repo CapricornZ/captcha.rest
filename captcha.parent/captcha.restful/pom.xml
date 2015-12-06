@@ -175,20 +175,7 @@
 		</dependency>
 	</dependencies>
 	
-	<profiles>
-		<profile>
-			<id>PRD</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<host>127.0.0.1</host>
-				<port>9990</port>
-				<username>jboss</username>
-				<password>Pass2010</password>
-			</properties>
-		</profile>
-	</profiles>
+	
 	<build>
 		<finalName>captcha.restful</finalName>
 		<plugins>

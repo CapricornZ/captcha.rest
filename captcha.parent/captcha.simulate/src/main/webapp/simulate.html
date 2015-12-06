@@ -1,0 +1,467 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+	<title>达达模拟练习</title>
+	<!-- 新 Bootstrap 核心 CSS 文件 -->
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css"></link>
+	<!-- 可选的Bootstrap主题文件（一般不用引入） -->
+	<!--<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">-->
+	<!--[if lte IE 9]>
+		<script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+		<!--<script src="js/respond.src.js"></script>-->
+		<!--<script src="js/html5shiv.js"></script>-->
+	<![endif]-->
+
+	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script src="js/jquery/jquery.timer.js"></script>
+	<script src="js/bootstrap-progressbar.js"></script>
+<script>
+	//格式化显示日期时间
+	//参数x : 待显示的日期时间，示例： new Date()
+	//参数y: 需要显示的格式，示例：yyyy-MM-dd hh:mm:ss
+	function date2str(x, y) {
+		var z = {
+		   y: x.getFullYear(),
+		   M: x.getMonth() + 1,
+		   d: x.getDate(),
+		   h: x.getHours(),
+		   m: x.getMinutes(),
+		   s: x.getSeconds()
+		};
+		return y.replace(/(y+|M+|d+|h+|m+|s+)/g, function(v) {
+	   		return ((v.length > 1 ? "0" : "") + eval('z.' + v.slice(-1))).slice(-(v.length > 2 ? v.length : 2))
+		});
+	}
+	
+	var process;
+	var index;
+	
+	function getBrowserInfo(){
+
+      var agent = navigator.userAgent.toLowerCase(); 
+      var regStr_ie = /msie [\d.]+;/gi;
+      var regStr_ff = /firefox\/[\d.]+/gi;
+      var regStr_chrome = /chrome\/[\d.]+/gi;
+      var regStr_saf = /safari\/[\d.]+/gi;
+      //IE
+      if(agent.indexOf("msie") > 0)
+    	  return agent.match(regStr_ie);
+ 
+      //firefox
+      if(agent.indexOf("firefox") > 0)
+    	  return agent.match(regStr_ff);
+ 
+      //Chrome
+      if(agent.indexOf("chrome") > 0)
+    	  return agent.match(regStr_chrome) ;
+ 
+      //Safari
+      if(agent.indexOf("safari") > 0 && agent.indexOf("chrome") < 0)
+    	  return agent.match(regStr_saf) ; 
+    }
+
+	
+	function finalJudge(){
+		
+		var gavePrice = $('#gavePrice').attr('value');
+		var gaveTime = $('#gaveTime').attr('value');
+		var finalStep = process[process.length-1];
+		
+		if(gavePrice >= finalStep.price && gavePrice <= finalStep.price+300){
+				
+			var message = "恭喜您,成交了！";
+			message += "中标价格:" + gavePrice;
+			message += "<br/>本场出价时间:" + gaveTime;
+			message += "<br/>点击[F5]，重新模拟";
+			popupTip(message);
+			
+		} else {
+			popupTip("很可惜，您没有成交。<br/>点击[F5]，重新模拟");
+		}
+	}
+
+	function popupTip(message){
+		
+		$('div .modal-content').css("background","url(images/tips.bmp)")
+		$('#BID').hide();
+		$('#TIP').show();
+		$('#TIP p').first().html(message);
+		$('.progress').hide();
+		$('#ok').show();
+		$('#myModal').modal();
+	}
+	
+	function submit(){
+		
+		var active = $('#imgCaptcha').attr("value");
+		var input = $('#inputCaptcha').val();
+		
+		if(active.valueOf() == input){
+			
+			$('div .modal-content').css("background","url(images/tips.bmp)")
+			$('#BID').hide();
+			$('#TIP').show();
+			$('#TIP p').first().html("");
+			$('.progress').show();
+			$('#ok').hide();
+			$("div[role='progressbar']").css("width", "0%");
+			
+			var step = 0;
+			var timerProgress = $.timer(1000, function() {
+				if(step<4){
+					step++;
+					$("div[role='progressbar']").css("width", (step)*25 + "%");
+				}
+				else{
+					timerProgress.stop();
+					var min = process[index].price;
+					var max = process[index].price + 300;
+					var time = date2str(new Date(), "yyyy-MM-dd") + " " + process[index].time;
+					var givePrice = $('#inputPrice').val();
+					if(givePrice >= min && givePrice <= max){
+
+						popupTip("出价成功");
+						
+						$('#gavePrice').attr('value', givePrice);
+						$('#gavePrice').html(givePrice);
+						
+						$('#gaveTime').attr('value', process[index].time);
+						$('#gaveTime').html(time);
+						
+						{
+							//console.log(process.length);
+							//console.log(index);
+						}
+					} else
+						popupTip("您的出价不在修改出价区间范围内，请重新出价");
+				}
+			});
+			
+		} else {
+			popupTip("请输入正确的校验码");
+		}
+	}
+	
+	$(function(){
+
+		var browser = getBrowserInfo();
+		if(browser[0].indexOf("msie") >= 0){
+
+			$("#myModal").css("margin-left", "370px");
+			$("#myModal").css("margin-top", "50px");
+		}
+
+		$('.progress .progress-bar').progressbar({display_text: 'none'});
+		
+		$("img[toggle='CLICKDELTA']").click(function(){
+
+			var price = $('#price').attr("value");
+			var delta = $(this).attr("value");
+			$('#inputPrice').val(parseInt(price) + parseInt(delta));
+		});
+		
+		//对话框
+		$('#myModal').on('shown.bs.modal', function () {
+			
+			$('#inputCaptcha').val('');
+			
+			$("#imgCaptcha").attr("src", "images/loadCaptcha.bmp");
+			$("#imgCaptcha").attr("value", "");
+			$("#BID-CAPTCHA-TIP").html("");
+			
+			var rand = {};
+			rand.get = function (begin,end){
+				return Math.floor(Math.random()*(end-begin))+begin;
+			};
+			
+			var random = rand.get(1,10);
+			//console.log("random:" + random);
+			//console.log("random:" + (random>7));
+			if(random > 9){
+  				
+  				setTimeout(function(){
+  					$("#imgCaptcha").attr("src", "images/refreshCaptcha.bmp");
+  				}, 3000);
+
+			} else {
+				
+				var loadingTime = rand.get(500,2500);
+				setTimeout(function(){
+					
+					jQuery.ajax({
+			  			url : 'rest/service/simulate/captcha',
+			  			//headers: { "Authorization": "Basic " + btoa('ADMIN:PASSWORD') },
+			  			cache:false, 
+			  			success: function(data){
+			  				$("#imgCaptcha").attr("src", data.url);
+			  				$("#imgCaptcha").attr("value", data.value);
+			  				$("#BID-CAPTCHA-TIP").html(data.tip);
+			  			},
+			  			error:function(error){
+			  				
+			  				$("#imgCaptcha").attr("src", "#");
+			  				$("#imgCaptcha").attr("value", "");
+			  				$("#BID-CAPTCHA-TIP").html("");
+			  				alert("获取验证码异常！");
+			  			}
+					});
+  				}, loadingTime);
+			}
+		});
+		
+		//刷新验证码
+		$('#imgCaptcha').click(function(){
+			jQuery.ajax({
+	  			url : 'rest/service/simulate/captcha',
+	  			//headers: { "Authorization": "Basic " + btoa('ADMIN:PASSWORD') },
+	  			cache:false, 
+	  			success: function(data){
+	  				$("#imgCaptcha").attr("src", data.url);
+	  				$("#imgCaptcha").attr("value", data.value);
+	  				$("#BID-CAPTCHA-TIP").html(data.tip);
+	  			},
+	  			error:function(error){
+	  				
+	  				$("#imgCaptcha").attr("src", "#");
+	  				$("#imgCaptcha").attr("value", "");
+	  				$("#BID-CAPTCHA-TIP").html("");
+	  				alert("获取验证码异常！");
+	  			}
+			});
+		});
+		
+		$("button[toggle='DELTAPRICE']").click(function(){
+			
+			var delta = parseInt($("#deltaPrice").val());
+			if(delta%100 == 0){
+				
+				var price = parseInt($('#priceSM').html());
+				$('#inputPrice').val(price + delta);
+				
+			} else {
+				popupTip("加价金额必须为100的正整数倍");
+			}
+		});
+		
+		$("button[toggle='GIVEPRICE']").click(function(){
+			
+			var price = parseInt($('#inputPrice').val());
+			if(price%100 == 0){
+				
+				$('#userGivePrice').html(price);
+				$('div .modal-content').css("background","url(images/bids.bmp)");
+				$('#BID').show();
+				$('#TIP').hide();
+				$('#myModal').modal();
+				
+			} else {
+
+				popupTip("投标金额必须为100的正整数倍");
+			}
+		});
+
+		$.ajax({
+  			url : 'rest/service/simulate/start',
+  			cache:false,
+  			//headers: { "Authorization": "Basic " + btoa('ADMIN:PASSWORD') },
+  			success: function(data){
+  				
+  				index = 0;
+  				process = data;
+  				var start = process[0].time;
+  				var end = process[process.length-2].time;
+  				$('#step2').html(start.substring(0,5)+'至'+end.substring(0,5));
+  			},
+  			error:function(error){
+  				alert("初始化异常！");
+  			}
+		});
+
+		var timer = $.timer(1000, function() {
+			
+			var minTime = date2str(new Date(), "yyyy-MM-dd") + " " + process[index].time;
+			var priceRange = process[index].price-300 + '至' + (parseInt(process[index].price)+300);
+			var log = minTime + ", " + process[index].price;
+			$('#currentTime').html(process[index].time);
+			$('#price').attr("value", process[index].price);
+			$('#price').html(process[index].price+'元');
+			$('#priceSM').html(process[index].price);
+			$('#priceRange').html(priceRange);
+			$('#minTime').html(minTime);
+			//console.log(log);
+			index++;
+			
+			if(index>=process.length){
+				
+				timer.stop();
+				var text = "个人非营业性客户额度模拟投标拍卖会<br/>";
+				text += "拍卖会已经结束，稍后发布拍卖结果，请耐心等待.<br/>";
+				text += "最低中标价:" + process[process.length-1].price;
+				text += "<br/>最低可出价时间:" + date2str(new Date(), "yyyy-MM-dd") + " " + process[process.length-4].time;
+				$('#board').html(text);
+				finalJudge();
+			}
+		});
+	});
+</script>
+
+<style type="text/css">
+	.container {
+	    display:table;
+	    width: 100%;
+	}
+	.row {
+	    height: 100%;
+	    display: table-row;
+	}
+	.col-sm-4 {
+	    display: table-cell;
+	}
+</style>
+</head>
+
+<body>
+<div style="width:850px" align="center">
+   <div class="zuo" style="width:380px; float:left">
+     <div style="background:url(images/zuotou.jpg); width:380px; height:86px">
+        <div style="padding-top:10px"><img src="images/gkxx.jpg" /></div>
+     </div>
+     
+     <div style="background:#ccc; width:380px; height:350px">
+        <div style="background:#fff; width:370px; height:265px; font-size:14px; color:#36517e; " align="left">
+           <div style="margin-left:5px" id="board">
+           沪牌个人非营业性客户额度模拟投标拍卖会<br />
+             模拟投放额度：7526<br />
+             目前已投标人数：172205<br />
+             拍卖会起止时间：14:06至14:08<br />
+             首次出价时段：10:30至11:00<br />
+             修改出价时段：<span id="step2">14:06至14:08</span><br />
+             <br />
+             &nbsp;&nbsp;目前为修改出价时间段<br />
+             系统目前时间：<span style="color:#F00;font-family:NSimSun;font-weight:bold;" id="currentTime">14:06:10</span><br />
+             目前最低可成交价：<span style="color:#F00;font-family:NSimSun;font-weight:bold;" id="priceSM">82700</span><br />
+             最低可成交价出价时间：<span style="color:#F00;font-family:NSimSun;font-weight:bold;" id="minTime">2015-11-06 14:06:04</span><br />
+             目前数据库接受处理价格区间：<span style="color:#F00;font-family:NSimSun;font-weight:bold;" id="priceRange">82400至83000</span><br />
+           </div>
+        </div>
+        
+        <div style="background:#fff2e5; width:370px; height:32px; margin-top:47px;" align="left"><div style=" padding-left:5px; padding-top:5px; color:#C00">请尽早出价避免因网络繁忙拥堵无法出价。</div></div>
+     </div>
+
+   </div>
+   <div class="you" style=" width:450px; float:right">
+      <div style="background:url(images/zuotou1.jpg); width:450px; height:86px">
+        <div style="padding-top:19px"><img src="images/tbpm.jpg" /></div>
+      </div>
+      <div style="background:#ccc; width:450px; height:350px">
+         <div style="width:440px; height:246px; background:#fff">
+             <div style="background:#fff2e5; width:390px; height:32px; font-size:20px" align="left">
+             	<div style=" padding-left:5px; padding-top:5px; color:#C00">
+             	目前最低成交价：<span style="color:#F00;font-family:'SimSun';" id="price" value="82700">82700元</span>
+             	</div>
+             </div>
+             <div style="float:left; margin-top:10px; margin-left:40px">
+	             <table>
+	             <tr>
+	             	<td align="right" style="font-weight:bold;">自定义加价幅度：</td>
+	             	<td colspan='2'>
+	             		<span style="color:red;font-size:24px;margin-left:5px;margin-right:5px;">+</span><input type="text" id="deltaPrice" size="13" style="color:red;text-align:center;padding:4px 4px;border:2px solid black"/>
+	             	</td>
+	             	<td><button type="button" class="btn btn-primary btn-sm" toggle="DELTAPRICE" style="margin-left:10px;font-weight:bold;">加&nbsp;&nbsp;价</button></td>
+	             </tr>
+	             <tr>
+	               <td align="right" style="font-weight:bold;">减价快捷键：</td>
+	               <td><span style="vertical-align:middle"><img style="padding:2px 2px;" src="images/minus300.jpg" value="-300" toggle="CLICKDELTA"/></span></td>
+	               <td><span style="vertical-align:middle"><img style="padding:2px 2px;" src="images/minus200.jpg" value="-200" toggle="CLICKDELTA"/></span></td>
+	               <td><span style="vertical-align:middle"><img style="padding:2px 2px;" src="images/minus100.jpg" value="-100" toggle="CLICKDELTA"/></span></td>
+	             </tr>
+	             <tr>
+	               <td align="right" style="font-weight:bold;">减价快捷键：</td>
+	               <td><span style="vertical-align:middle"><img style="padding:2px 2px;" src="images/plus300.jpg" value="300" toggle="CLICKDELTA"/></span></td>
+	               <td><span style="vertical-align:middle"><img style="padding:2px 2px;" src="images/plus200.jpg" value="200" toggle="CLICKDELTA"/></span></td>
+	               <td><span style="vertical-align:middle"><img style="padding:2px 2px;" src="images/plus100.jpg" value="100" toggle="CLICKDELTA"/></span></td>
+	             </tr>
+	             <tr>
+	             	<td align="right" style="font-weight:bold;">自行输入价格：</td>
+	               	<td colspan='2'><input type="text" id="inputPrice" size='13' style="font-size:16px;color:red;text-align:center;padding:4px 4px;border:2px solid black"/></td>
+	                <td><button type="button" class="btn btn-primary btn-sm" toggle="GIVEPRICE" style="margin-left:10px;font-weight:bold;">出&nbsp;&nbsp;价</button></td>
+	             </tr>
+	             </table>
+             </div>
+             
+             <div style=" width:127px; height:29px; float:left; padding-top:18px">
+               <img src="images/cjqkz.jpg" />
+             </div>
+         </div>
+         
+         <div style=" padding-left:5px; font-size:14px; padding-top:5px; color:#F00" align="left">
+           第一次出价<br />
+           出价金额：<span id="gavePrice" value="100">100</span><br />
+           出价时间：<span id="gaveTime">2015-11-06 14:06:07</span><br />
+           出价方式：网络出价
+         </div>
+         
+         <div style="height:45px; width:450px; background:#fff; margin-top:20px">
+            <div style=" float:left; font-size:18px; color:#F00" >
+            <table>
+            <tr>
+            	<td>虎牌帮帮忙出品&nbsp;仅供模拟练习</td>
+            	<td width="10"></td>
+            	<td><!--<input type="button" value="查询本人最新出价情况" style="font-size:16px; " />--></td>
+            </tr>
+            </table>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content" style="width:478px;height:331px;background:url(images/tips.bmp) no-repeat;">
+         <!--
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">模态框（Modal）标题</h4>
+         </div>
+         -->
+         <div class="modal-header" style="height:70px;border-bottom-width: 0px;"></div>
+         <div class="modal-body" id="BID">
+         	<p align="center" style="font-size:18px;">您的出价为：<span id="userGivePrice"></span>元</p>
+         	<p align="center" style="font-size:18px; margin-top: 25px;">
+         		请输入校验码：
+         		<input type="text" size="10" id="inputCaptcha" style="text-align:center;padding:4px 4px;margin-right:25px;border:2px solid blue"/>
+         		<img id="imgCaptcha" src="" alt="正在获取校验码" style="font-size:16px;"/>
+         	</p>
+         	<p align="left" style="font-size:16px; margin-left:150px;margin-top: 10px;font-family:'SimSun';" id="BID-CAPTCHA-TIP">请输入前4为图像校验码</p>
+         	<p align="center" style="margin-top: 30px;">
+         		<button class="btn btn-primary" type="button" style="margin-right:35px; width:120px;" onclick="return submit();">确&nbsp;&nbsp;&nbsp;定</button>
+         		<button class="btn btn-primary" type="button" style="margin-left: 35px; width:120px;" onclick="$('#myModal').modal('hide');">取&nbsp;&nbsp;&nbsp;消</button>
+         	</p>
+         </div>
+         <div class="modal-body" id="TIP" style="display:none;">
+         	<p style="font-size:16px; margin-left: 20px;"></p>
+         	<div class="progress progress-striped active" style="display:none;">
+			    <div class="progress-bar progress-bar-success" role="progressbar" data-transitiongoal="0"></div>
+			</div>
+         	<p align="center" style="margin-left:50px;margin-top:100px;" id="ok">
+         		<button class="btn btn-primary" type="button" style="margin-right:35px; width:120px;" onclick="$('#myModal').modal('hide');">确&nbsp;&nbsp;&nbsp;定</button>
+         	</p>
+         </div>
+         <!--
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            <button type="button" class="btn btn-primary">提交更改</button>
+         </div>
+         -->
+      </div><!-- /.modal-content -->
+</div><!-- /.modal -->
+</body>
+</html>

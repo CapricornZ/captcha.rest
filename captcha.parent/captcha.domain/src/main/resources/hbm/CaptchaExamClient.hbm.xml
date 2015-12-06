@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Hibernate-mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<filter-def name="tagFilter">
+		<filter-param name="tagParam" type="string"/>
+	</filter-def>
+    <class name="demo.captcha.model.CaptchaExamClient" table="CaptchaExam"> 
+        <id name="host" type="java.lang.String" length="15">
+            <column name="HOST"/>
+            <generator class="assigned"/>
+        </id>
+        <property name="code" column="code"/>
+        <property name="expireTime" type="java.sql.Timestamp" column="expireTime"/>
+        <property name="updateTime" type="java.sql.Timestamp" column="updateTime"/>
+    </class>
+</hibernate-mapping>

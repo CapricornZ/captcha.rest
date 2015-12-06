@@ -226,13 +226,41 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	
 	<modules>
-		<module>captcha.restful</module>
 		<module>captcha.domain</module>
 		<module>captcha.service</module>
 	</modules>
 
 	<profiles>
+		<profile>
+			<id>captcha.restful</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<host>127.0.0.1</host>
+				<port>9990</port>
+				<username>jboss</username>
+				<password>Pass2010</password>
+			</properties>
+			<modules>
+				<module>captcha.restful</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>captcha.simulate</id>
+			<properties>
+				<host>127.0.0.1</host>
+				<port>9990</port>
+				<username>jboss</username>
+				<password>Pass2010</password>
+			</properties>
+			<modules>
+				<module>captcha.simulate</module>
+			</modules>
+		</profile>
+		
 		<profile>
 			<id>Simulate</id>
 			<properties>
@@ -247,6 +275,7 @@
 			</properties>
 		</profile>
 	</profiles>
+
 	<build>
 		<plugins>
 			<plugin>

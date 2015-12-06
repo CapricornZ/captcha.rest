@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xmlns:jaxws="http://cxf.apache.org/jaxws"
+    xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+    xmlns:cxf="http://cxf.apache.org/core"
+    xsi:schemaLocation="
+    	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    	http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+    	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+    	http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+	
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+  		<property name="locations">
+  			<list>
+  				<value>classpath:moni.properties</value>
+  			</list>
+  		</property>
+	</bean>
+    
+    <import resource="classpath:META-INF/cxf/cxf.xml"/>
+    <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml"/>
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
+
+    <cxf:bus>
+        <cxf:outInterceptors>
+        	<bean class="org.apache.cxf.transport.common.gzip.GZIPOutInterceptor"/>
+        	<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxf:outInterceptors>
+        <cxf:inInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxf:inInterceptors>
+    </cxf:bus>
+    
+    <bean id="repository" class="demo.captcha.rs.impl.SimulateService.RepositoryCreator">
+    	<property name="url" value="${moni.captcha.repository}"/>
+    </bean>
+    <bean id="JUN" class="demo.captcha.rs.impl.SimulateService.PolicyGenerator">
+		<property name="warnPrice" value="${moni.warnprice}"/>
+		<property name="change">
+			<value>${moni.change.JUN}</value>
+		</property>
+	</bean>
+	<bean id="JUL" class="demo.captcha.rs.impl.SimulateService.PolicyGenerator">
+		<property name="warnPrice" value="${moni.warnprice}"/>
+		<property name="change">
+			<value>${moni.change.JUL}</value>
+		</property>
+	</bean>
+	<bean id="AUG" class="demo.captcha.rs.impl.SimulateService.PolicyGenerator">
+		<property name="warnPrice" value="${moni.warnprice}"/>
+		<property name="change">
+			<value>${moni.change.AUG}</value>
+		</property>
+	</bean>
+	<bean id="SEP" class="demo.captcha.rs.impl.SimulateService.PolicyGenerator">
+		<property name="warnPrice" value="${moni.warnprice}"/>
+		<property name="change">
+			<value>${moni.change.SEP}</value>
+		</property>
+	</bean>	
+	<bean id="OCT" class="demo.captcha.rs.impl.SimulateService.PolicyGenerator">
+		<property name="warnPrice" value="${moni.warnprice}"/>
+		<property name="change">
+			<value>${moni.change.OCT}</value>
+		</property>
+	</bean>	
+
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+    <!-- RESTFUL CXF SERVER -->
+    <jaxrs:server id="serviceContainer" address="/service">
+        <jaxrs:serviceBeans>
+        	<bean class="demo.captcha.rs.impl.SimulateService">
+        		<property name="captchaExamClientService" ref="captchaExamClientService"/>
+        		<property name="repository" ref="repository"/>
+        		<property name="policyGenerators">
+        			<list>
+        				<ref bean="JUN"/>
+        				<ref bean="JUL"/>
+        				<ref bean="AUG"/>
+        				<ref bean="SEP"/>
+        				<ref bean="OCT"/>
+        			</list>
+        		</property>
+        	</bean>
+        </jaxrs:serviceBeans>
+        <jaxrs:providers>
+			<bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+        </jaxrs:providers>
+    </jaxrs:server>
+</beans>
