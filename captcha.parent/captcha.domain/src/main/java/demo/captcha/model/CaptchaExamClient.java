@@ -2,9 +2,12 @@ package demo.captcha.model;
 
 import java.util.Date;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 public class CaptchaExamClient {
 	
 	private String host;
+	@JsonIgnore
 	private String code;
 	private Date expireTime;
 	private Date updateTime;
