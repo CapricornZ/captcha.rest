@@ -48,7 +48,7 @@ public class ConfigService extends Service implements IConfigService {
 			pConfig.setPname(config.getPname());
 			pConfig.setTags(config.getTags());
 			pConfig.setUpdateTime(new Date());
-			pConfig.setClient(null);
+			
 			this.getSession().saveOrUpdate(pConfig);
 			
 			if( null != oClient && !oClient.equals(client)){
