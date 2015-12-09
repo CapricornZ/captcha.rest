@@ -41,6 +41,7 @@
         </cxf:inInterceptors>
     </cxf:bus>
     
+    <!--
     <bean id="repository" class="demo.captcha.rs.impl.SimulateService.RepositoryCreator">
     	<property name="url" value="${moni.captcha.repository}"/>
     </bean>
@@ -73,7 +74,8 @@
 		<property name="change">
 			<value>${moni.change.OCT}</value>
 		</property>
-	</bean>	
+	</bean>
+	-->	
 
 	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
     <!-- RESTFUL CXF SERVER -->
@@ -100,6 +102,7 @@
         		<property name="globalConfigSIMULATE" ref="GLOBAL-SIMULATE"/>
         	</bean>
         	<bean class="demo.captcha.rs.impl.ResourceService"/>
+        	<!--
         	<bean class="demo.captcha.rs.impl.SimulateService">
         		<property name="repository" ref="repository"/>
         		<property name="policyGenerators">
@@ -112,6 +115,7 @@
         			</list>
         		</property>
         	</bean>
+        	-->
         </jaxrs:serviceBeans>
         <jaxrs:providers>
 			<bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>

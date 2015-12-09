@@ -15,6 +15,7 @@ public class Config {
 	private String passwd;
 	private String pid;
 	private String pname;
+	private String tags;
 	private Date updateTime;
 	@JsonIgnore
 	private Client client;
@@ -44,6 +45,9 @@ public class Config {
 	public String getPid() { return pid; }
 	public void setPid(String pid) { this.pid = pid; }
 	
+	public String getTags() { return tags; }
+	public void setTags(String tags) { this.tags = tags; }
+
 	@Override
 	public boolean equals(Object obj) {
 

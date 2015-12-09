@@ -46,6 +46,7 @@ public class ConfigService extends Service implements IConfigService {
 			pConfig.setPasswd(config.getPasswd());
 			pConfig.setPid(config.getPid());
 			pConfig.setPname(config.getPname());
+			pConfig.setTags(config.getTags());
 			pConfig.setUpdateTime(new Date());
 			pConfig.setClient(null);
 			this.getSession().saveOrUpdate(pConfig);
@@ -85,7 +86,7 @@ public class ConfigService extends Service implements IConfigService {
 	@Override
 	public List<Config> listAll() {
 		
-		return (List<Config>)this.getSession().createQuery("from Config").list();
+		return (List<Config>)this.getSession().createQuery("from Config order by updateTime desc").list();
 	}
 
 	@Override

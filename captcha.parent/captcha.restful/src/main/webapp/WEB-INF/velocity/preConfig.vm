@@ -7,18 +7,22 @@
 <script type="text/javascript" src="${ContextPath}/js/bootstrap.js"></script>
 <script type="text/javascript" src="${ContextPath}/js/bootstrap-dialog.min.js"></script>
 <script src="${ContextPath}/js/bootstrap-select.min.js"></script>
+<script src="${ContextPath}/js/jquery/jquery.tags.js"></script>
 
 <script type="text/javascript">
-	$(function(){
 
-		var url = "${ContextPath}/rest/service/command/client";
-		//$.get(url, function(result){
-		//	for(var i=0; i<result.length; i++){
-		//		var option = $("<option>").val(result[i].ip).text(result[i].ip);
-		//		$('#client').append(option);
-		//	}
-  		//});
-  		
+	$(function(){
+	
+		//$(':input').keydown(function(event){
+			
+			//console.log('hasClass(input-tags) : ' + $(this).hasClass('input-tags'));
+			//if(event.keyCode == 13 && !$(this).hasClass('input-tags')) {
+			
+			//	event.preventDefault();
+			//	return false;
+			//}
+		//});
+		
   		$("a[toggle='MODIFY']").click(function(){
   		
   			var configID = $(this).attr("config");
@@ -47,14 +51,22 @@
   			});
   		});
   		
-  		$("#OK").click(function(){
+  		$("#reset").click(function(){
+  			$('#frm input[type="text"]').each(function(){
+  				$(this).val("");
+  			});
+  			$('span[class*="label"]').remove();
+  		});
+  		
+  		$("#save").click(function(){
 
   			var tips = $('#tipsArea').val();
   			var reqParam = {
-  				no:$("#noInput").val(),
-  				passwd:$("#passwdInput").val(),
-  				pid:$("#pidInput").val(),
-  				pname:$("#puserInput").val()
+  				no    : $("#noInput").val(),
+  				passwd: $("#passwdInput").val(),
+  				pid   : $("#pidInput").val(),
+  				pname : $("#puserInput").val(),
+  				tags  : $("#tagsInput").val()
   			};
   			var endPoint = "${ContextPath}/rest/service/command/config";
   			$.ajax({
@@ -106,6 +118,7 @@
 					<td>密码</td>
 					<td>身份证号</td>
 					<td>姓名</td>
+					<td>TAGs</td>
 					<td>HOST</td>
 					<td></td>
 				</tr>
@@ -113,12 +126,13 @@
 				<tr config="${config.no}">
 					<td>×</td>
 					<td><a href='#' config='${config.no}' toggle='MODIFY'>${config.no}</a></td>
-					<td>${config.passwd}</td>
-					<td>${config.pid}</td>
-					<td>${config.pname}</td>
-					<td>${config.renderClient}</td>
+					<td>$!{config.passwd}</td>
+					<td>$!{config.pid}</td>
+					<td>$!{config.pname}</td>
+					<td>$!{config.tags}</td>
+					<td>$!{config.renderClient}</td>
 					<td>
-						<button class="btn btn-primary btn-sm" type="submit" toggle="DEL" >删除</button>
+						<button class="btn btn-danger btn-sm" type="submit" toggle="DEL" >删除</button>
 						<!--<button class="btn btn-info" toggle="MODIFY" config="${config.no}">修改</button>-->
 					</td>
 				</tr>
@@ -126,7 +140,7 @@
 			</table>
 		</div>
 		<div class="col-md-4">
-			<form class="form-horizontal" onsubmit="return false;">
+			<form class="form-horizontal" id="frm" onsubmit="return false;">
 				<fieldset>
 					<legend>创建配置</legend>
 					<div class="form-group">
@@ -165,6 +179,13 @@
 							</div>
 						</div>
 					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="tagsInput">TAGs</label>
+						<div class="col-sm-5">
+							<input id="tagsInput" type="text" data-toggle="tags" placeholder="TAGs"/>
+						</div>
+					</div>
+					   
 					<!--<div class="form-group">
 						<label class="col-sm-2 control-label" for="client">CLIENTs</label>
 						<div class="col-sm-2">
@@ -175,15 +196,15 @@
 					</div>-->
 					<!--
 					<div class="control-group">
-						<label class="col-sm-2 control-label" for="tipsArea">操作提示</label>
+						<label class="col-sm-5 control-label" for="tipsArea">操作提示</label>
 			            <div class="controls">
 			            	<textarea class="form-control" id="tipsArea" rows="3" style="width:250px;">48秒+600;52秒出价;</textarea>
 			            </div>
 					</div>
 					-->
 					<div class="col-sm-offset-2 col-sm-10">
-						<button class="btn btn-primary" type="submit" id="OK">确定</button>
-						<button class="btn">取消</button>
+						<input type="button" id="save" class="btn btn-primary" value="确定"></input>
+						<input type="button" id="reset" class="btn" value="取消"></input>
 					</div>
 				</fieldset>
 			</form>
