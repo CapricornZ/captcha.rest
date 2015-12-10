@@ -60,7 +60,7 @@
 			if($('#checkSubmitTime').is(':checked'))
 				policy.submitTime = $('#submitTime').val();
 			if($('#checkReachPrice').is(':checked'))
-				policy.submitReachPrice = true;
+				policy.submitReachPrice = $('#submitReachPrice').val();;
 				
 			var endPoint = "${ContextPath}/rest/service/command/config/" + $('#configID').val();
 			endPoint += "/client/" + $("#clientEdit").val();
@@ -86,6 +86,7 @@
 	$(function(){
 		
 		$("#deltaPrice").mask("999", {placeholder:"600"});
+		$("#submitReachPrice").mask("999", {placeholder:"400"});
 		$("#submitTime").mask("99:99:99",{placeholder:"hh:MM:ss"});
 		$("#priceTime").mask("99:99:99",{placeholder:"hh:MM:ss"});
 		$("#captchaTime").mask("99:99:99",{placeholder:"hh:MM:ss"});
@@ -109,7 +110,7 @@
 			if($('#checkSubmitTime').is(':checked'))
 				memo += ';\r\n提交时间:' + $('#submitTime').val();
 			if($('#checkReachPrice').is(':checked'))
-				memo += ';\r\n离最低价差400提交';
+				memo += ';\r\n离最低价差' + $('#submitReachPrice').val() + '提交';
 		});
 		
 		$("#checkCaptchaTime").click(function(){
@@ -118,6 +119,10 @@
 		
 		$("#checkSubmitTime").click(function(){
 			$('#submitTime').attr("disabled", !$(this).is(':checked'));
+		});
+		
+		$("#checkReachPrice").click(function(){
+			$('#submitReachPrice').attr("disabled", !$(this).is(':checked'));
 		});
 		
 		//init UI
@@ -146,10 +151,15 @@
 				$('#submitTime').val('00:00:00');
 			}
 			
-			var submitReachPrice = tips.submitReachPrice != null;
-			if(tips.submitReachPrice != null)
-				submitReachPrice = tips.submitReachPrice;
-			$('#checkReachPrice').attr('checked', submitReachPrice);
+			if(tips.submitReachPrice != null){
+				$('#checkReachPrice').attr('checked', true);
+				$('#submitReachPrice').attr('disabled', false);
+				$('#submitReachPrice').val(tips.submitReachPrice);
+			} else {
+				$('#checkReachPrice').attr('checked', false);
+				$('#submitReachPrice').attr('disabled', true);
+				$('#submitReachPrice').val(tips.submitReachPrice);
+			}
 		}
 		else
 			$("[toggle*='TIPS']").hide();//toggle包含TIPS
@@ -255,16 +265,11 @@
 			</div>
 		</div>
 		<div class="form-group" toggle="TIPS">
-			<label class="col-sm-3 control-label" for="">提交触发价格<input checked="checked" type="checkbox" id="checkReachPrice"/></label>
-			<div class="control col-sm-9">离开最低价差400，触发提交</div>
-		</div>
-		<!--
-		<div class="form-group" toggle="TIPS">
-			<label class="col-sm-3 control-label" for="submitTime">提示信息</label>
-			<div class="control col-sm-9">
-				<textarea style="width:300px;" rows="3" id="memo" class="form-control">$!{config.client.memo}</textarea>
+			<label class="col-sm-3 control-label" for="submitReachPrice">提交触发价格<input checked="checked" type="checkbox" id="checkReachPrice"/></label>
+			<div class="control col-sm-3">
+				<input class="form-control" toggle="OPS" id="submitReachPrice" type="text" placeholder="触发价格" style="width:100px;height:30px;" value=""/>
 			</div>
+			<label class="col-sm-6 control-label">出价离开最低价达到"触发价格"</label>
 		</div>
-		-->
 	</fieldset>
 </form>
