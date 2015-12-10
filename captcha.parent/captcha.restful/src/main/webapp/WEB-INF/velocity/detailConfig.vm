@@ -60,7 +60,7 @@
 			if($('#checkSubmitTime').is(':checked'))
 				policy.submitTime = $('#submitTime').val();
 			if($('#checkReachPrice').is(':checked'))
-				policy.submitReachPrice = $('#submitReachPrice').val();;
+				policy.submitReachPrice = $('#submitReachPrice').val();
 				
 			var endPoint = "${ContextPath}/rest/service/command/config/" + $('#configID').val();
 			endPoint += "/client/" + $("#clientEdit").val();
@@ -151,14 +151,14 @@
 				$('#submitTime').val('00:00:00');
 			}
 			
-			if(tips.submitReachPrice != null){
+			if(tips.submitReachPrice != null && tips.submitReachPrice > 0){
 				$('#checkReachPrice').attr('checked', true);
 				$('#submitReachPrice').attr('disabled', false);
 				$('#submitReachPrice').val(tips.submitReachPrice);
 			} else {
 				$('#checkReachPrice').attr('checked', false);
 				$('#submitReachPrice').attr('disabled', true);
-				$('#submitReachPrice').val(tips.submitReachPrice);
+				$('#submitReachPrice').val();
 			}
 		}
 		else
