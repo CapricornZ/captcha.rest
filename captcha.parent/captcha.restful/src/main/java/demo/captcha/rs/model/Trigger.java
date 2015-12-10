@@ -6,6 +6,7 @@ public class Trigger {
 	public String priceTime;
 	public String captchaTime;
 	public String submitTime;
+	public boolean submitReachPrice;
 	
 	public int getDeltaPrice() { return deltaPrice; }
 	public void setDeltaPrice(int deltaPrice) { this.deltaPrice = deltaPrice; }
@@ -18,4 +19,7 @@ public class Trigger {
 	
 	public String getSubmitTime() { return submitTime; }
 	public void setSubmitTime(String submitTime) { this.submitTime = submitTime; }
+	
+	public boolean isSubmitReachPrice() { return submitReachPrice; }
+	public void setSubmitReachPrice(boolean submitReachPrice) { this.submitReachPrice = submitReachPrice; }
 }

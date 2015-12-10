@@ -59,6 +59,8 @@
 				policy.captchaTime = $('#captchaTime').val();
 			if($('#checkSubmitTime').is(':checked'))
 				policy.submitTime = $('#submitTime').val();
+			if($('#checkReachPrice').is(':checked'))
+				policy.submitReachPrice = true;
 				
 			var endPoint = "${ContextPath}/rest/service/command/config/" + $('#configID').val();
 			endPoint += "/client/" + $("#clientEdit").val();
@@ -106,6 +108,8 @@
 				memo += ';\r\n验证码时间:' + $('#captchaTime').val();
 			if($('#checkSubmitTime').is(':checked'))
 				memo += ';\r\n提交时间:' + $('#submitTime').val();
+			if($('#checkReachPrice').is(':checked'))
+				memo += ';\r\n离最低价差400提交';
 		});
 		
 		$("#checkCaptchaTime").click(function(){
@@ -141,6 +145,11 @@
 				$('#submitTime').attr('disabled', true);
 				$('#submitTime').val('00:00:00');
 			}
+			
+			var submitReachPrice = tips.submitReachPrice != null;
+			if(tips.submitReachPrice != null)
+				submitReachPrice = tips.submitReachPrice;
+			$('#checkReachPrice').attr('checked', submitReachPrice);
 		}
 		else
 			$("[toggle*='TIPS']").hide();//toggle包含TIPS
@@ -200,7 +209,7 @@
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="tags">TAGs</label>
 			<div class="controls col-sm-6">
-				<input id="tags" type="text" data-toggle="tags" placeholder="TAGs" style="width:200px;height:30px;" />
+				<input id="tags" type="text" data-toggle="tags" placeholder="TAGs" style="width:100px;height:30px;" />
 			</div>
 		</div>
 	</fieldset>
@@ -244,6 +253,10 @@
 			<div class="control col-sm-9">
 				<input class="form-control" toggle="OPS" id="submitTime" type="text" placeholder="触发时间" style="width:100px;height:30px;" value="11:29:52"/>
 			</div>
+		</div>
+		<div class="form-group" toggle="TIPS">
+			<label class="col-sm-3 control-label" for="">提交触发价格<input checked="checked" type="checkbox" id="checkReachPrice"/></label>
+			<div class="control col-sm-9">离开最低价差400，触发提交</div>
 		</div>
 		<!--
 		<div class="form-group" toggle="TIPS">
