@@ -46,11 +46,11 @@
 	
 	<bean class="demo.captcha.rs.model.Entry" id="ENTRY0-real">
 		<property name="description" value="电信线路"/>
-		<property name="url" value="https://paimai2.alltobid.com/pubbid/2015112101/login.htm"/>
+		<property name="url" value="${real.URL0}"/>
 	</bean>
 	<bean class="demo.captcha.rs.model.Entry" id="ENTRY1-real">
 		<property name="description" value="非电信线路"/>
-		<property name="url" value="https://paimai.alltobid.com/pubbid/2015112101/login.htm"/>
+		<property name="url" value="${real.URL1}"/>
 	</bean>
 	
 	<bean id="PRICE-sm-real" class="demo.captcha.rs.model.OrcConfig">

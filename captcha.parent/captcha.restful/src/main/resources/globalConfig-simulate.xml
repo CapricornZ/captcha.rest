@@ -34,7 +34,7 @@
 	
 	<bean class="demo.captcha.rs.model.Entry" id="ENTRY0-simulate">
 		<property name="description" value="51模拟"/>
-		<property name="url" value="http://51hupai.com/moni"/>
+		<property name="url" value="${simulate.URL}"/>
 	</bean>
 	
 	<bean id="PRICE-sm-simulate" class="demo.captcha.rs.model.OrcConfig">
