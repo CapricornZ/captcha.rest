@@ -1,4 +1,5 @@
 #set( $ContextPath = ${request.contextPath} )
+#set( $layout = "layout/layoutBlank.vm" )
 
 <script type="text/javascript">
 
