@@ -9,6 +9,7 @@ public interface IConfigService {
 	
 	Config saveOrUpdate(Config config);
 	Config saveOrUpdate(Config config, Client client);
+	Config removeClient(Config config);
 
 	List<Config> listAll();
 	void delete(String config);

@@ -64,7 +64,7 @@ public class ConfigService implements IConfigService {
 	public void unAssign(String bidNo) {
 		
 		Config config = this.configService.queryByNo(bidNo);
-		this.configService.saveOrUpdate(config, null);
+		this.configService.removeClient(config);
 	}
 	
 	private String format(Trigger trigger){

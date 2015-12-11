@@ -42,6 +42,26 @@
 	        });
   		});
   		
+  		$("button[toggle='UNBIND']").click(function(){
+  		
+  			var elementTD = $(this).parent();
+  			var elementTR = $(this).parent().parent();
+  			var configID = elementTR.attr("config");
+  			var endPoint = "${ContextPath}/rest/service/command/config/" + configID + "/client";
+  			$.ajax({
+  				url  : endPoint,
+  				type : 'DELETE',
+  				cache: false,
+				contentType: 'application/json; charset=utf-8',
+				success: function(json) {
+					alert("SUCCESS");
+					console.log(" reponse :"+ json);
+					elementTD.html("");
+                },
+                error: function(msg) { alert("error"); }
+  			});
+  		});
+  		
   		$("button[toggle='DEL']").click(function(){
 
 			var elementTR = $(this).parent().parent();
@@ -135,15 +155,20 @@
 				</tr>
 				#foreach(${config} in ${configs})
 				<tr config="${config.no}" toggle="row">
-					<td>×</td>
+					<td align="right">$!{velocityCount}</td>
 					<td><a href='#' config='${config.no}' toggle='MODIFY'>${config.no}</a></td>
 					<td>$!{config.passwd}</td>
 					<td>$!{config.pid}</td>
 					<td>$!{config.pname}</td>
 					<td>$!{config.tags}</td>
-					<td>$!{config.renderClient}</td>
 					<td>
-						<button class="btn btn-danger btn-sm" type="submit" toggle="DEL" >删除</button>
+						#if(${config.renderClient} == "")
+						#else
+							<button class="btn btn-sm btn-danger" toggle="UNBIND"><span class="glyphicon glyphicon-ban-circle"/></button>${config.renderClient}
+						#end
+					</td>
+					<td>
+						<button class="btn btn-danger btn-sm" type="submit" toggle="DEL"><span class="glyphicon glyphicon-remove"/></button>
 						<!--<button class="btn btn-info" toggle="MODIFY" config="${config.no}">修改</button>-->
 					</td>
 				</tr>

@@ -108,4 +108,29 @@ public class ConfigService extends Service implements IConfigService {
 		
 		return (Config) this.getSession().get(Config.class, no);
 	}
+
+	@Override
+	public Config removeClient(Config config) {
+		
+		Config pConfig = (Config) this.getSession().get(Config.class, config.getNo());
+		Client oClient = pConfig.getClient();
+		
+		pConfig.setClient(null);
+		pConfig.setPasswd(config.getPasswd());
+		pConfig.setPid(config.getPid());
+		pConfig.setPname(config.getPname());
+		pConfig.setTags(config.getTags());
+		pConfig.setUpdateTime(new Date());
+		
+		this.getSession().saveOrUpdate(pConfig);
+		
+		if( null != oClient ){
+			
+			oClient.setConfig(null);
+			oClient.setTips(null);
+			oClient.setMemo(null);
+			this.getSession().update(oClient);
+		}
+		return pConfig;
+	}
 }
