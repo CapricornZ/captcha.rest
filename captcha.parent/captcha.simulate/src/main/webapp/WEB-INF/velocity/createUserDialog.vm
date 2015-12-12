@@ -1,0 +1,15 @@
+#set($layout="layout/layoutBlank.vm")
+<form class="form-horizontal" nsubmit="return false;">
+<div class="form-group">
+	<label class="col-sm-2 control-label" for="username">用户名</label>
+	<div class="col-sm-5">
+		<input id="username" type="text" placeholder="用户名"/>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-2 control-label" for="password">密码</label>
+	<div class="col-sm-5">
+		<input id="password" type="password" placeholder="登陆密码" value="${CODE}"/>
+	</div>
+</div>
+</form>

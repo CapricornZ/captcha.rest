@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Hibernate-mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="demo.captcha.model.ExamRecord" table="CaptchaExamRecord"> 
+        <id name="id" type="java.lang.Long">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <property name="level" type="java.lang.String" column="level"/>
+        <property name="correct" type="java.lang.Integer" column="correct"/>
+        <property name="total" type="java.lang.Integer" column="total"/>
+        <property name="avgCost" type="java.lang.Float" column="avgCost"/>
+        <property name="updateTime" type="java.sql.Timestamp" column="updateTime"/>
+        <many-to-one name="client" class="demo.captcha.model.CaptchaExamClient" lazy="false" column="client_id" unique="false"/>
+    </class>
+</hibernate-mapping>

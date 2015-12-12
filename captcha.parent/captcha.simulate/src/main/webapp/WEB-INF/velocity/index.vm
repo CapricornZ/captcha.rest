@@ -1,0 +1,110 @@
+#set( $ContextPath = ${request.contextPath} )
+<script type="text/javascript" src="${ContextPath}/js/bootstrap-dialog.min.js"></script>
+<script>
+	$(function(){
+		
+		$('#filter').keyup(function () {
+
+            var rex = new RegExp($(this).val(), 'i');
+            $('.searchable tr[toggle="DETAIL"]').hide();
+            $('.searchable tr[toggle="DETAIL"]').filter(function () {
+                return rex.test($(this).text());
+            }).show();
+
+        });
+        
+		$("tr[toggle='DETAIL']").click(function(){
+		
+			var client = $(this).attr('client');
+			//var endPoint = "${ContextPath}/rest/service/exam/client/" + client + "/record";
+			var url = "${ContextPath}/web/admin/exam/client/" + client;
+  			$('#detail').load(url);
+		});
+		
+		$("button").click(function(){
+			BootstrapDialog.show({
+				title   : "创建新用户",
+	            message : $('<div></div>').load('${ContextPath}/web/admin/exam/newclient'),
+	            buttons: [{
+	                label: '确定',
+	                cssClass: 'btn-primary',
+	                action: function(dialog) {
+	                    
+	                    var client = {
+	                    	"host":$('#username').val(),
+	                    	"code":$('#password').val()
+	                    };
+	                    var endPoint = "${ContextPath}/rest/service/exam/client";
+	                    $.ajax({
+			  				url  : endPoint,
+			  				type : 'POST',
+			  				cache: false,
+			  				data:JSON.stringify(client),
+							contentType: 'application/json; charset=utf-8',
+							success: function(json) {
+								alert("SUCCESS");
+								console.log(" reponse :"+ json);
+								dialog.close();
+			                },
+			                error: function(msg) { alert("error"); }
+			  			});
+	                }
+	            }, {
+	                label: '取消',
+	                action: function(dialog) { dialog.close(); }
+	            }]
+	        });
+		});
+	});
+</script>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-4">
+			
+				<div class="input-group">
+					<span class="input-group-addon">搜索</span>
+					<input id="filter" class="form-control" style="width:200px;height:30px;" type="text" placeholder=""></input>
+				</div>
+
+			<table class="table table-striped table-bordered searchable" id="configs">
+				<tr>
+					<td></td>
+					<td>用户名</td>
+					<td>密码</td>
+					<td></td>
+				</tr>
+				#foreach(${client} in ${clients})
+				<tr toggle="DETAIL" client="${client.host}">
+					<td align="right">$!{velocityCount}</td>
+					<td>${client.host}</td>
+					<td>${client.code}</td>
+					<td></td>
+				</tr>
+				#end
+				<tr>
+					<td colspan="4" align="right"><button class="btn btn-primary">创建新用户</button></td>
+				</tr>
+			</table>
+		</div>
+		<div class="col-md-8">
+			<div id="detail"></div>
+		</div>
+	</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">创建新用户</h4>
+         </div>
+         <div class="modal-body">
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">提交更改</button>
+         </div>
+      </div><!-- /.modal-content -->
+</div><!-- /.modal -->

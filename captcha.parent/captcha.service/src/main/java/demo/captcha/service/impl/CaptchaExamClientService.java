@@ -8,7 +8,9 @@ import java.util.List;
 import org.hibernate.Query;
 
 import demo.captcha.model.CaptchaExamClient;
+import demo.captcha.model.ExamRecord;
 import demo.captcha.model.Warrant;
+import demo.captcha.security.CodeGen;
 import demo.captcha.service.ICaptchaExamClientService;
 import demo.captcha.service.Service;
 
@@ -78,6 +80,48 @@ public class CaptchaExamClientService extends Service implements ICaptchaExamCli
 	public CaptchaExamClient update(CaptchaExamClient client) {
 
 		this.getSession().update(client);
+		return client;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CaptchaExamClient> listAll() {
+		
+		return (List<CaptchaExamClient>)this.getSession().createQuery(
+				"from CaptchaExamClient order by updateTime desc").list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ExamRecord> queryRecordByHost(CaptchaExamClient client) {
+
+		String hql = "from ExamRecord where client=:client order by updatetime desc";
+		Query query = this.getSession().createQuery(hql);
+		query.setParameter("client", client);
+		return query.list();
+	}
+
+	@Override
+	public ExamRecord updateRecord(CaptchaExamClient client, ExamRecord record) {
+		
+		record.setClient(client);
+		record.setUpdateTime(new Date());
+		this.getSession().save(record);
+		return record;
+	}
+
+	@Override
+	public CaptchaExamClient save(CaptchaExamClient client) {
+		
+		Date now = new Date();
+		Calendar calendar=Calendar.getInstance();   
+		calendar.setTime(now);
+		calendar.add(Calendar.MONTH, 1);
+		
+		client.setCode(CodeGen.genRandomNum(6));
+		client.setUpdateTime(now);
+		client.setExpireTime(calendar.getTime());
+		this.getSession().save(client);
 		return client;
 	}
 

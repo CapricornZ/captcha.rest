@@ -40,11 +40,10 @@
 	</bean>
 	
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">  
-	    <!--<property name="realm" ref="myRealm"/>-->
 	    <property name="realms">
 	    	<list>
+	    		<ref bean="myRealm"/>
 	    		<ref bean="dbRealm"/>
-	    		<!--<ref bean="myRealm"/>-->
 	    	</list>
 	    </property>
 	</bean>
@@ -72,6 +71,7 @@
 	        	<!--/real.zip=authcBasic,roles[user]
 	        	/simulate.zip=authcBasic,roles[user]-->
 
+				/rest/service/exam/**=anon
 				/rest/service/simulate/keepAlive/*=authcBasic,roles[user]
 				/rest/service/simulate/**=anon
 	        	/rest/**=authcBasic,roles[admin]

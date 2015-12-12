@@ -68,11 +68,9 @@
 			</props>
 		</property>
 	</bean>
-	
-	<!--
-	<bean class="demo.chapta.controller.DemoController">
-    	<property name="captchaConfig" ref="captchaConfig"/>
-    	<property name="priceConfig" ref="priceConfig"/>
+
+	<bean class="demo.captcha.controller.AdminController">
+		<property name="clientService" ref="captchaExamClientService"/>
     </bean>
-	-->
+
 </beans>

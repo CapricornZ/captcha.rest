@@ -1,0 +1,19 @@
+#set( $ContextPath = ${request.contextPath} )
+#set( $layout = "layout/layoutBlank.vm" )
+
+<table class="table table-striped table-bordered searchable" id="configs">
+	<tr>
+		<td>级别</td>
+		<td>成绩</td>
+		<td>平均耗时</td>
+		<td>提交时间</td>
+	</tr>
+	#foreach(${record} in ${records})
+	<tr>
+		<td>${record.level}</td>
+		<td>${record.correct}/${record.total}</td>
+		<td>${record.avgCost}</td>
+		<td>${record.updateTime}</td>
+	</tr>
+	#end
+</table>

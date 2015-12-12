@@ -83,6 +83,9 @@
         			</list>
         		</property>
         	</bean>
+        	<bean class="demo.captcha.rs.impl.ExamService">
+        		<property name="clientService" ref="captchaExamClientService"/>
+        	</bean>
         </jaxrs:serviceBeans>
         <jaxrs:providers>
 			<bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
