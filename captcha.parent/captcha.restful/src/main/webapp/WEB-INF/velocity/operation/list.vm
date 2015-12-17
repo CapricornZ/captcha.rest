@@ -58,19 +58,33 @@
 		loadHosts();
 		
 		$("button[toggle='DELETE']").click(function(){
+		
 			var operationID = $(this).attr("opsID");
-			$.ajax({
-			    url : '${ContextPath}/rest/service/command/operation/' + operationID,
-    			type: 'DELETE',
-				contentType: 'application/json;charset=utf-8;',
-				error: function(msg) { alert("error"); },
-				complete: function(msg) { console.log("complete"); },
-				success: function(msg) { 
-					console.log("success");
-					alert("操作成功");
-					$("tr[opsID='" + operationID + "']").remove();
-				}     
-			});
+			BootstrapDialog.show({
+	            message: "确定要删除？",
+	            buttons:[{
+	            	label : '是',
+	            	cssClass: 'btn-primary',
+	            	action: function(dialogItself){
+	            		$.ajax({
+						    url : '${ContextPath}/rest/service/command/operation/' + operationID,
+							type: 'DELETE',
+							contentType: 'application/json;charset=utf-8;',
+							error: function(msg) { alert("error"); },
+							complete: function(msg) { console.log("complete"); },
+							success: function(msg) { 
+								console.log("success");
+								alert("操作成功");
+								$("tr[opsID='" + operationID + "']").remove();
+							}     
+						});
+	            		dialogItself.close();
+	            	}
+	            },{
+	            	label : '否',
+	            	action: function(dialogItself){ dialogItself.close(); }
+	            }]
+	        });
 		});
 		
 		$("button[toggle='MODIFY']").click(function(){
@@ -191,29 +205,31 @@
 				var table = $('#hostTable tbody');
 				for(var i=0; i<result.length; i++){
 
-					var time=Date.parse(result[i].updateTime.replace(/-/g,"/"));
+					var time = Date.parse(result[i].updateTime.replace(/-/g,"/"));
 					var date = new Date(time);
 					date.setHours(date.getHours()+1);
 					
 					var detail = result[i].hover;
 					var x = "data-content='" + detail + "'"; 
 					var row = "<tr toggle='HOST'>";
-					row += "<td><input name='checkHost' type='checkbox' value='" + result[i].ip + "'/>"
+					row += "<td><input name='checkHost' type='checkbox' value='" + result[i].ip + "'/>";
 					row += "<a href='#' data-toggle='popover' title='DETAIL' data-content='" + detail + "' host='" + result[i].ip + "' onclick='return detailClient(this);'>" + result[i].ip + "</a>";
-					if(date > now)
+					if(result[i].isOnline)
 						row += "<img src='$ContextPath/img/online.ico'/>";
 					else
 						row += "<img src='$ContextPath/img/offline.ico'/>";
 					if(result[i].config != null)
 						row += "<br/><span style='margin-left: 12px;'>[" + result[i].config.no + "," + result[i].config.pname + "]</span>";
 					row += "</td>";
+					row += "<td>" + result[i].updateTime + "</td>";
 
 					if(result[i].operation.length > 0){
 						var ops = "";
 						for(var j=0; j<result[i].operation.length; j++){
 						
 							var button = "<button class='btn btn-danger btn-xs' toggle='REMOVE' host='" + result[i].ip + "' opsID='" + result[i].operation[j].id + "'>X</button>";
-							ops += "<div>【" + result[i].operation[j].id + "】";
+							ops += "<div>";
+							ops += button + "【" + result[i].operation[j].id + "】";
 							if(result[i].operation[j].tag == "real")
 								ops += "<span class='label label-primary'>国拍</span>";
 							else if(result[i].operation[j].tag == "simulate")
@@ -221,8 +237,8 @@
 							else
 								ops += "<span class='label label-warning'>未知</span>";
 							ops += "<span class='label label-default'>" + result[i].operation[j].type + "</span>";
-							ops += "@" + result[i].operation[j].startTime;
-							ops += button + "</div>";
+							//ops += "@" + result[i].operation[j].startTime;
+							ops += "</div>";
 						}
 						row += "<td>"+ops+"</td>";
 					} else
@@ -348,6 +364,7 @@
 										<input type="radio" name="all" id="inlineRadio2" value="option2"  onclick='return unCheckAll();'>不选
 									</label>
 								</th>
+								<th>updateTime</th>
 								<th>已分配の操作</th>
 							</tr>
 						</table>

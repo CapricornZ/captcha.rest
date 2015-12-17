@@ -12,16 +12,7 @@
 <script type="text/javascript">
 
 	$(function(){
-	
-		//$(':input').keydown(function(event){
-			
-			//console.log('hasClass(input-tags) : ' + $(this).hasClass('input-tags'));
-			//if(event.keyCode == 13 && !$(this).hasClass('input-tags')) {
-			
-			//	event.preventDefault();
-			//	return false;
-			//}
-		//});
+
 		$('#filter').keyup(function () {
 
             var rex = new RegExp($(this).val(), 'i');
@@ -67,18 +58,35 @@
 			var elementTR = $(this).parent().parent();
   			var configID = elementTR.attr("config");
   			var endPoint = "${ContextPath}/rest/service/command/config/" + configID;
-  			$.ajax({
-  				url  : endPoint,
-  				type : 'DELETE',
-  				cache: false,
-				contentType: 'application/json; charset=utf-8',
-				success: function(json) {
-					alert("SUCCESS");
-					console.log(" reponse :"+ json);
-					elementTR.remove();
-                },
-                error: function(msg) { alert("error"); }
-  			});
+			BootstrapDialog.show({
+	            message: "确定要删除？",
+	            buttons:[{
+	            	label : '是',
+	            	cssClass: 'btn-primary',
+	            	action: function(dialogItself){
+
+			  			$.ajax({
+			  				url  : endPoint,
+			  				type : 'DELETE',
+			  				cache: false,
+							contentType: 'application/json; charset=utf-8',
+							success: function(json) {
+								alert("SUCCESS");
+								console.log(" reponse :"+ json);
+								elementTR.remove();
+			                },
+			                error: function(msg) { alert("error"); }
+			  			});
+	            		dialogItself.close();
+	            	}
+	            },{
+	            	label : '否',
+	            	action: function(dialogItself){
+	            		dialogItself.close();
+	            	}
+	            }]
+	        });
+
   		});
   		
   		$("#reset").click(function(){
@@ -162,9 +170,10 @@
 					<td>$!{config.pname}</td>
 					<td>$!{config.tags}</td>
 					<td>
-						#if(${config.renderClient} == "")
-						#else
-							<button class="btn btn-sm btn-danger" toggle="UNBIND"><span class="glyphicon glyphicon-ban-circle"/></button>${config.renderClient}
+						#if(${config.client} != $null)
+							<button class="btn btn-sm btn-danger" toggle="UNBIND"><span class="glyphicon glyphicon-ban-circle"/></button>
+							<span>${config.client.ip}
+							#if(${config.client.isOnline})<img src='${ContextPath}/img/online.ico'/>#else<img src='${ContextPath}/img/offline.ico'/>#end</span>
 						#end
 					</td>
 					<td>

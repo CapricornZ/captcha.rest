@@ -1,10 +1,12 @@
 package demo.captcha.rs.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import demo.captcha.model.Client;
 import demo.captcha.model.Config;
 import demo.captcha.rs.IClientService;
+import demo.captcha.rs.model.ClientHtml;
 
 public class ClientService implements IClientService {
 
@@ -38,14 +40,22 @@ public class ClientService implements IClientService {
 	}
 
 	@Override
-	public List<Client> listClient() {
+	public List<ClientHtml> listClient() {
 		
-		return this.clientService.list();
+		List<ClientHtml> rtn = new ArrayList<ClientHtml>();
+		List<Client> clients = this.clientService.list();
+		for(Client client : clients)
+			rtn.add(new ClientHtml(client));
+		return rtn;
 	}
 
 	@Override
-	public List<Client> listClientFilter(String host) {
+	public List<ClientHtml> listClientFilter(String host) {
 
-		return this.clientService.listFilterByHost(host);
+		List<ClientHtml> rtn = new ArrayList<ClientHtml>();
+		List<Client> clients = this.clientService.listFilterByHost(host);
+		for(Client client : clients)
+			rtn.add(new ClientHtml(client));
+		return rtn;
 	}
 }

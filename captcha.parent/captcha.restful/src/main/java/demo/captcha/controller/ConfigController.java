@@ -1,5 +1,6 @@
 package demo.captcha.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import demo.captcha.model.Client;
 import demo.captcha.model.Config;
+import demo.captcha.rs.model.ConfigHtml;
 import demo.captcha.service.IClientService;
 import demo.captcha.service.IConfigService;
 
@@ -26,7 +28,12 @@ public class ConfigController {
 	@RequestMapping(value = "/init", method=RequestMethod.GET)
 	public String initConfig(Model model){
 		
-		model.addAttribute("configs", this.configService.listAll());
+		List<Config> configs = this.configService.listAll();
+		List<ConfigHtml> configHtmls = new ArrayList<ConfigHtml>();
+		for(Config config : configs)
+			configHtmls.add(new ConfigHtml(config));
+		
+		model.addAttribute("configs", configHtmls);
 		return "preConfig";
 	}
 	

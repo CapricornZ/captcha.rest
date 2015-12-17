@@ -12,6 +12,7 @@ import demo.captcha.model.ExamRecord;
 import demo.captcha.model.Warrant;
 import demo.captcha.security.CodeGen;
 import demo.captcha.service.ICaptchaExamClientService;
+import demo.captcha.service.Page;
 import demo.captcha.service.Service;
 
 public class CaptchaExamClientService extends Service implements ICaptchaExamClientService {
@@ -124,5 +125,38 @@ public class CaptchaExamClientService extends Service implements ICaptchaExamCli
 		this.getSession().save(client);
 		return client;
 	}
+
+	@Override
+	public Page<ExamRecord> queryRecordByHostWithPage(CaptchaExamClient client, int pageNumber) {
+		
+		Page<ExamRecord> page = new Page<ExamRecord>();
+		page.setCurrentPage(pageNumber);
+		List<ExamRecord> rtn = this.queryForList(
+				"from ExamRecord where client=:client", 
+				new String[]{"client"}, 
+				new Object[]{client}, 
+				page);
+		page.setDataList(rtn);
+		return page;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected List<ExamRecord> queryForList(String hql, String[] params, Object[] values, Page<ExamRecord> page) {  
+  	  
+        Query query = this.getSession().createQuery(hql + " order by updatetime desc");
+        Query queryCount = this.getSession().createQuery("select count(id) " + hql);
+        for(int pos=0; pos<params.length; pos++){
+        	query.setParameter(params[pos], values[pos]);
+        	queryCount.setParameter(params[pos], values[pos]);
+        }
+        
+        int totalCount = ((Long) queryCount.uniqueResult()).intValue();
+        page.setTotalCount(totalCount);
+        
+        query.setFirstResult(page.getFirstIndex());  
+        query.setMaxResults(page.getPageSize());
+        
+        return (List<ExamRecord>)query.list();
+    }
 
 }

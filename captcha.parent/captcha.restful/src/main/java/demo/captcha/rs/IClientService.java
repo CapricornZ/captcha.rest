@@ -13,7 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import demo.captcha.model.Config;
-import demo.captcha.model.Client;
+import demo.captcha.rs.model.ClientHtml;
 
 @WebService(endpointInterface="demo.captcha.restful.ClientService", serviceName="ClientService")
 @Path("/command/client")
@@ -39,10 +39,10 @@ public interface IClientService {
 	@GET
 	@Path("/")
 	@Produces({MediaType.APPLICATION_JSON})
-	public List<Client> listClient();
+	public List<ClientHtml> listClient();
 	
 	@GET
 	@Path("/filter/{HOST}")
 	@Produces({MediaType.APPLICATION_JSON})
-	public List<Client> listClientFilter(@PathParam("HOST")String host);	
+	public List<ClientHtml> listClientFilter(@PathParam("HOST")String host);	
 }

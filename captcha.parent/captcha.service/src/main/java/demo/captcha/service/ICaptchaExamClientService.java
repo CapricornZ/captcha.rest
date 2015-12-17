@@ -16,5 +16,6 @@ public interface ICaptchaExamClientService {
 	CaptchaExamClient update(CaptchaExamClient client);
 	
 	List<ExamRecord> queryRecordByHost(CaptchaExamClient client);
+	Page<ExamRecord> queryRecordByHostWithPage(CaptchaExamClient client, int pageNum);
 	ExamRecord updateRecord(CaptchaExamClient client, ExamRecord record);
 }
