@@ -19,12 +19,6 @@ public class Client {
 	private String memo;
 	private String tips;
 	
-	public String getHover(){
-		
-		String s = String.format("UPDATE:%s<br/>MEMO:%s", new java.text.SimpleDateFormat("hh:mm:ss").format(this.updateTime), this.memo);
-		return s;
-	}
-	
 	@Override
 	public int hashCode() {
 		return 0;

@@ -1,5 +1,8 @@
 package demo.captcha.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -7,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import demo.captcha.model.Client;
+import demo.captcha.rs.model.ClientHtml;
 import demo.captcha.service.IClientService;
 
 @RequestMapping(value = "/command/client")
@@ -21,7 +25,11 @@ public class ClientController {
 	@RequestMapping(value = "/stastic.do",method=RequestMethod.GET)
 	public String stastic(Model model){
 		
-		 model.addAttribute("CLIENTS", this.clientService.list());
+		List<Client> clients = this.clientService.list();
+		List<ClientHtml> html = new ArrayList<ClientHtml>();
+		for(Client client : clients)
+			html.add(new ClientHtml(client));
+		 model.addAttribute("CLIENTS", html);
 		 return "client/stastic";
 	}
 	

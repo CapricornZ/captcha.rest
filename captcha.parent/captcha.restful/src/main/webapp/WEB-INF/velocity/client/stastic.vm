@@ -37,7 +37,9 @@
 				</tr>
 				#foreach($client in ${CLIENTS})
 					<tr host="${client.ip}">
-						<td>${client.ip}</td>
+						<td>
+						#if(${client.isOnline})<img src='$ContextPath/img/online.ico'/>#else<img src='$ContextPath/img/offline.ico'/>#end${client.ip}
+						</td>
 						<td>$!{client.config.pid}</td>
 						<td>$!{client.config.pname}</td>
 						<td>$!{client.updateTime}</td>

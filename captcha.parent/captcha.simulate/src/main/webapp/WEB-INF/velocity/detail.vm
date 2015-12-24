@@ -1,19 +1,54 @@
 #set( $ContextPath = ${request.contextPath} )
 #set( $layout = "layout/layoutBlank.vm" )
+<script>
+	$(function(){
+		var myDate = new Date();
+		var current = myDate.getFullYear() + "-" + (myDate.getMonth()+1);
+		var client = '${client}';
+		var endPoint = "${ContextPath}/rest/service/exam/client/" + client + "/record/filter/" + current;
+		$.ajax({
+			url  : endPoint,
+			type : 'GET',
+			cache: false,
+			contentType: 'application/json; charset=utf-8',
+			success: function(json) {
+				//alert("SUCCESS");
+				//console.log(" reponse :"+ json);
+				$("tr[toggle='record']").remove();
+				for(i=0; i<json.length; i++){
+					var row = "<tr toggle='record'>";
+					row += "<td>" + json[i].level + "</td>";
+					row += "<td>" + json[i].correct + "/" + json[i].total + "</td>";
+					row += "<td>" + json[i].avgCost + "</td>";
+					row += "<td>" + json[i].updateTime + "</td>";
+					row += "</tr>";
+					$("#records").append(row);
+				}
+            },
+            error: function(msg) { alert("error"); }
+		});
+	});
+</script>
 
-<table class="table table-striped table-bordered searchable" id="configs">
-	<tr>
+<table class="table table-striped table-bordered searchable" id="records">
+	<thread><tr>
 		<td>级别</td>
 		<td>成绩</td>
 		<td>平均耗时</td>
 		<td>提交时间</td>
-	</tr>
-	#foreach(${record} in ${records})
-	<tr>
-		<td>${record.level}</td>
-		<td>${record.correct}/${record.total}</td>
-		<td>${record.avgCost}</td>
-		<td>${record.updateTime}</td>
-	</tr>
-	#end
+	</tr></thread>
 </table>
+<!--
+<div class="row">
+	<div class="col-md-6"></div>
+	<div class="col-md-6">
+		<ul class="pagination">
+			<li><a id="first" href="preview?pageNumber=0">|<<</a></li>
+			<li><a id="previous" href="preview?pageNumber=${page.previousPage}"><</a></li>
+			<li><a id="next" href="preview?pageNumber=${page.nextPage}">></a></li>
+			<li><a id="total" href="preview?pageNumber=${page.totalPage}">>>|</a></li>
+			<li><a id="current" href="#">第 ${page.currentPage}页 / 共 ${page.totalPage}页</a></li>
+		</ul>
+	</div>
+</div>
+-->

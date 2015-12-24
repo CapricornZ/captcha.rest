@@ -92,6 +92,16 @@ public class CaptchaExamClientService extends Service implements ICaptchaExamCli
 				"from CaptchaExamClient order by updateTime desc").list();
 	}
 
+	@Override
+	public long countRecordByHost(CaptchaExamClient client) {
+
+		String hql = "select count(id) from ExamRecord where client=:client";
+		Query query = this.getSession().createQuery(hql);
+		query.setParameter("client", client);
+		long count=(Long)query.uniqueResult();
+		return count;
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ExamRecord> queryRecordByHost(CaptchaExamClient client) {
@@ -101,6 +111,25 @@ public class CaptchaExamClientService extends Service implements ICaptchaExamCli
 		query.setParameter("client", client);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ExamRecord> queryRecordByHostDate(CaptchaExamClient client, String yyyyMM) {
+
+		String[] array = yyyyMM.split("-");
+		int year = Integer.parseInt(array[0]);
+		int month = Integer.parseInt(array[1]);
+		int endYear = year + (month+1>12 ? 1 : 0);
+		int endMonth = month + 1 > 12 ? 1 : month;
+		
+		String hql = "from ExamRecord where client=:client and updateTime >= :begin and updateTime < :end order by updatetime desc";
+		Query query = this.getSession().createQuery(hql);
+		query.setParameter("client", client);
+		
+		query.setParameter("begin", java.sql.Date.valueOf(String.format("%d-%02d-01", year, month)));
+		query.setParameter("end", java.sql.Date.valueOf(String.format("%d-%02d-01", endYear, endMonth)));
+		return query.list();
+	}
 
 	@Override
 	public ExamRecord updateRecord(CaptchaExamClient client, ExamRecord record) {
@@ -108,6 +137,11 @@ public class CaptchaExamClientService extends Service implements ICaptchaExamCli
 		record.setClient(client);
 		record.setUpdateTime(new Date());
 		this.getSession().save(record);
+		
+		client.setTotal(client.getTotal()+1);
+		if(record.getCorrect())
+			client.setCorrect(client.getCorrect()+1);
+		this.getSession().update(client);
 		return record;
 	}
 
@@ -117,9 +151,9 @@ public class CaptchaExamClientService extends Service implements ICaptchaExamCli
 		Date now = new Date();
 		Calendar calendar=Calendar.getInstance();   
 		calendar.setTime(now);
-		calendar.add(Calendar.MONTH, 1);
+		calendar.add(Calendar.MONTH, 3);
 		
-		client.setCode(CodeGen.genRandomNum(6));
+		//client.setCode(CodeGen.genRandomNum(6));
 		client.setUpdateTime(now);
 		client.setExpireTime(calendar.getTime());
 		this.getSession().save(client);
@@ -159,4 +193,5 @@ public class CaptchaExamClientService extends Service implements ICaptchaExamCli
         return (List<ExamRecord>)query.list();
     }
 
+	
 }

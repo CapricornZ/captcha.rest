@@ -13,6 +13,12 @@
             <generator class="assigned"/>
         </id>
         <property name="code" column="code"/>
+        <property name="userName"/>
+        <property name="mailAddress" column="mail"/>
+        <property name="phoneNo"/>
+        <property name="checkIns"/>
+        <property name="total"/>
+        <property name="correct"/>
         <property name="expireTime" type="java.sql.Timestamp" column="expireTime"/>
         <property name="updateTime" type="java.sql.Timestamp" column="updateTime"/>
     </class>

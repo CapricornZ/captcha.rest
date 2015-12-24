@@ -69,8 +69,19 @@
 		</property>
 	</bean>
 
+	<bean id="xmppFactory" class="demo.captcha.controller.XmppUtil">
+		<property name="user" value="admin@139.196.24.58"/>
+		<property name="password" value="Pass2010"/>
+	</bean>
+	<bean name="multiUserChatFactory" factory-bean="xmppFactory" factory-method="jointMultiUserChat"/>  
 	<bean class="demo.captcha.controller.AdminController">
 		<property name="clientService" ref="captchaExamClientService"/>
+		<property name="multiUserChat" ref="multiUserChatFactory"/>
     </bean>
-
+    <bean class="demo.captcha.controller.RootController">
+    	<property name="clientService" ref="captchaExamClientService"/>
+    </bean>
+    <bean class="demo.captcha.controller.UserController">
+    	<property name="clientService" ref="captchaExamClientService"/>
+    </bean>
 </beans>

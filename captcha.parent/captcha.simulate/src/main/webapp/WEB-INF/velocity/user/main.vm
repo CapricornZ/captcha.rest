@@ -1,0 +1,274 @@
+#set( $ContextPath = ${request.contextPath} )
+#set($layout="layout/layoutACE.vm")
+
+<!--[if !IE]> -->
+<script src="${ContextPath}/assets/js/jquery-2.0.3.min.js"></script>
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script src="${ContextPath}/assets/js/jquery-1.10.2.min.js'></script>
+<![endif]-->
+
+<script type="text/javascript">
+	var startTime;
+	var count;
+	jQuery(function(){
+	
+		//签到
+		$("i[toggle='signHere']").click(function(){
+			
+			jQuery.ajax({
+	  			url    : '${ContextPath}/web/user/${currentUser}/sign',
+	  			type   : 'POST',
+	  			success: function(data){ alert(data); },
+	  			error  : function(error){ }
+	  		});
+		});
+		
+		$('#inputCaptcha').keydown(function (event) {
+
+		    if(event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode == 8 || event.keyCode == 46 || event.keyCode == 39 || event.keyCode == 37)
+		    	;
+		    else if (event.keyCode == 32 || event.keyCode == 13){
+
+				submitResult();
+		    	max = $("#slider-range-min").slider("value");
+		    	if(count < max){
+			    	setTimeout(function(){
+			    		count ++ ;
+			    		loadCaptcha();
+					}, 1000);
+		    	}
+		    	event.preventDefault();
+		    }else
+		    	event.preventDefault();
+		});
+		
+		$('#start').click(function(){
+			count = 1;
+			loadCaptcha();
+		});
+		
+		$( "#slider-range-min" ).slider({
+			range: "min",
+			value: 15,
+			min: 5,
+			max: 25,
+			slide: function( event, ui ) { $( "#amount" ).val( ui.value ); }
+	    });
+	    $( "#amount" ).val( $( "#slider-range-min" ).slider( "value" ) );
+		    
+		$('.easy-pie-chart.percentage').each(function(){
+			var $box = $(this).closest('.infobox');
+			var barColor = $(this).data('color') || (!$box.hasClass('infobox-dark') ? $box.css('color') : 'rgba(255,255,255,0.95)');
+			var trackColor = barColor == 'rgba(255,255,255,0.95)' ? 'rgba(255,255,255,0.25)' : '#E2E2E2';
+			var size = parseInt($(this).data('size')) || 50;
+			$(this).easyPieChart({
+				barColor: barColor,
+				trackColor: trackColor,
+				scaleColor: false,
+				lineCap: 'butt',
+				lineWidth: parseInt(size/10),
+				animate: /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase()) ? false : 1000,
+				size: size
+			});
+		})
+	});
+	
+	function submitResult(){
+	
+		endTime = new Date();
+		var correct = $('#imgCaptcha').attr('value');
+		var inputVal = $('#inputCaptcha').val();
+		var cost = endTime.getTime() - startTime.getTime();
+		var reqParam = { cost : cost, correct : correct==inputVal};
+		jQuery.ajax({
+			type : "POST",
+  			url  : "${ContextPath}/rest/service/exam/client/${currentUser}/record",
+  			data : JSON.stringify(reqParam),
+  			contentType: 'application/json; charset=utf-8',
+  			success: function(data){ },
+  			error:function(error){ }
+		});
+	}
+	
+	function loadCaptcha(){
+		
+		$('#inputCaptcha').val('');
+		$("#imgCaptcha").attr("src", "${ContextPath}/images/loadCaptcha.bmp");
+		$("#imgCaptcha").attr("value", "");
+		$("#BID-CAPTCHA-TIP").html("");
+		
+		jQuery.ajax({
+  			url : '${ContextPath}/rest/service/simulate/captcha',
+  			cache:false, 
+  			success: function(data){
+  				$("#imgCaptcha").attr("src", '${ContextPath}/' + data.url);
+  				$("#imgCaptcha").attr("value", data.value);
+  				$("#BID-CAPTCHA-TIP").html(data.tip);
+  				startTime = new Date();
+  			},
+  			error:function(error){
+  				
+  				$("#imgCaptcha").attr("src", "#");
+  				$("#imgCaptcha").attr("value", "");
+  				$("#BID-CAPTCHA-TIP").html("获取验证码异常！");
+  			}
+		});
+		$('#inputCaptcha').focus();
+	}
+</script>
+
+<div class="breadcrumbs" id="breadcrumbs">
+	<ul class="breadcrumb">
+		<li>
+			<i class="icon-home home-icon"></i>
+			<a href="#">首页</a>
+		</li>
+		<li class="active">控制台</li>
+	</ul><!-- .breadcrumb -->
+
+	<div class="nav-search" id="nav-search">
+		<!--<form class="form-search">
+			<span class="input-icon">
+				<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+				<i class="icon-search nav-search-icon"></i>
+			</span>
+		</form>-->
+	</div><!-- #nav-search -->
+</div>
+
+<div class="page-content">
+	<div class="page-header">
+		<h1>控制台<small><i class="icon-double-angle-right"></i>查看</small></h1>
+	</div><!-- /.page-header -->
+
+	<div class="row">
+		<div class="col-xs-12">
+			<!-- PAGE CONTENT BEGINS -->
+			<div class="row">
+				<div class="space-6"></div>
+				
+				<div class="col-sm-3 infobox-container">
+					<div class="infobox infobox-red">
+						<div class="infobox-icon" style="cursor:pointer;">
+							<i class="icon-heart" toggle="signHere"></i>
+						</div>
+						<div class="infobox-data">
+							<span class="infobox-data-number">签到:$!{client.checkIns}</span>
+							<div class="infobox-content">需要完成15</div>
+						</div>
+						<!-- <div class="stat stat-important">4%</div> -->
+					</div>
+					
+					<div class="infobox infobox-blue2"><!-- 验证码 -->
+						<div class="infobox-icon"><i class="icon-tasks"></i></div>
+						<div class="infobox-data">
+							<span class="infobox-data-number">校验码:${finish}</span>
+							<div class="infobox-content">需要达到${target}次</div>
+						</div>
+						<!-- <div class="stat stat-success">1.95%</div> -->
+					</div>
+					
+					<div class="infobox infobox-blue2">
+						<div class="infobox-progress">
+							<div class="easy-pie-chart percentage" data-percent="${rate}" data-size="46">
+								<span class="percent">${rate}</span>%
+							</div>
+						</div>
+						<div class="infobox-data">
+							<span class="infobox-text">校验码准确率</span>
+							<div class="infobox-content">
+								<!-- <span class="bigger-110">~</span>剩余58GB -->
+							</div>
+						</div>
+					</div>
+
+					<div class="space-6"></div>
+				</div>
+
+				<div class="vspace-sm"></div>
+
+				<div class="col-sm-7">
+					<div class="widget-box">
+						<div class="widget-header widget-header-flat widget-header-small">
+							<h5>
+								<i class="icon-signal"></i>校验码模拟练习器
+							</h5>
+							
+							<!-- 
+							<div class="widget-toolbar no-border">
+								<button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown">
+									本周<i class="icon-angle-down icon-on-right bigger-110"></i>
+								</button>
+								<ul class="dropdown-menu pull-right dropdown-125 dropdown-lighter dropdown-caret">
+									<li class="active">
+										<a href="#" class="blue">
+											<i class="icon-caret-right bigger-110">&nbsp;</i>本周
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<i class="icon-caret-right bigger-110 invisible">&nbsp;</i>上周
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<i class="icon-caret-right bigger-110 invisible">&nbsp;</i>本月
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<i class="icon-caret-right bigger-110 invisible">&nbsp;</i>上月
+										</a>
+									</li>
+								</ul>
+							</div>
+							 -->
+						</div>
+
+						<div class="widget-body">
+							<div class="widget-main">
+								<div id="piechart-placeholder">
+									<p align="center" style="font-size:18px;">您的出价为：<span id="userGivePrice">83300</span>元</p>
+									<p align="center" style="font-size:18px; margin-top: 25px;">请输入校验码：
+										<input type="text" style="text-align:center;padding:4px 4px;margin-right:25px;border:2px solid blue" id="inputCaptcha" size="10">
+										<img style="font-size:16px;" alt="正在获取校验码" src="/captcha.simulate/repository/20151222/7347-36.jpg" id="imgCaptcha" value="7347">
+									</p>
+									<p align="center" id="BID-CAPTCHA-TIP" style="font-size:16px; margin-top: 10px;font-family:'SimSun';">请输入后四位图像校验码</p>
+									<p align="center" style="font-family:'SimSun'; margin-top: 30px;">
+						         		<button id="start" style="margin-right:35px; width:120px;" type="button" class="btn btn-app btn-sm btn-primary">开&nbsp;&nbsp;&nbsp;始</button>
+						         		<button id="stop" style="margin-left: 35px; width:120px;" type="button" class="btn btn-app btn-sm btn-primary">结&nbsp;&nbsp;&nbsp;束</button>
+						         	</p>
+									<p align="center">
+									  <label for="amount">模拟次数：</label>
+									  <input type="text" id="amount" style="width:80px;border:0; color:#f6931f; font-weight:bold;">
+									</p>
+									<div id="slider-range-min"></div>
+								</div>
+
+								<div class="hr hr8 hr-double">
+								</div>
+
+								<div class="clearfix">
+									<div class="grid3"></div>
+									<div class="grid3">
+										<!-- 
+										<button class="btn btn-app btn-sm btn-default"><i class="icon-play-circle align-top bigger-125"></i>开始</button>
+										<button class="btn btn-app btn-sm btn-default"><i class="icon-play-circle align-top bigger-125"></i>结束</button>
+										 -->
+									</div>
+									<div class="grid3">
+										<!--<span class="grey">
+											<i class="icon-pinterest-sign icon-2x red"></i>&nbsp; pins
+										</span>
+										<h4 class="bigger pull-right">1,050</h4>-->
+									</div>
+								</div>
+							</div><!-- /widget-main -->
+						</div><!-- /widget-body -->
+					</div><!-- /widget-box -->
+				</div><!-- /span -->
+			</div><!-- /row -->
+
+</div><!-- /.page-content -->
