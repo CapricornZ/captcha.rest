@@ -20,12 +20,6 @@ public class OperationService implements IOperationService {
 	public void setClientService(IClientService clientServ){
 		this.clientService = clientServ;
 	}
-	
-	@Override
-	public void deleteOperation(int opsID) {
-		
-		this.operationService.deleteByID(opsID);
-	}
 
 	@Override
 	public void acceptBidStep1(BidStep1Operation bid) {
@@ -57,6 +51,12 @@ public class OperationService implements IOperationService {
 		this.operationService.saveOrUpdate(login);
 	}
 
+	@Override
+	public void deleteOperation(int opsID) {
+		
+		this.operationService.deleteByID(opsID);
+	}
+	
 	@Override
 	public void assignOperation(int opsID, String[] hosts) {
 		

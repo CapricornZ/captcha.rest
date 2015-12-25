@@ -4,7 +4,8 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="demo.captcha.model.Config" table="Configs"> 
+    <class name="demo.captcha.model.Config" table="Configs">
+    	<cache usage="read-write"/>
         <id name="no" type="java.lang.String" length="15">
             <column name="no"/>
             <generator class="assigned"/>

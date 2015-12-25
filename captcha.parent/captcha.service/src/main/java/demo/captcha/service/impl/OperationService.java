@@ -87,23 +87,23 @@ public class OperationService extends Service implements IOperationService {
 	public void assign2Clients(int operationID, List<Client> hosts) {
 		
 		Session session = this.getSession();
-		Query queryOps = session.createQuery("from Operation where id=:id");
-		queryOps.setParameter("id", operationID);
-		@SuppressWarnings("rawtypes")
-		List operations = queryOps.list();
+		Operation operation = (Operation) session.get(Operation.class, operationID);
 		
-		if(operations.size() > 0){
-			Operation operation = (Operation)operations.get(0);
+		if( null != operation){
+
 			for(Client client : hosts){
 				if(!operation.getClients().contains(client)){
 					//client.getOperation().add(operation);
 					//session.merge(client);
 					operation.getClients().add(client);
+					client.getOperation().add(operation);
+					session.merge(client);
 				}
 			}
 			//session.update(operation);
 			//session.saveOrUpdate(operation);
 			session.merge(operation);
 		}
+		//this.getSessionFactory().getCache().evictCollection("Client.operation", operationID);
 	}
 }

@@ -4,7 +4,8 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="demo.captcha.model.Operation" table="Operations"> 
+    <class name="demo.captcha.model.Operation" table="Operations">
+    	<cache usage="read-write"/>
         <id name="id" type="java.lang.Integer">
             <column name="id"/>
             <generator class="identity"/>
@@ -17,11 +18,12 @@
         <property name="updateTime" type="java.sql.Timestamp" column="updateTime"/>
         
         <bag name="clients" table="client_operation" cascade="none" lazy="false">
+        	<cache usage="read-write"/>
         	<key column="operation_id"/>
         	<many-to-many class="demo.captcha.model.Client" column="client_id"/>
         </bag>
         
-        <subclass name="demo.captcha.model.BidStep2Operation" discriminator-value="BIDStep2">  
+        <subclass name="demo.captcha.model.BidStep2Operation" discriminator-value="BIDStep2">
             <property name="price"/>
         </subclass>
         <subclass name="demo.captcha.model.BidStep1Operation" discriminator-value="BIDStep1">

@@ -7,7 +7,7 @@
 	<filter-def name="tagFilter">
 		<filter-param name="tagParam" type="string"/>
 	</filter-def>
-    <class name="demo.captcha.model.CaptchaExamClient" table="CaptchaExam"> 
+    <class name="demo.captcha.model.CaptchaExamClient" table="CaptchaExam">
         <id name="host" type="java.lang.String" length="15">
             <column name="HOST"/>
             <generator class="assigned"/>

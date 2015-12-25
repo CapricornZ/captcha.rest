@@ -7,7 +7,8 @@
 	<filter-def name="tagFilter">
 		<filter-param name="tagParam" type="string"/>
 	</filter-def>
-    <class name="demo.captcha.model.Client" table="Clients"> 
+    <class name="demo.captcha.model.Client" table="Clients">
+    	<cache usage="read-write"/>
         <id name="ip" type="java.lang.String" length="15">
             <column name="IP"/>
             <generator class="assigned"/>
@@ -21,6 +22,7 @@
         
         <!-- <set sort="demo.chapta.model.OperationSort"></set> -->
         <bag inverse="true" name="operation" table="client_operation" cascade="none" lazy="false">
+        	<cache usage="read-write"/>
         	<key column="client_id"/>
         	<many-to-many class="demo.captcha.model.Operation" column="operation_id" order-by="startTime">
         		<filter name="tagFilter" condition=":tagParam = tag"/>

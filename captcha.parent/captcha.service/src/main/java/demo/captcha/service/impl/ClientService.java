@@ -21,15 +21,16 @@ public class ClientService extends Service implements IClientService {
     
     public Client saveOrUpdate(Client client){
     	
-    	String hql = "from Client where ip=:ip";
-    	Query query = this.getSession().createQuery(hql);
-    	query.setParameter("ip", client.getIp());
+    	//String hql = "from Client where ip=:ip";
+    	//Query query = this.getSession().createQuery(hql);
+    	//query.setParameter("ip", client.getIp());
+    	Client tmpClient = (Client) this.getSession().get(Client.class, client.getIp());
     	
-    	@SuppressWarnings("unchecked")
-		List<Client> list = query.list();
-    	if(list.size()>0){
+    	//@SuppressWarnings("unchecked")
+		//List<Client> list = query.list();
+    	if( null != tmpClient) {
     		
-    		Client tmpClient = list.get(0);
+    		//Client tmpClient = list.get(0);
     		tmpClient.setUpdateTime(new Date());
     		this.getSession().update(tmpClient);
     		return tmpClient;
@@ -59,6 +60,7 @@ public class ClientService extends Service implements IClientService {
     	
     	String hql = "from Client where ip=:ip";
     	Query query = this.getSession().createQuery(hql);
+    	query.setCacheable(true);
     	query.setParameter("ip", ip);
     	
     	@SuppressWarnings("unchecked")
@@ -106,18 +108,21 @@ public class ClientService extends Service implements IClientService {
 	@Override
 	public void removeOperation(String host, int operationID) {
 		
-		Query query = this.getSession().createQuery("from Operation where id=:id");
-		@SuppressWarnings("unchecked")
-		List<Operation> ops = query.setParameter("id", operationID).list();
-		if(ops.size() > 0){
-			
-			Operation operation = ops.get(0);
+		//Query query = this.getSession().createQuery("from Operation where id=:id");
+		//@SuppressWarnings("unchecked")
+		//List<Operation> ops = query.setParameter("id", operationID).list();
+		
+		Operation operation = (Operation)this.getSession().get(Operation.class, operationID);
+		if( null !=  operation){
+
 			boolean bFound = false;
 			for (Iterator<Client> iter = operation.getClients().iterator(); !bFound && iter.hasNext();) {
 				
 				Client client = iter.next();
 				if(client.getIp().equals(host)){
 					operation.getClients().remove(client);
+					client.getOperation().remove(operation);
+					this.getSession().merge(client);
 					bFound = true;
 				}
 			}

@@ -43,6 +43,15 @@
     <logger name="org.hibernate">
         <level value="INFO" />
     </logger>
+    <logger name="org.hibernate.SQL">
+    	<level value="DEBUG" />
+    </logger>
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder">
+    	<level value="TRACE"/>
+    </logger> 
+    <logger name="net.sf.ehcache">
+    	<level value="INFO" />
+    </logger>
     <logger name="org.apache">
     	<level value="INFO" />
     </logger>

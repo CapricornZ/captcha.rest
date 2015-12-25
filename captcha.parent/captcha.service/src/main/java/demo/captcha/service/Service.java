@@ -10,9 +10,8 @@ public abstract class Service {
 	@Resource(name="sessionFactory")
     private SessionFactory sessionFactory;
 	
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+    public void setSessionFactory(SessionFactory sessionFactory) { this.sessionFactory = sessionFactory; }
+    public SessionFactory getSessionFactory(){ return this.sessionFactory; }
     
     protected Session getSession() {
         return sessionFactory.getCurrentSession();
