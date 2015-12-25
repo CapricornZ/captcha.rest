@@ -1,5 +1,6 @@
 package demo.captcha.controller;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.shiro.SecurityUtils;
@@ -55,11 +56,13 @@ public class UserController {
 		CaptchaExamClient client = this.clientService.queryByHost(user);
 		if(null != client){
 			
+			final int DAY = 24*3600*1000;
 			long now = new Date().getTime();
-			long update = client.getUpdateTime().getTime();
-			long diff = now - update;
-			long day = 24 * 60 * 60 * 1000;
-			if(client.getCheckIns() != 0 && diff > day || client.getCheckIns() == 0){
+			long last= client.getUpdateTime().getTime();
+			long nowDay = now / DAY;
+			long lastDay= last / DAY;
+
+			if(client.getCheckIns() != 0 && nowDay > lastDay || client.getCheckIns() == 0){
 				client.setCheckIns(client.getCheckIns() + 1);
 				client.setUpdateTime(new Date());
 				this.clientService.update(client);
