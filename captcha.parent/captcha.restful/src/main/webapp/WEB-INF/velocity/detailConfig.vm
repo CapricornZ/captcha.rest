@@ -266,7 +266,7 @@
 			</div>
 		</div>
 		<div class="form-group" toggle="TIPS">
-			<label class="col-sm-3 control-label" for="submitReachPrice">提交触发价格<input checked="checked" type="checkbox" id="checkReachPrice"/></label>
+			<label class="col-sm-3 control-label" for="submitReachPrice">提交触发价格<input type="checkbox" id="checkReachPrice"/></label>
 			<div class="control col-sm-3">
 				<input class="form-control" toggle="OPS" id="submitReachPrice" type="text" placeholder="触发价格" style="width:100px;height:30px;" value=""/>
 			</div>
