@@ -94,6 +94,6 @@
     	<property name="rankService" ref="rankService"/>
     </bean>
     <task:scheduled-tasks>
-    	<task:scheduled ref="taskJob" method="execute" cron="0 38 17 * * ?"/>
+    	<task:scheduled ref="taskJob" method="execute" cron="0 0 0 * * ?"/>
     </task:scheduled-tasks>
 </beans>
