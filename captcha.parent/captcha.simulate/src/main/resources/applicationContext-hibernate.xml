@@ -85,4 +85,7 @@
 	<bean id="captchaExamClientService" class="demo.captcha.service.impl.CaptchaExamClientService">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
+	<bean id="rankService" class="demo.captcha.service.impl.RankService">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
 </beans>

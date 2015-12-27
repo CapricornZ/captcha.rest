@@ -62,4 +62,10 @@ public class ExamService implements IExam {
 		}
         return dbClient;
 	}
+
+	@Override
+	public CaptchaExamClient queryUser(String host) {
+		
+		return this.clientService.queryByHost(host);
+	}
 }

@@ -12,15 +12,22 @@
 <script type="text/javascript">
 	var startTime;
 	var count;
+
 	jQuery(function(){
-	
+		
+		init();
+		refresh();
+		
 		//签到
 		$("i[toggle='signHere']").click(function(){
 			
 			jQuery.ajax({
 	  			url    : '${ContextPath}/web/user/${currentUser}/sign',
 	  			type   : 'POST',
-	  			success: function(data){ alert(data); },
+	  			success: function(data){ 
+	  				alert(data);
+	  				refresh();
+	  			},
 	  			error  : function(error){ }
 	  		});
 		});
@@ -40,27 +47,39 @@
 			    		count ++ ;
 			    		loadCaptcha();
 					}, 1000);
+		    	} else {
+		    		init();
+		    		refresh();
 		    	}
 		    	event.preventDefault();
 		    }else
 		    	event.preventDefault();
 		});
 		
-		$('#start').click(function(){
-			count = 1;
-			loadCaptcha();
+		jQuery('#btnEnd').click(function(){
+			$(this).attr('disabled', 'disabled');
+			$('#btnStart').removeAttr('disabled');
+			init();
+			refresh();
 		});
 		
+		$('#btnStart').click(function(){
+			count = 1;
+			loadCaptcha();
+			$(this).attr('disabled', 'disabled');
+			$('#btnEnd').removeAttr('disabled');
+		});
+
 		$( "#slider-range-min" ).slider({
 			range: "min",
-			value: 15,
+			value: 25,
 			min: 5,
-			max: 25,
+			max: 150,
 			slide: function( event, ui ) { $( "#amount" ).val( ui.value ); }
 	    });
 	    $( "#amount" ).val( $( "#slider-range-min" ).slider( "value" ) );
-		    
-		$('.easy-pie-chart.percentage').each(function(){
+	    
+	    $('.easy-pie-chart.percentage').each(function(){
 			var $box = $(this).closest('.infobox');
 			var barColor = $(this).data('color') || (!$box.hasClass('infobox-dark') ? $box.css('color') : 'rgba(255,255,255,0.95)');
 			var trackColor = barColor == 'rgba(255,255,255,0.95)' ? 'rgba(255,255,255,0.25)' : '#E2E2E2';
@@ -74,8 +93,35 @@
 				animate: /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase()) ? false : 1000,
 				size: size
 			});
-		})
+		});
+		
+		$('#RankingList').load("${ContextPath}/web/user/rankingList");
 	});
+	
+	function refresh(){
+		var endPoint = "${ContextPath}/rest/service/exam/client/${currentUser}";
+		jQuery.ajax({
+			type : "GET",
+  			url  : endPoint,
+  			contentType: 'application/json; charset=utf-8',
+  			success: function(data){
+  				$('#checkIns').html("签到:" + data.checkIns);
+  				$('#captchaTotal').html(data.total);
+  				var rate = Math.floor(data.correct * 100 / data.total);
+  				$('#correctRate').attr('data-percent', rate);
+  				$('#correctRate>span').html(rate);
+  			},
+  			error:function(error){ alert("更新数据失败，请稍后再试"); }
+		});
+	}
+	
+	function init(){
+		$('#inputCaptcha').val('');
+		$('#btnStart').removeAttr('disabled');
+		$('#btnEnd').attr('disabled', 'disabled');
+		$('#imgCaptcha').attr('src', "${ContextPath}/images/loadCaptcha.bmp");
+		$('#BID-CAPTCHA-TIP').html("<font color='red'>1. 看清这里的验证码提示<br/>2. 然后输入正确的验证码<br/>3. 输入完毕后按【空格】</font>");
+	}
 	
 	function submitResult(){
 	
@@ -157,7 +203,7 @@
 							<i class="icon-heart" toggle="signHere"></i>
 						</div>
 						<div class="infobox-data">
-							<span class="infobox-data-number">签到:$!{client.checkIns}</span>
+							<span class="infobox-data-number" id="checkIns">签到:$!{client.checkIns}</span>
 							<div class="infobox-content">需要完成15</div>
 						</div>
 						<!-- <div class="stat stat-important">4%</div> -->
@@ -166,37 +212,40 @@
 					<div class="infobox infobox-blue2"><!-- 验证码 -->
 						<div class="infobox-icon"><i class="icon-tasks"></i></div>
 						<div class="infobox-data">
-							<span class="infobox-data-number">校验码:${finish}</span>
+							<span class="infobox-data-number" id="captchaTotal">${finish}</span>
 							<div class="infobox-content">需要达到${target}次</div>
 						</div>
-						<!-- <div class="stat stat-success">1.95%</div> -->
+						#if(${CAPTCHA-RANK} != $null)
+						<div class="badge badge-success">排名：${CAPTCHA-RANK.rank}</div>
+						#end
 					</div>
 					
 					<div class="infobox infobox-blue2">
 						<div class="infobox-progress">
-							<div class="easy-pie-chart percentage" data-percent="${rate}" data-size="46">
+							<div class="easy-pie-chart percentage" data-percent="${rate}" data-size="46" id="correctRate">
 								<span class="percent">${rate}</span>%
 							</div>
 						</div>
 						<div class="infobox-data">
-							<span class="infobox-text">校验码准确率</span>
+							<span class="infobox-text">准确率</span>
 							<div class="infobox-content">
-								<!-- <span class="bigger-110">~</span>剩余58GB -->
+								<!--<span class="bigger-110">~</span>剩余58GB-->
 							</div>
 						</div>
+						#if(${RATE-RANK} != $null)
+						<div class="badge badge-success">排名：${RATE-RANK.rank}</div>
+						#end
 					</div>
 
 					<div class="space-6"></div>
 				</div>
 
 				<div class="vspace-sm"></div>
-
-				<div class="col-sm-7">
+				
+				<div class="col-sm-6">
 					<div class="widget-box">
 						<div class="widget-header widget-header-flat widget-header-small">
-							<h5>
-								<i class="icon-signal"></i>校验码模拟练习器
-							</h5>
+							<h5><i class="icon-signal"></i>校验码模拟练习器</h5>
 							
 							<!-- 
 							<div class="widget-toolbar no-border">
@@ -235,12 +284,12 @@
 									<p align="center" style="font-size:18px;">您的出价为：<span id="userGivePrice">83300</span>元</p>
 									<p align="center" style="font-size:18px; margin-top: 25px;">请输入校验码：
 										<input type="text" style="text-align:center;padding:4px 4px;margin-right:25px;border:2px solid blue" id="inputCaptcha" size="10">
-										<img style="font-size:16px;" alt="正在获取校验码" src="/captcha.simulate/repository/20151222/7347-36.jpg" id="imgCaptcha" value="7347">
+										<img style="font-size:16px;" alt="正在获取校验码" src="${ContextPath}/images/loadCaptcha.bmp" id="imgCaptcha">
 									</p>
-									<p align="center" id="BID-CAPTCHA-TIP" style="font-size:16px; margin-top: 10px;font-family:'SimSun';">请输入后四位图像校验码</p>
+									<p align="center" id="BID-CAPTCHA-TIP" style="font-size:16px; margin-top: 10px;font-family:'SimSun';"></p>
 									<p align="center" style="font-family:'SimSun'; margin-top: 30px;">
-						         		<button id="start" style="margin-right:35px; width:120px;" type="button" class="btn btn-app btn-sm btn-primary">开&nbsp;&nbsp;&nbsp;始</button>
-						         		<button id="stop" style="margin-left: 35px; width:120px;" type="button" class="btn btn-app btn-sm btn-primary">结&nbsp;&nbsp;&nbsp;束</button>
+						         		<button id="btnStart" style="margin-right:35px; width:120px;" type="button" class="btn btn-app btn-sm btn-primary">开&nbsp;&nbsp;&nbsp;始</button>
+						         		<button id="btnEnd" disabled="disabled" style="margin-left: 35px; width:120px;" type="button" class="btn btn-app btn-sm btn-primary">结&nbsp;&nbsp;&nbsp;束</button>
 						         	</p>
 									<p align="center">
 									  <label for="amount">模拟次数：</label>
@@ -271,6 +320,9 @@
 						</div><!-- /widget-body -->
 					</div><!-- /widget-box -->
 				</div><!-- /span -->
+				
+				<div class="col-sm-3" id="RankingList">
+				</div>
 			</div><!-- /row -->
 
 </div><!-- /.page-content -->

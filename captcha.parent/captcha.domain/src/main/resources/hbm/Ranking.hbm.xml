@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Hibernate-mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="demo.captcha.model.Ranking" table="Rankings">    	
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <discriminator column="type" />
+        <property name="rank"/>
+        <property name="updateTime" type="java.sql.Timestamp" column="updateTime"/>
+
+        <many-to-one name="owner" class="demo.captcha.model.CaptchaExamClient" 
+        	lazy="false" column="owner_id"/>
+        
+        <subclass name="demo.captcha.model.rank.CaptchaRank" discriminator-value="CAPTCHA">
+            <property name="total"/>
+        </subclass>
+        <subclass name="demo.captcha.model.rank.RateRank" discriminator-value="RATE">
+        	<property name="correctRate"/>
+        </subclass>
+    </class>
+</hibernate-mapping>

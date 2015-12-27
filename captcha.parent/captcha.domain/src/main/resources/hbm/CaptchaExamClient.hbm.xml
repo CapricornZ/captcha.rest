@@ -19,6 +19,7 @@
         <property name="checkIns"/>
         <property name="total"/>
         <property name="correct"/>
+        <property name="correctRate"/>
         <property name="expireTime" type="java.sql.Timestamp" column="expireTime"/>
         <property name="updateTime" type="java.sql.Timestamp" column="updateTime"/>
     </class>

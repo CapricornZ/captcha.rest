@@ -139,8 +139,8 @@ public class CaptchaExamClientService extends Service implements ICaptchaExamCli
 		this.getSession().save(record);
 		
 		client.setTotal(client.getTotal()+1);
-		if(record.getCorrect())
-			client.setCorrect(client.getCorrect()+1);
+		client.addCorrect(record.getCorrect());
+		
 		this.getSession().update(client);
 		return record;
 	}
@@ -193,5 +193,59 @@ public class CaptchaExamClientService extends Service implements ICaptchaExamCli
         return (List<ExamRecord>)query.list();
     }
 
+	public Page<CaptchaExamClient> rankingByQuality() {
+		
+		Page<CaptchaExamClient> page = new Page<CaptchaExamClient>();
+		page.setPageSize(5);
+		
+		String hql = "from CaptchaExamClient";
+		Query query = this.getSession().createQuery(hql +  " order by total desc");
+        Query queryCount = this.getSession().createQuery("select count(host) " + hql);
+        
+        int totalCount = ((Long) queryCount.uniqueResult()).intValue();
+        page.setTotalCount(totalCount);
+        
+        query.setFirstResult(page.getFirstIndex());  
+        query.setMaxResults(page.getPageSize());
+        
+        page.setDataList((List<CaptchaExamClient>)query.list());
+        
+        return page;
+	}
+
+	public Page<CaptchaExamClient> rankingByRate() {
+		
+		Page<CaptchaExamClient> page = new Page<CaptchaExamClient>();
+		page.setPageSize(5);
+		
+		String hql = "from CaptchaExamClient";
+		Query query = this.getSession().createQuery(hql +  " order by correctRate desc");
+        Query queryCount = this.getSession().createQuery("select count(host) " + hql);
+        
+        int totalCount = ((Long) queryCount.uniqueResult()).intValue();
+        page.setTotalCount(totalCount);
+        
+        query.setFirstResult(page.getFirstIndex());  
+        query.setMaxResults(page.getPageSize());
+        
+        page.setDataList((List<CaptchaExamClient>)query.list());
+        
+        return page;
+	}
+
+	@Override
+	public List<CaptchaExamClient> rankingQuality() {
+		
+		String hql = "from CaptchaExamClient";
+		Query query = this.getSession().createQuery(hql +  " order by total desc");
+		return query.list();
+	}
 	
+	@Override
+	public List<CaptchaExamClient> rankingRate(){
+		
+		String hql = "from CaptchaExamClient";
+		Query query = this.getSession().createQuery(hql +  " order by correctRate desc");
+		return query.list();
+	}
 }

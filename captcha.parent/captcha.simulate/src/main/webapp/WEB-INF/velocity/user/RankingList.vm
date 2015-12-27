@@ -1,0 +1,50 @@
+#set( $ContextPath = ${request.contextPath} )
+#set($layout="layout/layoutBlank.vm")
+
+<div id="recent-box" class="widget-box transparent">
+	<div class="widget-header">
+		<h4 class="lighter smaller"><i class="icon-rss orange"></i>TOP5(昨天)</h4>
+		<div class="widget-toolbar no-border">
+			<ul id="recent-tab" class="nav nav-tabs">
+				<li class="active"><a href="#task-tab" data-toggle="tab">校验码</a></li>
+				<li class=""><a href="#member-tab" data-toggle="tab">准确率</a></li>
+			</ul>
+		</div>
+	</div><!--widget-header-->
+	<div class="widget-body">
+		<div class="tab-content padding-8 overflow-visible">
+			<div id="task-tab" class="tab-pane active">
+				<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+					<thread>
+						<tr><th></th><th>用户</th><th>数量</th></tr>
+					</thread>
+					<tbody>
+					#foreach(${item} in ${CAPTCHA})
+						<tr>
+							<td class="center">$!{velocityCount}</td>
+							<td>${item.owner.host}</td>
+							<td>${item.total}</td>
+						</tr>
+					#end
+					</tbody>
+				</table>
+			</div>
+			<div id="member-tab" class="tab-pane ">
+				<table id="sample-table-2" class="table table-striped table-bordered table-hover">
+					<thread>
+						<tr><th></th><th>用户</th><th>准确率</th></tr>
+					</thread>
+					<tbody>
+					#foreach(${item} in ${RATE})
+						<tr>
+							<td class="center">$!{velocityCount}</td>
+							<td>${item.owner.host}</td>
+							<td>$NumberTool.format("#0.00",${item.correctRate})%</td>
+						</tr>
+					#end
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div><!--widget-body-->
+</div>

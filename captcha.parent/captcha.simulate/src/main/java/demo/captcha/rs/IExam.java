@@ -50,4 +50,9 @@ public interface IExam {
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
 	CaptchaExamClient createUser(CaptchaExamClient client);
+	
+	@GET
+	@Path("/client/{HOST}")
+	@Produces({MediaType.APPLICATION_JSON})
+	CaptchaExamClient queryUser(@PathParam("HOST")String host);
 }

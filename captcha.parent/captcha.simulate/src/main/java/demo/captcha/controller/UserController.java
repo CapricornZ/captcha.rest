@@ -1,7 +1,7 @@
 package demo.captcha.controller;
 
-import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import demo.captcha.model.CaptchaExamClient;
+import demo.captcha.model.Ranking;
+import demo.captcha.model.rank.CaptchaRank;
+import demo.captcha.model.rank.RateRank;
 import demo.captcha.service.ICaptchaExamClientService;
+import demo.captcha.service.IRankService;
 
 @RequestMapping(value = "/user")
 @Controller
@@ -21,6 +25,9 @@ public class UserController {
 	
 	private ICaptchaExamClientService clientService;
 	public void setClientService(ICaptchaExamClientService service){ this.clientService = service; }
+	
+	private IRankService rankService;
+	public void setRankService(IRankService service){ this.rankService = service; }
 	
 	@RequestMapping(value = "/exam",method=RequestMethod.GET)
 	public String listClient(Model model){
@@ -35,17 +42,32 @@ public class UserController {
 		
 		Subject currentUser = SecurityUtils.getSubject();
 		CaptchaExamClient client = this.clientService.queryByHost((String)currentUser.getPrincipal());
-		long count = this.clientService.countRecordByHost(client);
-		int target = 6000;
+		List<Ranking> ranks = this.rankService.getRankByOwner(client);
+		
+		final int target = 6000;
 		model.addAttribute("currentUser", currentUser.getPrincipal());
 		model.addAttribute("client", client);
-		model.addAttribute("finish", count);
+		model.addAttribute("finish", client.getTotal());
 		model.addAttribute("target", target);
+		for(Ranking rank : ranks){
+			if(rank instanceof CaptchaRank)
+				model.addAttribute("CAPTCHA-RANK", rank);
+			if(rank instanceof RateRank)
+				model.addAttribute("RATE-RANK", rank);;
+		}
 		int rate = 0;
 		if(client.getTotal() != 0)
 			rate = client.getCorrect()*100/client.getTotal();
 		model.addAttribute("rate", rate);
 		return "user/main";
+	}
+	
+	@RequestMapping(value = "/rankingList",method=RequestMethod.GET)
+	public String rankingList(Model model){
+		
+		model.addAttribute("CAPTCHA", this.rankService.topCaptcha(5));
+		model.addAttribute("RATE", this.rankService.topRate(5));
+		return "user/RankingList";
 	}
 	
 	@RequestMapping(value = "/{USER}/sign",method=RequestMethod.POST,produces = "text/html;charset=UTF-8")

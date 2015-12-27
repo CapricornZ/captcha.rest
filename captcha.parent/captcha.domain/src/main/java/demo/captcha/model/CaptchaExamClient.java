@@ -2,8 +2,6 @@ package demo.captcha.model;
 
 import java.util.Date;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-
 public class CaptchaExamClient {
 	
 	private String host;//登录名
@@ -14,6 +12,7 @@ public class CaptchaExamClient {
 	private int checkIns;//本期签到次数
 	private int correct;
 	private int total;
+	private float rate;//成功率
 	private Date expireTime;
 	private Date updateTime;
 	
@@ -43,7 +42,17 @@ public class CaptchaExamClient {
 	
 	public int getCorrect() { return correct; }
 	public void setCorrect(int correct) { this.correct = correct; }
+	public void addCorrect(boolean correct){
+		
+		if(correct)
+			this.correct += 1;
+		if(this.total != 0)
+			this.rate = (float)this.correct * 100 / (float)this.total;
+	}
 	
 	public int getTotal() { return total; }
-	public void setTotal(int total) { this.total = total; }	
+	public void setTotal(int total) { this.total = total; }
+	
+	public float getCorrectRate() { return rate; }
+	public void setCorrectRate(float rate) { this.rate = rate; }
 }

@@ -20,4 +20,9 @@ public interface ICaptchaExamClientService {
 	List<ExamRecord> queryRecordByHostDate(CaptchaExamClient client, String yyyyMM);
 	Page<ExamRecord> queryRecordByHostWithPage(CaptchaExamClient client, int pageNum);
 	ExamRecord updateRecord(CaptchaExamClient client, ExamRecord record);
+	
+	//Page<CaptchaExamClient> rankingByQuality();
+	//Page<CaptchaExamClient> rankingByRate();
+	List<CaptchaExamClient> rankingQuality();
+	List<CaptchaExamClient> rankingRate();
 }
