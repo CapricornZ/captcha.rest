@@ -13,6 +13,7 @@ public class CaptchaExamClient {
 	private int correct;
 	private int total;
 	private float rate;//成功率
+	private String roles;
 	private Date expireTime;
 	private Date updateTime;
 	
@@ -55,4 +56,7 @@ public class CaptchaExamClient {
 	
 	public float getCorrectRate() { return rate; }
 	public void setCorrectRate(float rate) { this.rate = rate; }
+	
+	public String getRoles() { return roles; }
+	public void setRoles(String roles) { this.roles = roles; }
 }

@@ -42,7 +42,7 @@
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">  
 	    <property name="realms">
 	    	<list>
-	    		<ref bean="myRealm"/>
+	    		<!--<ref bean="myRealm"/>-->
 	    		<ref bean="dbRealm"/>
 	    	</list>
 	    </property>

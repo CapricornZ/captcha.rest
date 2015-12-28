@@ -1,25 +1,16 @@
 #set( $ContextPath = ${request.contextPath} )
 #set($layout="layout/layoutACE.vm")
 
-<script type="text/javascript" src="${ContextPath}/js/bootstrap-dialog.min.js"></script>
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="http://tablesorter.com/themes/blue/style.css" type="text/css" id="" media="print, projection, screen" />
 
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css" />
-
+<script type="text/javascript" src="${ContextPath}/assets/js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="http://tablesorter.com/__jquery.tablesorter.min.js"></script>
 <script>
 	$(function(){
-		$('#sample-table-1').DataTable({
-			"ajax": "exam/client",
-			"columns": [
-				{ "data": "userName" },
-	            { "data": "total" },
-	            { "data": "correctRate" },
-	            { "data": "checkIns" }
-	        ]
-		});
+		
+		$("#sample-table-1").tablesorter();
 	});
-	
+
 	function refreshRank(){
 		
 		$.ajax({
@@ -27,8 +18,7 @@
 			type : 'POST',
 			cache: false,
 			contentType: 'application/json; charset=utf-8',
-			success: function(json) {
-		    },
+			success: function(json) { alert("success"); },
 		    error: function(msg) { alert("error"); }
 		});
 	}
@@ -38,18 +28,25 @@
 	<div class="space-6">
 	</div>
 	<div class="col-sm-9">
-		<input type="button" class="btn" onclick="return refreshRank();" value="刷新排行榜"></input>
-		<table id="sample-table-1" >
-			<thread>
-				<tr>
-					<th>姓名</th><th>total</th><th>rate</th><th>checkIns</th>
-				</tr>
-			</thread>
-			<tfoot>
+		<table class="tablesorter table table-striped .table-bordered table-hover" cellspacing="1" id='sample-table-1'>             
+		    <thead>
 		        <tr>
-		            <th>姓名</th><th>total</th><th>rate</th><th>checkIns</th>
+		        	<th>userName</th> 
+		            <th>total</th> 
+		            <th>rate</th> 
+		            <th>checkIns</th>
+		        </tr> 
+		    </thead> 
+		    <tbody>
+		    	#foreach(${client} in ${clients})
+		        <tr> 
+		            <td>${client.userName}</td> 
+		            <td>${client.total}</td> 
+		            <td>${client.correctRate}%</td> 
+		            <td>${client.checkIns}</td> 
 		        </tr>
-		    </tfoot>
+		        #end
+		    </tbody> 
 		</table>
 	</div>
 </div>

@@ -83,8 +83,35 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/main",method=RequestMethod.GET)
-	public String main(){
+	public String main(Model model){
+		
+		Subject currentUser = SecurityUtils.getSubject();
+		CaptchaExamClient client = this.clientService.queryByHost((String)currentUser.getPrincipal());
+		List<CaptchaExamClient> clients = this.clientService.listAll();
+		
+		model.addAttribute("currentUser", currentUser.getPrincipal());
+		model.addAttribute("client", client);
+		model.addAttribute("clients", clients);
 		return "admin/main";
+	}
+	
+	@RequestMapping(value = "/createUser",method=RequestMethod.GET)
+	public String createUser(Model model){
+		
+		Subject currentUser = SecurityUtils.getSubject();
+		CaptchaExamClient client = this.clientService.queryByHost((String)currentUser.getPrincipal());
+		
+		model.addAttribute("currentUser", currentUser.getPrincipal());
+		model.addAttribute("client", client);
+		return "admin/createUser";
+	}
+	
+	@RequestMapping(value = "/userExists", method = RequestMethod.GET)  
+    @ResponseBody  
+	public String userExists(@RequestParam("userName")String userName){
+		
+		CaptchaExamClient client = this.clientService.queryByHost(userName);
+		return client == null ? "true" : "false";
 	}
 	
 	@RequestMapping(value = "/exam/client",method=RequestMethod.GET)

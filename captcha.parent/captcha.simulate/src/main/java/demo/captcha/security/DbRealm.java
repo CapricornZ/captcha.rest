@@ -1,5 +1,7 @@
 package demo.captcha.security;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
@@ -36,7 +38,8 @@ public class DbRealm extends AuthorizingRealm {
 			CaptchaExamClient client = this.repository.queryByHost(currentUsername);
 			if(null != client){
 				
-				simpleAuthorInfo.addRole("user");
+				String[] roles = client.getRoles().split(",");
+				simpleAuthorInfo.addRoles(Arrays.asList(roles));
 				return simpleAuthorInfo;
 			}
 		}

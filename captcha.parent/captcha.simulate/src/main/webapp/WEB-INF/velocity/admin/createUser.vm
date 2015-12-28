@@ -1,0 +1,128 @@
+#set( $ContextPath = ${request.contextPath} )
+#set($layout="layout/layoutACE.vm")
+
+<script type="text/javascript" src="${ContextPath}/assets/js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="${ContextPath}/assets/js/jquery.validate.min.js"></script>
+<script type="text/javascript" >
+	// 手机号码验证
+	jQuery.validator.addMethod("isMobile", function(value, element) {
+	    var length = value.length;
+	    var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
+	    return this.optional(element) || (length == 11 && mobile.test(value));
+	}, "请正确填写您的手机号码");
+	
+	var validator;
+	jQuery(function(){
+		$("a[toggle='social-login']").attr("disabled", "disabled");
+		validator = $("#signupForm").validate({
+			rules:{
+				email:   { required:true, email: true },
+				phoneNo: { required:true, minlength : 11, isMobile : true },
+				realName:{ required:true },
+				password:{ required:true, minlength: 6 },
+				confirm_password:{ required: true, minlength: 6, equalTo: "#password" },
+				userName:{ 
+					required: true,
+					remote  : {
+						type: "GET",
+						url : "userExists",
+						data: { userName : function(){return $("#userName").val();} } 
+					}
+				}
+			},
+			submitHandler:function(form){
+			
+				var reqParam = {
+					host : $('#userName').val(),
+					code : $('#password').val(),
+					userName : $('#realName').val(),
+					mailAddress : $('#email').val(),
+					phoneNo : $('#phoneNo').val()
+				};
+				jQuery.ajax({
+		  			url : '${ContextPath}/rest/service/exam/client',
+		  			type: 'POST',
+		  			data : JSON.stringify(reqParam),
+		  			contentType: 'application/json; charset=utf-8',
+		  			success: function(data){  alert('注册成功,请返回登陆页'); },
+		  			error:function(error){ alert('注册失败，请联系管理员'); }
+		  		});
+	        }
+		});
+		
+		$("#reset").click(function() {
+	        validator.resetForm();
+	    });
+	    
+		$('#submit').click(function(){
+			validator.submit();
+		});
+	});
+</script>
+
+<div id="signup-box" class="signup-box widget-box no-border visible">
+<div class="widget-body">
+<div class="widget-main col-sm-3">
+	<h4 class="header green lighter bigger">
+		<i class="icon-group blue"></i>New User Registration
+	</h4>
+	<div class="space-6"></div>
+	<p> Enter user details to begin: </p>
+	<form id="signupForm" novalidate="novalidate">
+		<fieldset>
+			<label class="block clearfix">
+				<span class="block input-icon input-icon-right">
+					<input id="email" class="form-control" placeholder="Email" name="email">
+					<i class="icon-envelope"></i>
+				</span>
+			</label>
+			
+			<label class="block clearfix">
+				<span class="block input-icon input-icon-right">
+					<input type="text" placeholder="登陆名" class="form-control" name="userName" id="userName">
+					<i class="icon-user"></i>
+				</span>
+			</label>
+			
+			<label class="block clearfix">
+				<span class="block input-icon input-icon-right">
+					<input type="text" placeholder="真实姓名" class="form-control" name="realName" id="realName">
+					<i class="icon-user"></i>
+				</span>
+			</label>
+			
+			<label class="block clearfix">
+				<span class="block input-icon input-icon-right">
+					<input type="text" placeholder="手机号码" class="form-control" name="phoneNo" id="phoneNo">
+					<i class=" icon-group"></i>
+				</span>
+			</label>
+			
+			<label class="block clearfix">
+				<span class="block input-icon input-icon-right">
+					<input type="password" placeholder="登陆密码" class="form-control" name="password" id="password">
+					<i class="icon-lock"></i>
+				</span>
+			</label>
+			
+			<label class="block clearfix">
+				<span class="block input-icon input-icon-right">
+					<input type="password" placeholder="重复登陆密码" class="form-control" name="confirm_password" id="confirm_password">
+					<i class="icon-retweet"></i>
+				</span>
+			</label>
+			<div class="space-8"></div>
+			
+			<div class="clearfix">
+				<button class="width-30 pull-left btn btn-sm" type="reset">
+					<i class="icon-refresh"></i>Reset
+				</button>
+				<button class="width-65 pull-right btn btn-sm btn-success" id="submit" type="submit">
+					Register<i class="icon-arrow-right icon-on-right"></i>
+				</button>
+			</div>
+		</fieldset>
+	</form>
+</div>
+</div>
+</div>

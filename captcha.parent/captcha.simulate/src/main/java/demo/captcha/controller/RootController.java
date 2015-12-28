@@ -82,15 +82,7 @@ public class RootController {
             result = "failure";  
         }  
         return result;  
-    }  
-	
-	@RequestMapping(value = "/userExists", method = RequestMethod.GET)  
-    @ResponseBody  
-	public String userExists(@RequestParam("userName")String userName){
-		
-		CaptchaExamClient client = this.clientService.queryByHost(userName);
-		return client == null ? "true" : "false";
-	}
+    }
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)  
     public String logout() {  

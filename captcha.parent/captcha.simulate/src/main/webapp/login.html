@@ -12,23 +12,20 @@
 		<link rel="stylesheet" href="assets/css/font-awesome.min.css" />
 
 		<!--[if IE 7]>
-		  <link rel="stylesheet" href="assets/css/font-awesome-ie7.min.css" />
+		<link rel="stylesheet" href="assets/css/font-awesome-ie7.min.css" />
 		<![endif]-->
 
 		<!-- page specific plugin styles -->
-
-
 		<!-- ace styles -->
 
 		<link rel="stylesheet" href="assets/css/ace.min.css" />
 		<link rel="stylesheet" href="assets/css/ace-rtl.min.css" />
 
 		<!--[if lte IE 8]>
-		  <link rel="stylesheet" href="assets/css/ace-ie.min.css" />
+		<link rel="stylesheet" href="assets/css/ace-ie.min.css" />
 		<![endif]-->
 
 		<!-- inline styles related to this page -->
-
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 
 		<!--[if lt IE 9]>
@@ -120,9 +117,9 @@
 											</div>
 
 											<div>
-												<a href="#" onclick="show_box('signup-box'); return false;" class="user-signup-link">
+												<!--<a href="#" onclick="show_box('signup-box'); return false;" class="user-signup-link">
 													I want to register<i class="icon-arrow-right"></i>
-												</a>
+												</a>-->
 											</div>
 										</div>
 									</div><!-- /widget-body -->
@@ -163,6 +160,7 @@
 									</div><!-- /widget-body -->
 								</div><!-- /forgot-box -->
 
+<!-- 
 								<div id="signup-box" class="signup-box widget-box no-border">
 									<div class="widget-body">
 										<div class="widget-main">
@@ -215,8 +213,6 @@
 															<i class="icon-retweet"></i>
 														</span>
 													</label>
-
-<!-- 
 													<label class="block">
 														<input type="checkbox" class="ace" />
 														<span class="lbl">
@@ -224,7 +220,7 @@
 															<a href="#">User Agreement</a>
 														</span>
 													</label>
- -->
+													
 													<div class="space-24"></div>
 
 													<div class="clearfix">
@@ -244,8 +240,9 @@
 												<i class="icon-arrow-left"></i>Back to login
 											</a>
 										</div>
-									</div><!-- /widget-body -->
-								</div><!-- /signup-box -->
+									</div>
+								</div>
+ -->
 							</div><!-- /position-relative -->
 						</div>
 					</div><!-- /.col -->
@@ -282,65 +279,6 @@
 				jQuery('.widget-box.visible').removeClass('visible');
 				jQuery('#'+id).addClass('visible');
 			}
-			
-			// 手机号码验证
-			jQuery.validator.addMethod("isMobile", function(value, element) {
-			    var length = value.length;
-			    var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
-			    return this.optional(element) || (length == 11 && mobile.test(value));
-			}, "请正确填写您的手机号码");
-			
-			var validator;
-			jQuery(function(){
-				$("a[toggle='social-login']").attr("disabled", "disabled");
-				validator = $("#signupForm").validate({
-					rules:{
-						email:   { required: true, email: true },
-						phoneNo: { required:true, minlength : 11, isMobile : true },
-						realName:{required:true},
-						password:{ required: true, minlength: 6 },
-						confirm_password:{ required: true, minlength: 6, equalTo: "#password" },
-						userName:{ 
-							required: true,
-							remote  :{
-								type: "GET",
-								url : "web/userExists",
-								data: { userName : function(){return $("#userName").val();} } 
-							}
-						}
-					},
-					submitHandler:function(form){
-			            //alert("submitted");   
-			            form.submit();
-			        }
-				});
-				
-				$("#reset").click(function() {
-			        validator.resetForm();
-			    });
-				$('#submit').click(function(){
-
-					if(validator.valid()){
-						var reqParam = {
-							host : $('#userName').val(),
-							code : $('#password').val(),
-							userName : $('#realName').val(),
-							mailAddress : $('#email').val(),
-							phoneNo : $('#phoneNo').val()
-						};
-						jQuery.ajax({
-				  			url : 'rest/service/exam/client',
-				  			type: 'POST',
-				  			data : JSON.stringify(reqParam),
-				  			contentType: 'application/json; charset=utf-8',
-				  			success: function(data){ 
-				  				alert('注册成功,请返回登陆页');
-				  			},
-				  			error:function(error){ alert('注册失败，请联系管理员'); }
-				  		});
-					}
-				});
-			});
 		</script>
 </body>
 </html>
