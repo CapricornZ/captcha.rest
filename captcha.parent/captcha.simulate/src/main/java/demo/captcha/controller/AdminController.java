@@ -1,5 +1,7 @@
 package demo.captcha.controller;
 
+import java.util.List;
+
 import javax.ws.rs.PathParam;
 
 import org.apache.shiro.SecurityUtils;
@@ -27,6 +29,7 @@ import demo.captcha.model.CaptchaExamClient;
 import demo.captcha.security.CodeGen;
 import demo.captcha.security.User;
 import demo.captcha.service.ICaptchaExamClientService;
+import demo.captcha.tasks.TaskJob;
 
 @RequestMapping(value = "/admin")
 @Controller
@@ -37,6 +40,9 @@ public class AdminController {
 	
 	private ICaptchaExamClientService clientService;
 	public void setClientService(ICaptchaExamClientService service){ this.clientService = service; }
+	
+	private TaskJob refreshRank;
+	public void setTaskJob(TaskJob job){ this.refreshRank = job; }
 	
 	@RequestMapping(value = "/index",method=RequestMethod.GET)
 	public String listClient(Model model){
@@ -74,5 +80,36 @@ public class AdminController {
 	@RequestMapping(value = "/exam/client/msg/{msg}",method=RequestMethod.POST)
 	public String sendMessage(@PathParam("msg")String message){
 		return "SUCCESS";
+	}
+	
+	@RequestMapping(value = "/main",method=RequestMethod.GET)
+	public String main(){
+		return "admin/main";
+	}
+	
+	@RequestMapping(value = "/exam/client",method=RequestMethod.GET)
+	@ResponseBody
+	public Object listClient(){
+		List<CaptchaExamClient> clients = this.clientService.listAll();
+		return new JQTable(clients);
+	}
+	
+	@RequestMapping(value = "/exam/refresh",method=RequestMethod.POST)
+	@ResponseBody
+	public String refreshRank(){
+		
+		this.refreshRank.execute();
+		return "";
+	}
+	
+	public static class JQTable{
+		private List<CaptchaExamClient> data;
+		public List<CaptchaExamClient> getData(){
+			return this.data;
+		}
+		
+		public JQTable(List<CaptchaExamClient> data){
+			this.data = data;
+		}
 	}
 }

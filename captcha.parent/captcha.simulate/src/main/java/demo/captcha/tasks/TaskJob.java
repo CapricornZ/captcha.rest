@@ -36,7 +36,7 @@ public class TaskJob {
 			RateRank rank = new RateRank();
 			rank.setOwner(rankingByQuality.get(i));
 			rank.setRank(i+1);
-			rank.setCorrectRate(rankingByQuality.get(i).getCorrectRate());
+			rank.setCorrectRate(rankingByRate.get(i).getCorrectRate());
 			ranking.add(rank);
 		}
 		

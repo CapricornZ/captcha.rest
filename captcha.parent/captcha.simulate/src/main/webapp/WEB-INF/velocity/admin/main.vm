@@ -1,0 +1,55 @@
+#set( $ContextPath = ${request.contextPath} )
+#set($layout="layout/layoutACE.vm")
+
+<script type="text/javascript" src="${ContextPath}/js/bootstrap-dialog.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css" />
+
+<script>
+	$(function(){
+		$('#sample-table-1').DataTable({
+			"ajax": "exam/client",
+			"columns": [
+				{ "data": "userName" },
+	            { "data": "total" },
+	            { "data": "correctRate" },
+	            { "data": "checkIns" }
+	        ]
+		});
+	});
+	
+	function refreshRank(){
+		
+		$.ajax({
+			url  : "exam/refresh",
+			type : 'POST',
+			cache: false,
+			contentType: 'application/json; charset=utf-8',
+			success: function(json) {
+		    },
+		    error: function(msg) { alert("error"); }
+		});
+	}
+</script>
+
+<div class="row">
+	<div class="space-6">
+	</div>
+	<div class="col-sm-9">
+		<input type="button" class="btn" onclick="return refreshRank();" value="刷新排行榜"></input>
+		<table id="sample-table-1" >
+			<thread>
+				<tr>
+					<th>姓名</th><th>total</th><th>rate</th><th>checkIns</th>
+				</tr>
+			</thread>
+			<tfoot>
+		        <tr>
+		            <th>姓名</th><th>total</th><th>rate</th><th>checkIns</th>
+		        </tr>
+		    </tfoot>
+		</table>
+	</div>
+</div>

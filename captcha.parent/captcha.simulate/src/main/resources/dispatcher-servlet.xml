@@ -80,6 +80,7 @@
 	<bean class="demo.captcha.controller.AdminController">
 		<property name="clientService" ref="captchaExamClientService"/>
 		<property name="multiUserChat" ref="multiUserChatFactory"/>
+		<property name="taskJob" ref="taskJob"/>
     </bean>
     <bean class="demo.captcha.controller.RootController">
     	<property name="clientService" ref="captchaExamClientService"/>

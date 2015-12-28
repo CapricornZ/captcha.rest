@@ -299,11 +299,12 @@
 							</ul>
 						</li>
 						-->
+						#if($shiro.hasAnyRoles("admin"))
 						<li>
 							<a href="#" class="dropdown-toggle">
 								<i class="icon-file-alt"></i>
 								<span class="menu-text">
-									其他页面<span class="badge badge-primary">5</span>
+									管理员页面<span class="badge badge-primary">5</span>
 								</span>
 								<b class="arrow icon-angle-down"></b>
 							</a>
@@ -316,6 +317,7 @@
 								<li><a href="#"><i class="icon-double-angle-right"></i>空白页面</a></li>
 							</ul>
 						</li>
+						#end
 					</ul><!-- /.nav-list -->
 
 					<div class="sidebar-collapse" id="sidebar-collapse">

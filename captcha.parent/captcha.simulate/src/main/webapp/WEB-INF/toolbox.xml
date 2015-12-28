@@ -10,6 +10,11 @@
         <scope>application</scope>  
         <class>org.apache.velocity.tools.generic.NumberTool</class>  
     </tool>
+    <tool>
+		<key>shiro</key><!-- 可选默认为 shiro -->
+		<scope>application</scope>
+		<class>demo.captcha.security.Permission</class>
+	</tool>
 
 	<!-- <tool>
 		<key>orderHelper</key>
