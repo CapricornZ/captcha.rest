@@ -30,6 +30,9 @@
 					}
 				}
 			},
+			messages: {
+				userName:  {remote:"用户名已存在"}
+			},
 			submitHandler:function(form){
 			
 				var reqParam = {
