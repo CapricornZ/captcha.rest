@@ -279,6 +279,10 @@
 				jQuery('.widget-box.visible').removeClass('visible');
 				jQuery('#'+id).addClass('visible');
 			}
+			
+			$(function(){
+				$('a[toggle="social-login"]').attr('disabled', 'disabled');
+			});
 		</script>
 </body>
 </html>

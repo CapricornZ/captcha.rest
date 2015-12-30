@@ -3,7 +3,7 @@
 
 <div id="recent-box" class="widget-box transparent">
 	<div class="widget-header">
-		<h4 class="lighter smaller"><i class="icon-rss orange"></i>TOP5(昨天)</h4>
+		<h4 class="lighter smaller"><i class="icon-rss orange"></i>TOP5</h4>
 		<div class="widget-toolbar no-border">
 			<ul id="recent-tab" class="nav nav-tabs">
 				<li class="active"><a href="#task-tab" data-toggle="tab">校验码</a></li>

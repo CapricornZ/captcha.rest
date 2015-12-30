@@ -50,6 +50,7 @@ public class ExamService implements IExam {
 	@Override
 	public CaptchaExamClient createUser(CaptchaExamClient client) {
 		
+		client.setRoles("user");
 		CaptchaExamClient dbClient = this.clientService.save(client);
 		ConnectionConfiguration config = new ConnectionConfiguration("139.196.24.58",5222);
 		Connection connection = new XMPPConnection(config);
@@ -61,6 +62,14 @@ public class ExamService implements IExam {
 			e.printStackTrace();
 		}
         return dbClient;
+	}
+	
+	@Override
+	public void createBatchUser(List<CaptchaExamClient> clients) {
+		
+		for(CaptchaExamClient client : clients)
+			client.setRoles("user");
+		this.clientService.save(clients);
 	}
 
 	@Override

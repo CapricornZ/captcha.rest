@@ -73,8 +73,8 @@
 		$( "#slider-range-min" ).slider({
 			range: "min",
 			value: 25,
-			min: 5,
-			max: 150,
+			min  : 5,
+			max  : 150,
 			slide: function( event, ui ) { $( "#amount" ).val( ui.value ); }
 	    });
 	    $( "#amount" ).val( $( "#slider-range-min" ).slider( "value" ) );
@@ -105,17 +105,27 @@
   			url  : endPoint,
   			contentType: 'application/json; charset=utf-8',
   			success: function(data){
-  				$('#checkIns').html("签到:" + data.checkIns);
-  				$('#captchaTotal').html(data.total);
-  				var rate = Math.floor(data.correct * 100 / data.total);
+  				$('#checkIns').html("综合分:" + data.totalScore);
+  				
+  				$('#captchaTotal').html("已完成" + data.total + "次");
+  				//var rate = Math.floor(data.correct * 100 / data.total);
+  				var rate = Math.floor(data.correctRate);
+  				
   				$('#correctRate').attr('data-percent', rate);
   				$('#correctRate>span').html(rate);
+  				if(rate >= 96)
+  					$('#correctRate-TIPS').html('请保持好状态！');
+  				else
+  					$('#correctRate-TIPS').html('有待提高，请加油！');
+  				
+  				$('#captchaAvgCost').html(parseInt(data.avgCost) + "ms");
   			},
   			error:function(error){ alert("更新数据失败，请稍后再试"); }
 		});
 	}
 	
 	function init(){
+	
 		$('#inputCaptcha').val('');
 		$('#btnStart').removeAttr('disabled');
 		$('#btnEnd').attr('disabled', 'disabled');
@@ -130,6 +140,7 @@
 		var inputVal = $('#inputCaptcha').val();
 		var cost = endTime.getTime() - startTime.getTime();
 		var reqParam = { cost : cost, correct : correct==inputVal};
+		$('#BID-CAPTCHA-RESULT').html(correct!=inputVal ? '<img src="${ContextPath}/images/Error_easyicon.net.ico"/>' : '<img src="${ContextPath}/images/OK_easyicon.net.ico"/>');
 		jQuery.ajax({
 			type : "POST",
   			url  : "${ContextPath}/rest/service/exam/client/${currentUser}/record",
@@ -146,6 +157,7 @@
 		$("#imgCaptcha").attr("src", "${ContextPath}/images/loadCaptcha.bmp");
 		$("#imgCaptcha").attr("value", "");
 		$("#BID-CAPTCHA-TIP").html("");
+		$('#BID-CAPTCHA-RESULT').html("");
 		
 		jQuery.ajax({
   			url : '${ContextPath}/rest/service/simulate/captcha',
@@ -196,15 +208,23 @@
 			<!-- PAGE CONTENT BEGINS -->
 			<div class="row">
 				<div class="space-6"></div>
-				
+			<!--
+			<div class="alert alert-block alert-success">
+				<button data-dismiss="alert" class="close" type="button">
+					<i class="icon-remove"></i>
+				</button>
+
+				综合分&保底价 : <i class="icon-ok green"></i>>=280,保底150元 <i class="icon-ok green"></i>>=260,保底120元 <i class="icon-ok green"></i>>=240,保底100元
+			</div>
+			-->
 				<div class="col-sm-3 infobox-container">
 					<div class="infobox infobox-red">
 						<div class="infobox-icon" style="cursor:pointer;">
 							<i class="icon-heart" toggle="signHere"></i>
 						</div>
 						<div class="infobox-data">
-							<span class="infobox-data-number" id="checkIns">签到:$!{client.checkIns}</span>
-							<div class="infobox-content">需要完成15</div>
+							<span class="infobox-data-number" id="checkIns">综合分:</span>
+							<!--<div class="infobox-content">请完成15次</div>-->
 						</div>
 						<!-- <div class="stat stat-important">4%</div> -->
 					</div>
@@ -212,8 +232,9 @@
 					<div class="infobox infobox-blue2"><!-- 验证码 -->
 						<div class="infobox-icon"><i class="icon-tasks"></i></div>
 						<div class="infobox-data">
-							<span class="infobox-data-number" id="captchaTotal">${finish}</span>
-							<div class="infobox-content">需要达到${target}次</div>
+							<span class="infobox-text">验证码</span>
+							<!--<span class="infobox-data-number">验证码</span>-->
+							<div class="infobox-content" id="captchaTotal"></div>
 						</div>
 						#if(${CAPTCHA-RANK} != $null)
 						<div class="badge badge-success">排名：${CAPTCHA-RANK.rank}</div>
@@ -229,12 +250,20 @@
 						<div class="infobox-data">
 							<span class="infobox-text">准确率</span>
 							<div class="infobox-content">
-								<!--<span class="bigger-110">~</span>剩余58GB-->
+								<span class="bigger-110" id="correctRate-TIPS">请保持好状态</span>
 							</div>
 						</div>
 						#if(${RATE-RANK} != $null)
 						<div class="badge badge-success">排名：${RATE-RANK.rank}</div>
 						#end
+					</div>
+					
+					<div class="infobox infobox-blue2">
+						<div class="infobox-icon"><i class="icon-exchange"></i></div>
+						<div class="infobox-data">
+							<span class="infobox-text">平均耗时</span>
+							<div class="infobox-content" id="captchaAvgCost"></div>
+						</div>
 					</div>
 
 					<div class="space-6"></div>
@@ -287,6 +316,7 @@
 										<img style="font-size:16px;" alt="正在获取校验码" src="${ContextPath}/images/loadCaptcha.bmp" id="imgCaptcha">
 									</p>
 									<p align="center" id="BID-CAPTCHA-TIP" style="font-size:16px; margin-top: 10px;font-family:'SimSun';"></p>
+									<p align="center" id="BID-CAPTCHA-RESULT" style="font-size:16px; margin-top: 10px;font-family:'SimSun';"><img/></p>
 									<p align="center" style="font-family:'SimSun'; margin-top: 30px;">
 						         		<button id="btnStart" style="margin-right:35px; width:120px;" type="button" class="btn btn-app btn-sm btn-primary">开&nbsp;&nbsp;&nbsp;始</button>
 						         		<button id="btnEnd" disabled="disabled" style="margin-left: 35px; width:120px;" type="button" class="btn btn-app btn-sm btn-primary">结&nbsp;&nbsp;&nbsp;束</button>

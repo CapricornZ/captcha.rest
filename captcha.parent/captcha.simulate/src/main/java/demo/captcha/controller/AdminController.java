@@ -1,21 +1,16 @@
 package demo.captcha.controller;
 
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.PathParam;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.jivesoftware.smack.Connection;
-import org.jivesoftware.smack.ConnectionConfiguration;
-import org.jivesoftware.smack.XMPPConnection;
+
 import org.jivesoftware.smackx.muc.MultiUserChat;
-import org.jivesoftware.smackx.muc.RoomInfo;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,12 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import demo.captcha.model.CaptchaExamClient;
 import demo.captcha.security.CodeGen;
-import demo.captcha.security.User;
 import demo.captcha.service.ICaptchaExamClientService;
 import demo.captcha.tasks.TaskJob;
+import demo.captcha.util.ReadExcel;
 
 @RequestMapping(value = "/admin")
 @Controller
@@ -106,8 +103,23 @@ public class AdminController {
 		return "admin/createUser";
 	}
 	
+	@RequestMapping(value = "/batchUser")
+	public String publish(@RequestParam("dataFile")MultipartFile file, 
+			Model model, HttpServletRequest request) throws IOException{
+	//public String publish(MultipartHttpServletRequest request, Model model) throws IOException{
+		
+		//Iterator<String> itr =  request.getFileNames();
+		//MultipartFile mpf = request.getFile(itr.next());
+		
+		//java.io.InputStream is = file.getInputStream();
+		ReadExcel readExcel = new ReadExcel();
+		List<CaptchaExamClient> list = readExcel.readXlsx(file.getInputStream());
+		model.addAttribute("clients", list);
+		return "admin/batchUser";
+	}
+	
 	@RequestMapping(value = "/userExists", method = RequestMethod.GET)  
-    @ResponseBody  
+    @ResponseBody
 	public String userExists(@RequestParam("userName")String userName){
 		
 		CaptchaExamClient client = this.clientService.queryByHost(userName);

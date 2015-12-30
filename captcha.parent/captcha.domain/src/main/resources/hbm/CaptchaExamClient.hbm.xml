@@ -20,6 +20,8 @@
         <property name="total"/>
         <property name="correct"/>
         <property name="correctRate"/>
+        <property name="avgCost"/>
+        <property name="totalScore"/>
         <property name="roles"/>
         <property name="expireTime" type="java.sql.Timestamp" column="expireTime"/>
         <property name="updateTime" type="java.sql.Timestamp" column="updateTime"/>

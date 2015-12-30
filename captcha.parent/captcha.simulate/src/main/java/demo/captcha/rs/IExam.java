@@ -51,6 +51,12 @@ public interface IExam {
 	@Produces({MediaType.APPLICATION_JSON})
 	CaptchaExamClient createUser(CaptchaExamClient client);
 	
+	@POST
+	@Path("/client/batch")
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
+	void createBatchUser(List<CaptchaExamClient> client);
+	
 	@GET
 	@Path("/client/{HOST}")
 	@Produces({MediaType.APPLICATION_JSON})

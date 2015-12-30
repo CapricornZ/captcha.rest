@@ -14,6 +14,7 @@ import demo.captcha.security.CodeGen;
 import demo.captcha.service.ICaptchaExamClientService;
 import demo.captcha.service.Page;
 import demo.captcha.service.Service;
+import demo.captcha.util.ScoreGen;
 
 public class CaptchaExamClientService extends Service implements ICaptchaExamClientService {
 
@@ -138,8 +139,15 @@ public class CaptchaExamClientService extends Service implements ICaptchaExamCli
 		record.setUpdateTime(new Date());
 		this.getSession().save(record);
 		
+		double cost = client.getTotal() * client.getAvgCost();
+		cost += record.getCost();
+		
 		client.setTotal(client.getTotal()+1);
 		client.addCorrect(record.getCorrect());
+
+		client.setAvgCost((float)(cost/client.getTotal()));
+		
+		client.setTotalScore(ScoreGen.score(client));
 		
 		this.getSession().update(client);
 		return record;
@@ -158,6 +166,22 @@ public class CaptchaExamClientService extends Service implements ICaptchaExamCli
 		client.setExpireTime(calendar.getTime());
 		this.getSession().save(client);
 		return client;
+	}
+	
+	@Override
+	public void save(List<CaptchaExamClient> clients) {
+		
+		Date now = new Date();
+		Calendar calendar=Calendar.getInstance();   
+		calendar.setTime(now);
+		calendar.add(Calendar.MONTH, 3);
+		
+		for(CaptchaExamClient client : clients){
+
+			client.setUpdateTime(now);
+			client.setExpireTime(calendar.getTime());
+			this.getSession().save(client);
+		}
 	}
 
 	@Override

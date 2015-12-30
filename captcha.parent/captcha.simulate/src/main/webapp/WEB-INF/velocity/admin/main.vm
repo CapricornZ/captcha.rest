@@ -5,6 +5,7 @@
 
 <script type="text/javascript" src="${ContextPath}/assets/js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="http://tablesorter.com/__jquery.tablesorter.min.js"></script>
+<script type="text/javascript" src="${ContextPath}/js/ajaxfileupload.js"></script>
 <script>
 	$(function(){
 		
@@ -27,7 +28,7 @@
 <div class="row">
 	<div class="space-6">
 	</div>
-	<div class="col-sm-9">
+	<div class="col-sm-6">
 		<table class="tablesorter table table-striped .table-bordered table-hover" cellspacing="1" id='sample-table-1'>             
 		    <thead>
 		        <tr>

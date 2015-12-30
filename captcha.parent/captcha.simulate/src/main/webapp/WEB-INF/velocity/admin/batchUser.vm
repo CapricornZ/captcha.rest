@@ -1,0 +1,128 @@
+#set( $ContextPath = ${request.contextPath} )
+#set($layout="layout/layoutBlank.vm")
+
+<script type="text/javascript" src="${ContextPath}/assets/js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="${ContextPath}/assets/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="${ContextPath}/assets/js/tabledit.min.js"></script>
+<script>
+	function deparam(query) {
+	    var pairs, i, keyValuePair, key, value, map = {};
+	    // remove leading question mark if its there
+	    if (query.slice(0, 1) === '?') {
+	        query = query.slice(1);
+	    }
+	    if (query !== '') {
+	        pairs = query.split('&');
+	        for (i = 0; i < pairs.length; i += 1) {
+	            keyValuePair = pairs[i].split('=');
+	            key = decodeURIComponent(keyValuePair[0]);
+	            value = (keyValuePair.length > 1) ? decodeURIComponent(keyValuePair[1]) : undefined;
+	            map[key] = value;
+	        }
+	    }
+	    return map;
+	}
+	
+	$(function(){
+
+		$('#example1').Tabledit({
+		    columns: {
+		        identifier: [0, 'host'],
+		        editable: [
+		            [1, 'code'],
+		            [2, 'userName'],
+		            [3, 'phoneNo'],
+		            [4, 'mail']
+		        ]
+		    },
+		    buttons:{
+			    edit: {
+			        class: 'btn btn-xs btn-info',
+			        html: '<i class="icon-edit"></i>',
+			        action: 'edit'
+			    },
+			    delete: {
+			        class: 'btn btn-xs btn-danger',
+			        html: '<i class="icon-trash"></i>',
+			        action: 'delete'
+			    },
+			    save: {
+			        class: 'btn btn-xs btn-success',
+			        html: '<i class="icon-save"></i>'
+			    },
+			    restore: {
+        			class: 'btn btn-xs btn-warning',
+        			html: 'Restore',
+        			action: 'restore'
+			    },
+			    confirm: {
+			        class: 'btn btn-xs btn-danger',
+			        html: '<i class="icon-eye-open"></i>确定?'
+			    }
+			},
+			onAjax : function(action, serialize){
+				
+				var param = deparam(serialize)
+				console.log(param["action"] + param["host"]);
+				//console.log(serialize);
+				if(param["action"] == "edit"){
+					$('tr[id="' + param["host"] + '"]').addClass("danger");
+				}
+				if(param["action"] == "delete"){
+					$('tr[id="' + param["host"] + '"]').remove();
+				}
+				return false;
+			}
+		});
+		
+		$("#BATCH").click(function(){
+			
+			var totalUsers = new Array();
+			$("#example1 tbody[toggle='content'] tr").each(function(){
+				var client = {
+					'host' : $(this).find("td").eq(0).find("span").html(),
+					'code' : $(this).find("td").eq(1).find("span").html(),
+					'userName' : $(this).find("td").eq(2).find("span").html(),
+					'mailAddress' : $(this).find("td").eq(3).find("span").html(),
+					'phoneNo' : $(this).find("td").eq(4).find("span").html()
+				};
+				totalUsers.push(client);
+			});
+			console.log(totalUsers);
+			
+			$.ajax({
+            	url  : '${ContextPath}/rest/service/exam/client/batch',
+                type : 'POST',
+                data : JSON.stringify(totalUsers),
+                contentType: "application/json; charset=utf-8",    
+                success : function(data) { 
+                },
+                error : function(err) { alert(err); }
+            });
+		});
+	});
+</script>
+<table id="example1" class="table table-striped">
+	<thread>
+		<tr>
+			<th>登录名</th>
+			<th>登录密码</th>
+			<th>姓名</th>
+			<th>邮箱</th>
+			<th>手机</th>
+		</tr>
+	</thread>
+	<tbody toggle="content">
+	#foreach(${client} in ${clients})
+	<tr>
+		<td>${client.host}</td>
+		<td>${client.code}</td>
+		<td>${client.userName}</td>
+		<td>${client.phoneNo}</td>
+		<td>${client.mailAddress}</td>
+	</tr>
+	#end
+	</tbody>
+</table>
+
+<button class="btn btn-xs btn-app btn-danger" id="BATCH">批量创建</button>

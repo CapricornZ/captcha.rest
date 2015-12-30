@@ -13,6 +13,8 @@ public class CaptchaExamClient {
 	private int correct;
 	private int total;
 	private float rate;//成功率
+	private float avgCost;//平均耗时
+	private int totalScore;//
 	private String roles;
 	private Date expireTime;
 	private Date updateTime;
@@ -59,4 +61,10 @@ public class CaptchaExamClient {
 	
 	public String getRoles() { return roles; }
 	public void setRoles(String roles) { this.roles = roles; }
+	
+	public float getAvgCost() { return avgCost; }
+	public void setAvgCost(float avgCost) { this.avgCost = avgCost; }
+	
+	public int getTotalScore() { return totalScore; }
+	public void setTotalScore(int totalScore) { this.totalScore = totalScore; }
 }
