@@ -84,7 +84,6 @@
 				};
 				totalUsers.push(client);
 			});
-			console.log(totalUsers);
 			
 			$.ajax({
             	url  : '${ContextPath}/rest/service/exam/client/batch',
@@ -119,5 +118,4 @@
 	#end
 	</tbody>
 </table>
-
-<button class="btn btn-xs btn-app btn-danger" id="BATCH">批量创建</button>
+<button class="btn btn-sm btn-success" id="BATCH"><span class="icon-group"></span>批量创建</button>
