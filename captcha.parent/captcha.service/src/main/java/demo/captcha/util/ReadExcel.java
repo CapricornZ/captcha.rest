@@ -59,7 +59,9 @@ public class ReadExcel {
 						client.setPhoneNo(this.getValue(phoneNo));
 						client.setRoles("user");
 	
-						list.add(client);
+						if(!client.getHost().trim().isEmpty())
+							list.add(client);
+						
 					}catch (Exception ex){
 						ex.printStackTrace();
 					}

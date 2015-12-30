@@ -92,7 +92,7 @@
 					<div class="col-sm-4">
 						<input type="file" name="dataFile" id="dataFile" class="form-control" placeholder="apply.xlsx" style="width:250px;"/>
 					</div>
-					<button type="button" class="btn btn-sm btn-primary" id="upload"><span class="icon-share"></span>PUBLISH</button>
+					<button type="button" class="btn btn-sm btn-primary" id="upload"><span class="icon-share"></span>UPLOAD</button>
 				</div>
 			</form>
 			

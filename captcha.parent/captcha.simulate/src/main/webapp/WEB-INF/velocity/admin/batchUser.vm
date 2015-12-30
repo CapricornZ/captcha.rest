@@ -62,16 +62,12 @@
 			},
 			onAjax : function(action, serialize){
 				
-				var param = deparam(serialize)
-				console.log(param["action"] + param["host"]);
-				//console.log(serialize);
-				if(param["action"] == "edit"){
+				var param = deparam(serialize);
+				
+				if(param["action"] == "edit")
 					$('tr[id="' + param["host"] + '"]').addClass("danger");
-				}
-				if(param["action"] == "delete"){
+				if(param["action"] == "delete")
 					$('tr[id="' + param["host"] + '"]').remove();
-				}
-				return false;
 			}
 		});
 		
@@ -95,9 +91,8 @@
                 type : 'POST',
                 data : JSON.stringify(totalUsers),
                 contentType: "application/json; charset=utf-8",    
-                success : function(data) { 
-                },
-                error : function(err) { alert(err); }
+                success : function(data) { alert("创建成功"); },
+                error : function(err) { alert("创建异常，请检查文件内容"); }
             });
 		});
 	});
