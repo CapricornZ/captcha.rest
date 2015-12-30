@@ -30,7 +30,15 @@ public class ScoreGen {
 		CaptchaTotal.put(30, 85);
 		CaptchaTotal.put(20, 80);
 		CaptchaTotal.put(10, 75);
+		//小于1000,70分
+		CaptchaTotal.put(9, 70);
+		CaptchaTotal.put(8, 70);
+		CaptchaTotal.put(7, 70);
+		CaptchaTotal.put(6, 70);
 		CaptchaTotal.put(5, 70);
+		//小于500,65分
+		CaptchaTotal.put(4, 65);
+		CaptchaTotal.put(3, 65);
 		CaptchaTotal.put(2, 65);
 	}
 	
@@ -51,5 +59,14 @@ public class ScoreGen {
 			scoreAvgCost = 60;
 		
 		return scoreTotal + scoreAvgCost + scoreRate;
+	}
+	
+	public static void main(String[] args){
+		
+		CaptchaExamClient client = new CaptchaExamClient();
+		client.setAvgCost((float)2188.590576171875);
+		client.setCorrect((int)97.10526275634766);
+		client.setTotal(380);
+		System.out.println(score(client));
 	}
 }

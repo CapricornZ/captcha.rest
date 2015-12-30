@@ -101,7 +101,7 @@
 		</div>
 		<div class="widget-main col-sm-3">
 			<h4 class="header green lighter bigger">
-				<i class="icon-group blue"></i>New User Registration
+				<i class="icon-user blue"></i>New User Registration
 			</h4>
 			<div class="space-6"></div>
 			<p> Enter user details to begin: </p>
