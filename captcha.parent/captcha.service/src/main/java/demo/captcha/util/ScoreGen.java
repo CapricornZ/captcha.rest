@@ -15,14 +15,13 @@ public class ScoreGen {
 		CaptchaAvgCost.put(0, 100);
 		CaptchaAvgCost.put(1, 100);
 		CaptchaAvgCost.put(2, 100);
-		CaptchaAvgCost.put(3, 100);
-		CaptchaAvgCost.put(4, 95);
-		CaptchaAvgCost.put(5, 90);
-		CaptchaAvgCost.put(6, 85);
-		CaptchaAvgCost.put(7, 80);
-		CaptchaAvgCost.put(8, 75);
-		CaptchaAvgCost.put(9, 70);
-		CaptchaAvgCost.put(10, 65);
+		CaptchaAvgCost.put(3, 95);
+		CaptchaAvgCost.put(4, 90);
+		CaptchaAvgCost.put(5, 85);
+		CaptchaAvgCost.put(6, 80);
+		CaptchaAvgCost.put(7, 75);
+		CaptchaAvgCost.put(8, 70);
+		CaptchaAvgCost.put(9, 65);
 		
 		CaptchaTotal = new HashMap<Integer, Integer>();
 		CaptchaTotal.put(60, 100);

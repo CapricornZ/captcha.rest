@@ -64,9 +64,13 @@ public class UserController {
 	
 	@RequestMapping(value = "/rankingList",method=RequestMethod.GET)
 	public String rankingList(Model model){
+		List<Ranking> rankCaptcha = this.rankService.topCaptcha(5);
+		List<Ranking> rankRate = this.rankService.topRate(5);
+		model.addAttribute("CAPTCHA", rankCaptcha);
+		model.addAttribute("RATE", rankRate);
 		
-		model.addAttribute("CAPTCHA", this.rankService.topCaptcha(5));
-		model.addAttribute("RATE", this.rankService.topRate(5));
+		if(rankCaptcha != null && rankCaptcha.size()>0)
+			model.addAttribute("lastUpdate", rankCaptcha.get(0).getUpdateTime());
 		return "user/RankingList";
 	}
 	
