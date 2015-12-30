@@ -43,7 +43,7 @@ public class ScoreGen {
 		if(CaptchaTotal.containsKey(keyTotal))
 			scoreTotal = CaptchaTotal.get(keyTotal);
 		else
-			scoreTotal = 60;
+			scoreTotal = 0;
 		
 		int keyAvgCost = (int)client.getAvgCost()/1000;
 		if(CaptchaAvgCost.containsKey(keyAvgCost))

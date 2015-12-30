@@ -1,15 +1,18 @@
 #set( $ContextPath = ${request.contextPath} )
 #set($layout="layout/layoutACE.vm")
 
-<link rel="stylesheet" href="http://tablesorter.com/themes/blue/style.css" type="text/css" id="" media="print, projection, screen" />
+<!--<link rel="stylesheet" href="http://tablesorter.com/themes/blue/style.css" type="text/css" id="" media="print, projection, screen" />-->
+<link rel="stylesheet" href="${ContextPath}/css/bootstrap-table.css">
 
 <script type="text/javascript" src="${ContextPath}/assets/js/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="http://tablesorter.com/__jquery.tablesorter.min.js"></script>
+<!--<script type="text/javascript" src="http://tablesorter.com/__jquery.tablesorter.min.js"></script>-->
 <script type="text/javascript" src="${ContextPath}/js/ajaxfileupload.js"></script>
+<script src="${ContextPath}/js/bootstrap-table.js"></script>
 <script>
 	$(function(){
 		
-		$("#sample-table-1").tablesorter();
+		//$("#sample-table-1").tablesorter();
+		$('#sample-table-1').bootstrapTable();
 	});
 
 	function refreshRank(){
@@ -29,13 +32,14 @@
 	<div class="space-6">
 	</div>
 	<div class="col-sm-6">
-		<table class="tablesorter table table-striped .table-bordered table-hover" cellspacing="1" id='sample-table-1'>             
+		<table class="tablesorter table table-striped .table-bordered table-hover" cellspacing="1" id='sample-table-1'
+			data-sort-name="score" data-sort-order="desc">             
 		    <thead>
 		        <tr>
-		        	<th>userName</th> 
-		            <th>total</th> 
-		            <th>rate</th> 
-		            <th>checkIns</th>
+		        	<th data-field="name" data-sortable="true">userName</th> 
+		            <th data-field="total" data-sortable="true">验证码总数</th> 
+		            <th data-field="rate" data-sortable="true">准确率</th> 
+		            <th data-field="score" data-sortable="true">综合分</th>
 		        </tr> 
 		    </thead> 
 		    <tbody>
@@ -44,7 +48,7 @@
 		            <td>${client.userName}</td> 
 		            <td>${client.total}</td> 
 		            <td>${client.correctRate}%</td> 
-		            <td>${client.checkIns}</td> 
+		            <td>${client.totalScore}</td> 
 		        </tr>
 		        #end
 		    </tbody> 
