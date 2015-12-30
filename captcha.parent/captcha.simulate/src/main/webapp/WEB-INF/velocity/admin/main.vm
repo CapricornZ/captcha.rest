@@ -32,7 +32,7 @@
 <div class="row">
 	<div class="space-6">
 	</div>
-	<div class="col-sm-6">
+	<div class="col-sm-9">
 		<table id='sample-table-1' data-flat="true"
                 data-search="true" data-show-multi-sort="true"
                 data-toggle="table" data-sort-name="score" data-sort-order="desc">             
@@ -43,6 +43,7 @@
 		            <th data-field="total" data-sortable="true">验证码总数(次)</th>
 		            <th data-field="avgCost" data-sortable="true">平均反应速度(ms)</th>
 		            <th data-field="score" data-sortable="true">综合分</th>
+		            <th data-field="lastUpdate" data-sortable="true">最后更新时间</th>
 		        </tr> 
 		    </thead> 
 		    <tbody>
@@ -52,7 +53,8 @@
 		            <td>${client.correctRate}%</td>
 		            <td>${client.total}</td>
 		            <td>${client.avgCost}</td>
-		            <td>${client.totalScore}</td> 
+		            <td>${client.totalScore}</td>
+		            <td>${client.updateTime}</td>
 		        </tr>
 		        #end
 		    </tbody> 

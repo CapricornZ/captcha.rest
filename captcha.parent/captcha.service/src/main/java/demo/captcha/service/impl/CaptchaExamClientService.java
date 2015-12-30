@@ -144,10 +144,9 @@ public class CaptchaExamClientService extends Service implements ICaptchaExamCli
 		
 		client.setTotal(client.getTotal()+1);
 		client.addCorrect(record.getCorrect());
-
 		client.setAvgCost((float)(cost/client.getTotal()));
-		
 		client.setTotalScore(ScoreGen.score(client));
+		client.setUpdateTime(new Date());
 		
 		this.getSession().update(client);
 		return record;
