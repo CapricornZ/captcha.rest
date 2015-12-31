@@ -1,7 +1,6 @@
 package demo.captcha.controller;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import demo.captcha.model.CaptchaExamClient;
 import demo.captcha.security.CodeGen;
@@ -106,12 +104,7 @@ public class AdminController {
 	@RequestMapping(value = "/batchUser")
 	public String publish(@RequestParam("dataFile")MultipartFile file, 
 			Model model, HttpServletRequest request) throws IOException{
-	//public String publish(MultipartHttpServletRequest request, Model model) throws IOException{
 		
-		//Iterator<String> itr =  request.getFileNames();
-		//MultipartFile mpf = request.getFile(itr.next());
-		
-		//java.io.InputStream is = file.getInputStream();
 		ReadExcel readExcel = new ReadExcel();
 		List<CaptchaExamClient> list = readExcel.readXlsx(file.getInputStream());
 		model.addAttribute("clients", list);
