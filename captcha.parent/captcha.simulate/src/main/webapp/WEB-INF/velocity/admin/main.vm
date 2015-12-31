@@ -8,42 +8,32 @@
 <!--<script type="text/javascript" src="http://tablesorter.com/__jquery.tablesorter.min.js"></script>-->
 <script type="text/javascript" src="${ContextPath}/js/ajaxfileupload.js"></script>
 <script src="${ContextPath}/js/bootstrap-table.js"></script>
-<script src="http://issues.wenzhixin.net.cn/bootstrap-table/assets/bootstrap-table/src/extensions/multiple-sort/bootstrap-table-multiple-sort.js"></script>
+<script src="${ContextPath}/js/bootstrap-table-multiple-sort.js"></script>
+<script src="${ContextPath}/js/bootstrap-table-export.js"></script>
+<script src="${ContextPath}/js/tableExport.js"></script>
+
 <script>
 	$(function(){
 		
 		//$("#sample-table-1").tablesorter();
 		//$('#sample-table-1').bootstrapTable();
 	});
-
-	function refreshRank(){
-		
-		$.ajax({
-			url  : "exam/refresh",
-			type : 'POST',
-			cache: false,
-			contentType: 'application/json; charset=utf-8',
-			success: function(json) { alert("success"); },
-		    error: function(msg) { alert("error"); }
-		});
-	}
 </script>
 
 <div class="row">
-	<div class="space-6">
-	</div>
+	<div class="space-6"></div>
 	<div class="col-sm-9">
-		<table id='sample-table-1' data-flat="true"
-                data-search="true" data-show-multi-sort="true"
+		<table id='sample-table-1'
+                data-search="true" data-show-multi-sort="true" data-show-export="true"
                 data-toggle="table" data-sort-name="score" data-sort-order="desc">             
 		    <thead>
 		        <tr>
-		        	<th data-field="name" data-sortable="true">userName</th>
+		        	<th data-field="name" data-sortable="true">用户</th>
 		        	<th data-field="rate" data-sortable="true">准确率(%)</th>
 		            <th data-field="total" data-sortable="true">验证码总数(次)</th>
 		            <th data-field="avgCost" data-sortable="true">平均反应速度(ms)</th>
 		            <th data-field="score" data-sortable="true">综合分</th>
-		            <th data-field="lastUpdate" data-sortable="true">最后更新时间</th>
+		            <th data-field="lastUpdate" data-sortable="true">最后在线时间</th>
 		        </tr> 
 		    </thead> 
 		    <tbody>

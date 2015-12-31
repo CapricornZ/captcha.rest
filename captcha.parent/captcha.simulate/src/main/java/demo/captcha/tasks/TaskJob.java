@@ -1,6 +1,7 @@
 package demo.captcha.tasks;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import demo.captcha.model.CaptchaExamClient;
@@ -28,6 +29,7 @@ public class TaskJob {
 			rank.setOwner(rankingByQuality.get(i));
 			rank.setRank(i+1);
 			rank.setTotal(rankingByQuality.get(i).getTotal());
+			rank.setUpdateTime(new Date());
 			ranking.add(rank);
 		}
 		
@@ -37,6 +39,7 @@ public class TaskJob {
 			rank.setOwner(rankingByQuality.get(i));
 			rank.setRank(i+1);
 			rank.setCorrectRate(rankingByRate.get(i).getCorrectRate());
+			rank.setUpdateTime(new Date());
 			ranking.add(rank);
 		}
 		

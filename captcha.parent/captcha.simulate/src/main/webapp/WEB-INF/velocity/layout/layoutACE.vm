@@ -300,17 +300,30 @@
 						</li>
 						-->
 						#if($shiro.hasAnyRoles("admin"))
+						<script>
+						function refreshRank(){
+							$.ajax({
+								url  : "${ContextPath}/web/admin/exam/refresh",
+								type : 'POST',
+								cache: false,
+								contentType: 'application/json; charset=utf-8',
+								success: function(json) { alert("success"); },
+							    error: function(msg) { alert("error"); }
+							});
+						}
+						</script>
 						<li>
 							<a href="#" class="dropdown-toggle">
 								<i class="icon-file-alt"></i>
 								<span class="menu-text">
-									管理员页面<span class="badge badge-primary">2</span>
+									管理员页面<span class="badge badge-primary">3</span>
 								</span>
 								<b class="arrow icon-angle-down"></b>
 							</a>
-							<ul class="submenu">
+							<ul class="submenu" style="display: block;">
 								<li><a href="${ContextPath}/web/admin/main"><i class="icon-double-angle-right"></i>组员成绩</a></li>
 								<li><a href="${ContextPath}/web/admin/createUser"><i class="icon-double-angle-right"></i>新用户注册</a></li>
+								<li><a href="#" onclick="return refreshRank();"><i class="icon-double-angle-right"></i>刷新排行榜</a></li>
 							</ul>
 						</li>
 						#end
