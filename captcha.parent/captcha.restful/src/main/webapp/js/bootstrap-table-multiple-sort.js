@@ -161,7 +161,7 @@
     });
 
     $.extend($.fn.bootstrapTable.defaults.icons, {
-        sort: 'glyphicon glyphicon-plus',
+        sort: 'glyphicon glyphicon-list',
         plus: 'glyphicon-plus',
         minus: 'glyphicon-minus'
     });

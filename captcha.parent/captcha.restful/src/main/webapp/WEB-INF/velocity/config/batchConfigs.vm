@@ -24,6 +24,7 @@
 	$(function(){
 
 		$('#example1').Tabledit({
+			editButton: false,
 		    columns: {
 		        identifier: [0, 'id'],
 		        editable: [
@@ -91,7 +92,7 @@
 					'config' : config,
 					'trigger' : {
 						'priceTime' : $(this).find("td").eq(7).find("span").html(),
-						'deltaPrice' : $(this).find("td").eq(8).find("span").html(),
+						'deltaPrice' : parseInt($(this).find("td").eq(8).find("span").html()),
 						'submitTime' : $(this).find("td").eq(9).find("span").html() 
 					}
 				};

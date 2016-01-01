@@ -974,7 +974,7 @@
                 sprintf(' btn-%s', this.options.iconSize) +
                 ' dropdown-toggle" data-toggle="dropdown">',
                 sprintf('<i class="%s %s"></i>', this.options.iconsPrefix, this.options.icons.columns),
-                ' <span class="caret"></span>',
+                //' <span class="caret"></span>',
                 '</button>',
                 '<ul class="dropdown-menu" role="menu">');
 

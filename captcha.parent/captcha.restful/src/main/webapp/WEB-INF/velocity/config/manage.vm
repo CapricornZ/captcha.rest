@@ -17,7 +17,7 @@
   		
   			var configID = $(this).attr("config");
   			BootstrapDialog.show({
-				title   : "修改",
+				title   : "标书配置",
 	            message : $('<div></div>').load('${ContextPath}/web/command/config/detail/' + configID + '.do')
 	        });
   		});
@@ -26,8 +26,7 @@
   		$("button[toggle='UNBIND']").click(function(){
   		
   			var elementTD = $(this).parent();
-  			var elementTR = $(this).parent().parent();
-  			var configID = elementTR.attr("config");
+  			var configID = $(this).attr("config");
   			var endPoint = "${ContextPath}/rest/service/command/config/" + configID + "/client";
   			$.ajax({
   				url  : endPoint,
@@ -47,7 +46,7 @@
   		$("button[toggle='DEL']").click(function(){
 
 			var elementTR = $(this).parent().parent();
-  			var configID = elementTR.attr("config");
+  			var configID = $(this).attr("config");
   			var endPoint = "${ContextPath}/rest/service/command/config/" + configID;
 			BootstrapDialog.show({
 	            message: "确定要删除？",
@@ -76,6 +75,13 @@
 	            		dialogItself.close();
 	            	}
 	            }]
+	        });
+  		});
+  		
+  		$("#createConfig").click(function(){
+  			BootstrapDialog.show({
+				title   : "添加标书",
+	            message : $('<div></div>').load('${ContextPath}/web/command/config/create.do')
 	        });
   		});
   		
@@ -114,43 +120,50 @@
 	});
 </script>
 
-<div class="col-md-9">
-<table id="configs" class="table table-striped"
-	data-search="true" data-show-multi-sort="true" data-show-export="true">
-	<thead>
-		<tr>
-			<th data-field="id">#</th>
-			<th data-field="bidNo" data-sortable="true">投标号</th>
-			<th data-field="passwd">密码</th>
-			<th data-field="identify" data-sortable="true">身份证号</th>
-			<th data-field="name" data-sortable="true">姓名</th>
-			<th data-field="tags">TAGs</th>
-			<th data-field="host" data-sortable="true">HOST</th>
-			<th>OPS</th>
+<div class="row">
+	<div class="col-md-12">
+	<div id="toolbar" class="btn-group">
+	    <button type="button" class="btn btn-default" id="createConfig"><i class="glyphicon glyphicon-plus"></i></button>
+	</div>
+	<table id="configs" class="table table-striped" 
+		data-show-columns="true" data-toolbar="#toolbar"
+		data-search="true" data-show-multi-sort="true" data-show-export="true">
+		<thead>
+			<tr>
+				<th data-field="id">#</th>
+				<th data-field="bidNo" data-sortable="true">投标号</th>
+				<th data-field="passwd" data-visible="false">密码</th>
+				<th data-field="identify" data-sortable="true" data-visible="false">身份证号</th>
+				<th data-field="name" data-sortable="true">姓名</th>
+				<th data-field="tags">来源</th>
+				<th data-field="tips" data-visible="false">策略</th>
+				<th data-field="host" data-sortable="true">HOST</th>
+				<th>OPS</th>
+			</tr>
+		</thead>
+		<tbody>
+		#foreach(${config} in ${configs})
+		<tr config="${config.no}" toggle="row">
+			<td align="right">$!{velocityCount}</td>
+			<td><a href='#' config='${config.no}' toggle='MODIFY'>${config.no}</a></td>
+			<td>$!{config.passwd}</td>
+			<td>$!{config.pid}</td>
+			<td>$!{config.pname}</td>
+			<td>$!{config.tags}</td>
+			<td>$!{config.client.tips}</td>
+			<td>
+				#if(${config.client} != $null)
+					<button config="${config.no}" class="btn btn-sm btn-danger" toggle="UNBIND"><span class="glyphicon glyphicon-ban-circle"/></button>
+					<span>${config.client.ip}
+					#if(${config.client.isOnline})<img src='${ContextPath}/img/online.ico'/>#else<img src='${ContextPath}/img/offline.ico'/>#end</span>
+				#end
+			</td>
+			<td>
+				<button class="btn btn-danger btn-sm" type="button" config="${config.no}" toggle="DEL"><span class="glyphicon glyphicon-remove"/></button>
+			</td>
 		</tr>
-	</thead>
-	<tbody>
-	#foreach(${config} in ${configs})
-	<tr config="${config.no}" toggle="row">
-		<td align="right">$!{velocityCount}</td>
-		<td><a href='#' config='${config.no}' toggle='MODIFY'>${config.no}</a></td>
-		<td>$!{config.passwd}</td>
-		<td>$!{config.pid}</td>
-		<td>$!{config.pname}</td>
-		<td>$!{config.tags}</td>
-		<td>
-			#if(${config.client} != $null)
-				<button class="btn btn-sm btn-danger" toggle="UNBIND"><span class="glyphicon glyphicon-ban-circle"/></button>
-				<span>${config.client.ip}
-				#if(${config.client.isOnline})<img src='${ContextPath}/img/online.ico'/>#else<img src='${ContextPath}/img/offline.ico'/>#end</span>
-			#end
-		</td>
-		<td>
-			<button class="btn btn-danger btn-sm" type="submit" toggle="DEL"><span class="glyphicon glyphicon-remove"/></button>
-			<!--<button class="btn btn-info" toggle="MODIFY" config="${config.no}">修改</button>-->
-		</td>
-	</tr>
-	#end
-	</tbody>
-</table>
+		#end
+		</tbody>
+	</table>
+	</div>
 </div>

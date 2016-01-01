@@ -28,7 +28,7 @@
 		</h4>
 		<form class="form-horizontal" id="frm" action="#" method="POST" enctype="multipart/form-data">
 			<div class="form-group">
-				<div class="col-sm-4">
+				<div class="col-md-4">
 					<input type="file" name="dataFile" id="dataFile" class="form-control" placeholder="apply.xlsx" style="width:250px;"/>
 				</div>
 				<button type="button" class="btn btn-sm btn-primary" id="upload"><span class="icon-share"></span>UPLOAD</button>
