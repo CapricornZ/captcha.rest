@@ -2,7 +2,11 @@ package demo.captcha.rs.impl;
 
 import demo.captcha.model.Config;
 import demo.captcha.rs.IConfigService;
+import demo.captcha.rs.model.Assignment;
 import demo.captcha.rs.model.Trigger;
+
+import java.util.List;
+
 import demo.captcha.model.Client;
 import demo.captcha.service.IClientService;
 
@@ -77,5 +81,11 @@ public class ConfigService implements IConfigService {
 			sb.append(";\r\n提交触发:" + trigger.getSubmitTime());
 		
 		return sb.toString();
+	}
+
+	@Override
+	public void newAssignment(List<Assignment> assigns) {
+		
+		this.configService.assignment(assigns);
 	}
 }

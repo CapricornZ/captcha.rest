@@ -13,8 +13,8 @@
 						</ul>
 					</li>
 					<li><a href="${ContextPath}/web/command/warrant/preview?pageNumber=0">授权码</a></li>
-					<li><a href="${ContextPath}/web/command/config/init.do">投标信息</a></li>
-					<li><a href="${ContextPath}/web/command/operation/list.do">OPERATION配置表</a></li>
+					<li><a href="${ContextPath}/web/command/config/init.do">投标信息管理</a></li>
+					<li><a href="${ContextPath}/web/command/operation/list.do">OPERATION配置</a></li>
 					<li><a href="${ContextPath}/web/command/resource/preview.do?category=simulate">CONFS(simulate)</a></li>
 					<li><a href="${ContextPath}/web/command/resource/preview.do?category=real">CONFS(real)</a></li>
 					<li><a href="${ContextPath}/web/command/prePublish">HELPER发布</a></li>

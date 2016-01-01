@@ -1,0 +1,66 @@
+#set( $ContextPath = ${request.contextPath} )
+
+<link rel="stylesheet" type="text/css" href="${ContextPath}/css/bootstrap.css" >
+<link rel="stylesheet" type="text/css" href="${ContextPath}/css/jquery.datetimepicker.css"/>
+          
+<script type="text/javascript" src="${ContextPath}/js/jquery/jquery-1.11.2.min.js"></script>
+
+<script type="text/javascript" src="${ContextPath}/js/bootstrap.js"></script>
+<script type="text/javascript" src="${ContextPath}/js/bootstrap-dialog.min.js"></script>
+<script src="${ContextPath}/js/bootstrap-select.min.js"></script>
+<script src="${ContextPath}/js/jquery/jquery.tags.js"></script>
+
+<script>
+	$(function(){
+		$("a[data-toggle='tab']").click(function(){
+			var tab = $(this);
+			var target = $(this).attr('href');
+			var url = $(this).attr('url');
+			$.ajax({
+				type : "GET",
+				url  : url,
+				error: function(data){ },
+				success: function(data){ $(target).html(data); },
+				beforeSend:function(){ tab.html('<img src="${ContextPath}/img/refresh.gif"/>'); },
+				complete : function(){ tab.html(url); }
+			});
+		});
+		
+		init();
+	});
+	
+	function init(){
+		var tab = $('#init');
+		var target = tab.attr('href');
+		var url = tab.attr('url');
+		$.ajax({
+			type : "GET",
+			url  : url,
+			error: function(data){ },
+			success: function(data){ $(target).html(data); },
+			beforeSend:function(){ tab.html('<img src="${ContextPath}/img/refresh.gif"/>'); },
+			complete : function(){
+				tab.parent().addClass('active');
+				tab.html(url); 
+			}
+		});
+	}
+</script>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<ul class="nav nav-tabs">
+			   <li><a id="init" href="#manage" url="manage.do" data-toggle="tab">manage.do</a></li>
+			   <li><a href="#import" url="import.do" data-toggle="tab">import.do</a></li>
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<div class="tab-pane fade in active" id="manage">manage
+   				</div><!--div manage-->
+   				
+   				<div class="tab-pane fade in" id="import">import
+   				</div><!-- div import -->
+   			</div>
+		</div>
+	</div>
+</div>

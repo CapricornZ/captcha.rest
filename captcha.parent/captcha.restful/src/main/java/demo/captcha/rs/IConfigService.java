@@ -1,5 +1,7 @@
 package demo.captcha.rs;
 
+import java.util.List;
+
 import javax.jws.WebService;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -13,6 +15,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import demo.captcha.model.Config;
+import demo.captcha.rs.model.Assignment;
 import demo.captcha.rs.model.Trigger;
 
 @WebService(endpointInterface="demo.captcha.restful.ConfigService", serviceName="ConfigService")
@@ -46,4 +49,9 @@ public interface IConfigService {
 	@DELETE
 	@Path("/{BIDNO}/client")
 	void unAssign(@PathParam("BIDNO")String bidNo);
+	
+	@POST
+	@Path("/assignments")
+	@Consumes(MediaType.APPLICATION_JSON)
+	void newAssignment(List<Assignment> assignments);
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import demo.captcha.model.Client;
 import demo.captcha.model.Config;
+import demo.captcha.rs.model.Assignment;
 
 public interface IConfigService {
 	
@@ -14,4 +15,6 @@ public interface IConfigService {
 	List<Config> listAll();
 	void delete(String config);
 	Config queryByNo(String no);
+	
+	void assignment(List<Assignment> assignments);
 }

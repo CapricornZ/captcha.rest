@@ -1,0 +1,144 @@
+#set( $ContextPath = ${request.contextPath} )
+#set($layout="layout/layoutBlank.vm")
+
+<script type="text/javascript" src="${ContextPath}/js/tabledit.min.js"></script>
+<script>
+	function deparam(query) {
+	    var pairs, i, keyValuePair, key, value, map = {};
+	    // remove leading question mark if its there
+	    if (query.slice(0, 1) === '?') {
+	        query = query.slice(1);
+	    }
+	    if (query !== '') {
+	        pairs = query.split('&');
+	        for (i = 0; i < pairs.length; i += 1) {
+	            keyValuePair = pairs[i].split('=');
+	            key = decodeURIComponent(keyValuePair[0]);
+	            value = (keyValuePair.length > 1) ? decodeURIComponent(keyValuePair[1]) : undefined;
+	            map[key] = value;
+	        }
+	    }
+	    return map;
+	}
+	
+	$(function(){
+
+		$('#example1').Tabledit({
+		    columns: {
+		        identifier: [0, 'id'],
+		        editable: [
+		            [1, 'host'],
+		            [2, 'userName'],
+		            [3, 'identity'],
+		            [4, 'bidNo'],
+		            [5, 'bidPass'],
+		            [6, 'source'],
+		            [7, 'priceTime'],
+		            [8, 'priceDelta'],
+		            [9, 'submitTime']
+		        ]
+		    },
+		    buttons:{
+			    edit: {
+			        class: 'btn btn-xs btn-info',
+			        html: '<i class="glyphicon glyphicon-edit"></i>',
+			        action: 'edit'
+			    },
+			    delete: {
+			        class: 'btn btn-xs btn-danger',
+			        html: '<i class="glyphicon glyphicon-trash"></i>',
+			        action: 'delete'
+			    },
+			    save: {
+			        class: 'btn btn-xs btn-success',
+			        html: '<i class="glyphicon glyphicon-check"></i>保存'
+			    },
+			    restore: {
+        			class: 'btn btn-xs btn-warning',
+        			html: 'Restore',
+        			action: 'restore'
+			    },
+			    confirm: {
+			        class: 'btn btn-xs btn-danger',
+			        html: '<i class="glyphicon glyphicon-check"></i>确定!'
+			    }
+			},
+			onAjax : function(action, serialize){
+				
+				var param = deparam(serialize);
+				
+				if(param["action"] == "edit")
+					$('tr[id="' + param["id"] + '"]').addClass("danger");
+				if(param["action"] == "delete")
+					$('tr[id="' + param["id"] + '"]').remove();
+			}
+		});
+		
+		$("#BATCH").click(function(){
+
+			var totalUsers = new Array();
+			$("#example1 tbody[toggle='content'] tr").each(function(){
+			
+				var config = {
+					'no' : $(this).find("td").eq(4).find("span").html(),
+					'passwd' : $(this).find("td").eq(5).find("span").html(),
+					'pname' : $(this).find("td").eq(2).find("span").html(),
+					'pid' : $(this).find("td").eq(3).find("span").html(),
+					'tags': $(this).find("td").eq(6).find("span").html()
+				};
+				var assignment = {
+					'host' : $(this).find("td").eq(1).find("span").html(),
+					'config' : config,
+					'trigger' : {
+						'priceTime' : $(this).find("td").eq(7).find("span").html(),
+						'deltaPrice' : $(this).find("td").eq(8).find("span").html(),
+						'submitTime' : $(this).find("td").eq(9).find("span").html() 
+					}
+				};
+				totalUsers.push(assignment);
+			});
+			
+			$.ajax({
+            	url  : '${ContextPath}/rest/service/command/config/assignments',
+                type : 'POST',
+                data : JSON.stringify(totalUsers),
+                contentType: "application/json; charset=utf-8",
+                success : function(data) { alert("创建成功"); },
+                error : function(err) { alert("创建异常，请检查文件内容"); }
+            });
+		});
+	});
+</script>
+<table id="example1" class="table table-striped">
+	<thread>
+		<tr>
+			<th>#</th>
+			<th>拍拍机器</th>
+			<th>姓名</th>
+			<th>身份证</th>
+			<th>标书号</th>
+			<th>密码</th>
+			<th>来源</th>
+			<th>出价时间</th>
+			<th>价格</th>
+			<th>提交时间</th>
+		</tr>
+	</thread>
+	<tbody toggle="content">
+	#foreach(${client} in ${configs})
+	<tr>
+		<td>$!{velocityCount}</td>
+		<td>${client[0]}</td>
+		<td>${client[1]}</td>
+		<td>${client[2]}</td>
+		<td>${client[3]}</td>
+		<td>${client[4]}</td>
+		<td>${client[5]}</td>
+		<td>${client[6]}</td>
+		<td>${client[7]}</td>
+		<td>${client[8]}</td>
+	</tr>
+	#end
+	</tbody>
+</table>
+<button class="btn btn-sm btn-success" id="BATCH"><span class="icon-group"></span>批量导入</button>

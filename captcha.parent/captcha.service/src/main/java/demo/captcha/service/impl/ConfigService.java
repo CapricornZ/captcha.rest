@@ -4,9 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Query;
+import org.hibernate.Session;
 
 import demo.captcha.model.Client;
 import demo.captcha.model.Config;
+import demo.captcha.rs.model.Assignment;
 import demo.captcha.service.IConfigService;
 import demo.captcha.service.Service;
 
@@ -132,5 +134,32 @@ public class ConfigService extends Service implements IConfigService {
 			this.getSession().update(oClient);
 		}
 		return pConfig;
+	}
+
+	@Override
+	public void assignment(List<Assignment> assignments){
+		
+		com.google.gson.Gson gson = new com.google.gson.Gson();
+		for(Assignment assign : assignments){
+			
+			String trigger = gson.toJson(assign.getTrigger());
+			this.assignment(assign.getConfig(), assign.getHost(), trigger);
+		}
+	}
+	
+	
+	private void assignment(Config config, String client, String trigger) {
+		
+		Session session = this.getSession();
+		Client objClient = (Client)session.get(Client.class, client);
+		if( null != objClient ){
+			config.setClient(objClient);
+			
+			objClient.setTips(trigger);
+			objClient.setConfig(config);
+			
+			session.save(config);
+			session.update(objClient);
+		}
 	}
 }

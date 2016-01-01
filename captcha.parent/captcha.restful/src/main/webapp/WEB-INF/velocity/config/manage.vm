@@ -1,0 +1,156 @@
+#set( $ContextPath = ${request.contextPath} )
+#set( $layout = "layout/layoutBlank.vm" )
+
+<link rel="stylesheet" href="${ContextPath}/css/bootstrap-table.css">
+
+<script src="${ContextPath}/js/bootstrap-table.js"></script>
+<script src="${ContextPath}/js/bootstrap-table-multiple-sort.js"></script>
+<script src="${ContextPath}/js/bootstrap-table-export.js"></script>
+<script src="${ContextPath}/js/tableExport.js"></script>
+
+<script>
+	$(function(){		
+		$('#configs').bootstrapTable();
+		
+		//对话框查看，修改标书
+		$("a[toggle='MODIFY']").click(function(){
+  		
+  			var configID = $(this).attr("config");
+  			BootstrapDialog.show({
+				title   : "修改",
+	            message : $('<div></div>').load('${ContextPath}/web/command/config/detail/' + configID + '.do')
+	        });
+  		});
+  		
+  		//解绑标书<-->机器
+  		$("button[toggle='UNBIND']").click(function(){
+  		
+  			var elementTD = $(this).parent();
+  			var elementTR = $(this).parent().parent();
+  			var configID = elementTR.attr("config");
+  			var endPoint = "${ContextPath}/rest/service/command/config/" + configID + "/client";
+  			$.ajax({
+  				url  : endPoint,
+  				type : 'DELETE',
+  				cache: false,
+				contentType: 'application/json; charset=utf-8',
+				success: function(json) {
+					alert("SUCCESS");
+					console.log(" reponse :"+ json);
+					elementTD.html("");
+                },
+                error: function(msg) { alert("error"); }
+  			});
+  		});
+  		
+  		//删除标书
+  		$("button[toggle='DEL']").click(function(){
+
+			var elementTR = $(this).parent().parent();
+  			var configID = elementTR.attr("config");
+  			var endPoint = "${ContextPath}/rest/service/command/config/" + configID;
+			BootstrapDialog.show({
+	            message: "确定要删除？",
+	            buttons:[{
+	            	label : '是',
+	            	cssClass: 'btn-primary',
+	            	action: function(dialogItself){
+
+			  			$.ajax({
+			  				url  : endPoint,
+			  				type : 'DELETE',
+			  				cache: false,
+							contentType: 'application/json; charset=utf-8',
+							success: function(json) {
+								alert("SUCCESS");
+								console.log(" reponse :"+ json);
+								elementTR.remove();
+			                },
+			                error: function(msg) { alert("error"); }
+			  			});
+	            		dialogItself.close();
+	            	}
+	            },{
+	            	label : '否',
+	            	action: function(dialogItself){
+	            		dialogItself.close();
+	            	}
+	            }]
+	        });
+  		});
+  		
+  		$("#reset").click(function(){
+  			$('#frm input[type="text"]').each(function(){
+  				$(this).val("");
+  			});
+  			$('span[class*="label"]').remove();
+  		});
+  		
+  		//保存标书修改
+  		$("#save").click(function(){
+
+  			var tips = $('#tipsArea').val();
+  			var reqParam = {
+  				no    : $("#noInput").val(),
+  				passwd: $("#passwdInput").val(),
+  				pid   : $("#pidInput").val(),
+  				pname : $("#puserInput").val(),
+  				tags  : $("#tagsInput").val()
+  			};
+  			var endPoint = "${ContextPath}/rest/service/command/config";
+  			$.ajax({
+  				url:endPoint,
+  				type:'POST',
+  				cache:false,
+				data:JSON.stringify(reqParam),
+				contentType: 'application/json; charset=utf-8',
+				success: function(json) {
+					alert("SUCCESS");
+					console.log(" reponse :"+ json);
+                },
+                error: function(msg) { alert("error"); }
+  			});
+  		});
+	});
+</script>
+
+<div class="col-md-9">
+<table id="configs" class="table table-striped"
+	data-search="true" data-show-multi-sort="true" data-show-export="true">
+	<thead>
+		<tr>
+			<th data-field="id">#</th>
+			<th data-field="bidNo" data-sortable="true">投标号</th>
+			<th data-field="passwd">密码</th>
+			<th data-field="identify" data-sortable="true">身份证号</th>
+			<th data-field="name" data-sortable="true">姓名</th>
+			<th data-field="tags">TAGs</th>
+			<th data-field="host" data-sortable="true">HOST</th>
+			<th>OPS</th>
+		</tr>
+	</thead>
+	<tbody>
+	#foreach(${config} in ${configs})
+	<tr config="${config.no}" toggle="row">
+		<td align="right">$!{velocityCount}</td>
+		<td><a href='#' config='${config.no}' toggle='MODIFY'>${config.no}</a></td>
+		<td>$!{config.passwd}</td>
+		<td>$!{config.pid}</td>
+		<td>$!{config.pname}</td>
+		<td>$!{config.tags}</td>
+		<td>
+			#if(${config.client} != $null)
+				<button class="btn btn-sm btn-danger" toggle="UNBIND"><span class="glyphicon glyphicon-ban-circle"/></button>
+				<span>${config.client.ip}
+				#if(${config.client.isOnline})<img src='${ContextPath}/img/online.ico'/>#else<img src='${ContextPath}/img/offline.ico'/>#end</span>
+			#end
+		</td>
+		<td>
+			<button class="btn btn-danger btn-sm" type="submit" toggle="DEL"><span class="glyphicon glyphicon-remove"/></button>
+			<!--<button class="btn btn-info" toggle="MODIFY" config="${config.no}">修改</button>-->
+		</td>
+	</tr>
+	#end
+	</tbody>
+</table>
+</div>
