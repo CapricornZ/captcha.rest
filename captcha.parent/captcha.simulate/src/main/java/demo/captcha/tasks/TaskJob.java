@@ -36,7 +36,7 @@ public class TaskJob {
 		List<CaptchaExamClient> rankingByRate = this.clientService.rankingRate();
 		for(int i=0; i<rankingByRate.size(); i++){
 			RateRank rank = new RateRank();
-			rank.setOwner(rankingByQuality.get(i));
+			rank.setOwner(rankingByRate.get(i));
 			rank.setRank(i+1);
 			rank.setCorrectRate(rankingByRate.get(i).getCorrectRate());
 			rank.setUpdateTime(new Date());
