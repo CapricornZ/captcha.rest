@@ -1,0 +1,46 @@
+#set( $ContextPath = ${request.contextPath} )
+#set($layout="layout/layoutBlank.vm")
+<head>
+<meta charset="UTF-8">
+<meta content="utf-8" http-equiv="encoding">
+</head>
+
+<link class="include" rel="stylesheet" type="text/css" href="http://tenxer.github.io/xcharts/css/master.css"></link>
+
+<!--<script type="text/javascript" src="${ContextPath}/assets/js/jquery-1.10.2.min.js"></script>-->
+<script src="${ContextPath}/js/d3.v3.min.js" charset="utf-8"></script>
+<script src="${ContextPath}/js/xcharts.js"></script>
+
+<script>
+	var myChart;
+	var data = {
+	  "xScale": "ordinal",
+	  "yScale": "linear",
+	  "main": [{
+	      "className": ".pizza",
+	      "data":[{"x":0, "y":0}]
+	  }]
+	};
+	var opts = {
+		"mouseover":function(d,i){ $("#tips").html("<B>" + d.y + "</B>"); },
+		"mouseout":function(){ $("#tips").html(""); }
+	};
+		
+	$(function(){
+
+		$.ajax({
+			url : 'groupByDate/${client}',
+			type: 'GET',
+			error: function(msg) { alert("error"); },
+			success: function(msg) {
+				data.main[0].data = msg;
+				myChart = new xChart('bar', data, '#placeholder', opts);
+			}
+		});
+	});
+	
+	
+</script>
+
+<div id="placeholder" style="width:500px;height:300px"></div>
+<div id="tips"></div>

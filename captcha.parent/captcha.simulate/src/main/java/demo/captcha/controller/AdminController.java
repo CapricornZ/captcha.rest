@@ -1,6 +1,7 @@
 package demo.captcha.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -88,6 +89,37 @@ public class AdminController {
 		model.addAttribute("client", client);
 		model.addAttribute("clients", clients);
 		return "admin/main";
+	}
+	
+	@RequestMapping(value = "/detail/{CLIENT:.+}",method=RequestMethod.GET)
+	public String detail(Model model, @PathVariable("CLIENT")String host){
+		model.addAttribute("client", host);
+		return "admin/detail";
+	}
+	
+	@RequestMapping(value="/groupByDate/{CLIENT:.+}", method=RequestMethod.GET)
+	@ResponseBody
+	public List<Point> groupByDate(Model model, @PathVariable("CLIENT")String host){
+		
+		CaptchaExamClient client = this.clientService.queryByHost(host);
+		List result = this.clientService.groupByDate(client);
+		List<Point> rtn = new ArrayList<Point>();
+		for(Object item : result){
+			Object[] row = (Object[])item;
+			Long y = (Long)row[0];
+			String x = (String)row[1];
+			rtn.add(new Point(x, y));
+		}
+		return rtn;
+	}
+	
+	static public class Point{
+		public Point(String x, long y){
+			this.x = x;
+			this.y = y;
+		}
+		public String x;
+		public long y;
 	}
 	
 	@RequestMapping(value = "/createUser",method=RequestMethod.GET)

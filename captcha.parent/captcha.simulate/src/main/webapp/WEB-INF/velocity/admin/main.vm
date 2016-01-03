@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="${ContextPath}/css/bootstrap-table.css">
 
 <script type="text/javascript" src="${ContextPath}/assets/js/jquery-1.10.2.min.js"></script>
+<script src="${ContextPath}/assets/js/bootstrap.min.js"></script>
 <!--<script type="text/javascript" src="http://tablesorter.com/__jquery.tablesorter.min.js"></script>-->
 <script type="text/javascript" src="${ContextPath}/js/ajaxfileupload.js"></script>
 <script src="${ContextPath}/js/bootstrap-table.js"></script>
@@ -12,11 +13,31 @@
 <script src="${ContextPath}/js/bootstrap-table-export.js"></script>
 <script src="${ContextPath}/js/tableExport.js"></script>
 
+<script type="text/javascript" src="${ContextPath}/js/bootstrap-dialog.min.js"></script>
+
 <script>
 	$(function(){
 		
 		//$("#sample-table-1").tablesorter();
 		//$('#sample-table-1').bootstrapTable();
+		$("a[data-toggle='DETAIL']").click(function(){
+
+			var client = $(this).attr("client");
+			BootstrapDialog.show({
+				title   : "DETAIL",
+	            message : $('<div></div>').load('detail/' + client),
+				onshow: function(dialogRef){ }
+	        });
+		});
+		
+		$("a[toggle='MODIFY']").click(function(){
+  		
+  			var configID = $(this).attr("config");
+  			BootstrapDialog.show({
+				title   : "DETAIL",
+	            message : $('<div></div>').load('${ContextPath}/web/command/config/detail/' + configID + '.do')
+	        });
+  		});
 	});
 </script>
 
@@ -39,7 +60,7 @@
 		    <tbody>
 		    	#foreach(${client} in ${clients})
 		        <tr> 
-		            <td>${client.userName}</td> 
+		            <td><a data-toggle="DETAIL" href="#" client='${client.host}'>${client.userName}</a></td> 
 		            <td>${client.correctRate}%</td>
 		            <td>${client.total}</td>
 		            <td>${client.avgCost}</td>
@@ -51,3 +72,21 @@
 		</table>
 	</div>
 </div>
+
+<div class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <p>One fine body…</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

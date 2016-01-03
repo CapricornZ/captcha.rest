@@ -271,4 +271,13 @@ public class CaptchaExamClientService extends Service implements ICaptchaExamCli
 		Query query = this.getSession().createQuery(hql +  " order by correctRate desc");
 		return query.list();
 	}
+
+	@Override
+	public List groupByDate(CaptchaExamClient client) {
+		
+		String hql = "select count(id),SUBSTRING(updateTime,1,10) from ExamRecord where client=:client group by SUBSTRING(updateTime,1,10) order by SUBSTRING(updateTime,1,10)";
+		Query query = this.getSession().createQuery(hql);
+		query.setParameter("client", client);
+		return query.list();
+	}
 }
