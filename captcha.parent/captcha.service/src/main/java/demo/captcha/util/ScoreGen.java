@@ -38,7 +38,7 @@ public class ScoreGen {
 		
 		@Override
 		public boolean arriveAverage(CaptchaExamClient client){
-			return client.getTotal() >= 200;
+			return client.getTotal() >= 1000;
 		}
 	}
 	
@@ -51,7 +51,7 @@ public class ScoreGen {
 
 		@Override
 		public boolean arriveAverage(CaptchaExamClient client) {
-			return (int)client.getCorrectRate() > 95;
+			return (int)client.getCorrectRate() > 97;
 		}
 	}
 	
@@ -83,7 +83,7 @@ public class ScoreGen {
 		public boolean arriveAverage(CaptchaExamClient client) {
 
 			int keyAvgCost = (int)client.getAvgCost()/1000;
-			return keyAvgCost < 11;
+			return keyAvgCost < 4;
 		}
 	}
 	
