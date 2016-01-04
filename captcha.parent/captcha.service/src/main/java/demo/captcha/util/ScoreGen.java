@@ -7,7 +7,13 @@ import demo.captcha.model.CaptchaExamClient;
 
 public class ScoreGen {
 	
-	static class TotalScore{
+	interface IScore{
+		int score(CaptchaExamClient client);
+		boolean arriveAverage(CaptchaExamClient client);
+	}
+	
+	static class TotalScore implements IScore{
+		@Override
 		public int score(CaptchaExamClient client){
 			
 			int total = client.getTotal();
@@ -29,17 +35,28 @@ public class ScoreGen {
 				return 95;
 			return 100;
 		}
+		
+		@Override
+		public boolean arriveAverage(CaptchaExamClient client){
+			return client.getTotal() >= 200;
+		}
 	}
 	
-	static public class RateScore{
-		
+	static public class RateScore implements IScore{
+		@Override
 		public int score(CaptchaExamClient client){
 			int scoreRate = (int)client.getCorrectRate() > 95 ? (int)client.getCorrectRate() : 0;
 			return scoreRate;
 		}
+
+		@Override
+		public boolean arriveAverage(CaptchaExamClient client) {
+			return (int)client.getCorrectRate() > 95;
+		}
 	}
 	
-	static public class CostScore{
+	static public class CostScore implements IScore{
+		@Override
 		public int score(CaptchaExamClient client){
 			
 			int keyAvgCost = (int)client.getAvgCost()/1000;
@@ -61,10 +78,18 @@ public class ScoreGen {
 				return 65;
 			return 60;
 		}
+
+		@Override
+		public boolean arriveAverage(CaptchaExamClient client) {
+
+			int keyAvgCost = (int)client.getAvgCost()/1000;
+			return keyAvgCost < 11;
+		}
 	}
 	
 	static Map<Integer, Integer> CaptchaAvgCost;
 	static Map<Integer, Integer> CaptchaTotal;
+	static Map<Integer, String> comments;
 	
 	static {
 		CaptchaAvgCost = new HashMap<Integer, Integer>();
@@ -96,6 +121,25 @@ public class ScoreGen {
 		CaptchaTotal.put(4, 65);
 		CaptchaTotal.put(3, 65);
 		CaptchaTotal.put(2, 65);
+		
+		comments = new HashMap<Integer, String>();
+		comments.put(0, "还没进入状态？要努力练习才不会有遗憾！");
+		comments.put(1, "你有努力练习，注意提高准确率&缩短平均耗时会更好哟。");
+		comments.put(3, "我们知道你很努力。不要着急，确保准确再输入。");
+		comments.put(7, "我们给你99分，留一分是怕你骄傲～！");
+		comments.put(6, "增加练习次数，可以帮助你尽快提高综合分。");
+		comments.put(4, "你的准确率很棒！要对自己有信心，多家练习，缩短平均耗时。");
+	}
+	
+	public static String comment(CaptchaExamClient client){
+		
+		int total = 0;
+		total += new RateScore().arriveAverage(client) ? 4 : 0;
+		total += new TotalScore().arriveAverage(client) ? 1 : 0;
+		total += new CostScore().arriveAverage(client) ? 2 : 0;
+		if(comments.containsKey(total))
+			return comments.get(total);
+		return "";
 	}
 	
 	public static int score(CaptchaExamClient client){

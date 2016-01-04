@@ -212,15 +212,14 @@
 			<!-- PAGE CONTENT BEGINS -->
 			<div class="row">
 				<div class="space-6"></div>
-			<!--
+			
 			<div class="alert alert-block alert-success">
 				<button data-dismiss="alert" class="close" type="button">
 					<i class="icon-remove"></i>
 				</button>
-
-				综合分&保底价 : <i class="icon-ok green"></i>>=280,保底150元 <i class="icon-ok green"></i>>=260,保底120元 <i class="icon-ok green"></i>>=240,保底100元
+				$!{comment}
 			</div>
-			-->
+
 				<div class="col-sm-3 infobox-container">
 					<div class="infobox infobox-red">
 						<div class="infobox-icon" style="cursor:pointer;">

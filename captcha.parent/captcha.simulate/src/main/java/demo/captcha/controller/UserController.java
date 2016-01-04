@@ -19,6 +19,7 @@ import demo.captcha.model.rank.RateRank;
 import demo.captcha.model.rank.ScoreRank;
 import demo.captcha.service.ICaptchaExamClientService;
 import demo.captcha.service.IRankService;
+import demo.captcha.util.ScoreGen;
 
 @RequestMapping(value = "/user")
 @Controller
@@ -50,6 +51,7 @@ public class UserController {
 		model.addAttribute("client", client);
 		model.addAttribute("finish", client.getTotal());
 		model.addAttribute("target", target);
+		model.addAttribute("comment", ScoreGen.comment(client));
 		for(Ranking rank : ranks){
 			if(rank instanceof CaptchaRank)
 				model.addAttribute("CAPTCHA-RANK", rank);
