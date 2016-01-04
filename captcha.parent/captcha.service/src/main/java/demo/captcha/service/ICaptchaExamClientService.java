@@ -27,4 +27,5 @@ public interface ICaptchaExamClientService {
 	//Page<CaptchaExamClient> rankingByRate();
 	List<CaptchaExamClient> rankingQuality();
 	List<CaptchaExamClient> rankingRate();
+	List<CaptchaExamClient> rankingScore();
 }

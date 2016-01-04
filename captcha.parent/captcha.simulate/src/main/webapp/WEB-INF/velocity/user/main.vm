@@ -40,17 +40,19 @@
 		    	;
 		    else if (event.keyCode == 32 || event.keyCode == 13){
 
-				submitResult();
-		    	max = $("#slider-range-min").slider("value");
-		    	if(count < max){
-			    	setTimeout(function(){
-			    		count ++ ;
-			    		loadCaptcha();
-					}, 1000);
-		    	} else {
-		    		init();
-		    		refresh();
-		    	}
+				if($('#btnStart').attr('disabled') == 'disabled'){
+					submitResult();
+			    	max = $("#slider-range-min").slider("value");
+			    	if(count < max){
+				    	setTimeout(function(){
+				    		count ++ ;
+				    		loadCaptcha();
+						}, 1000);
+			    	} else {
+			    		init();
+			    		refresh();
+			    	}
+				}
 		    	event.preventDefault();
 		    }else
 		    	event.preventDefault();
@@ -105,10 +107,10 @@
   			url  : endPoint,
   			contentType: 'application/json; charset=utf-8',
   			success: function(data){
-  				$('#checkIns').html("综合分:" + data.totalScore);
+
+  				$('#score').html(data.totalScore);
   				
   				$('#captchaTotal').html("已完成" + data.total + "次");
-  				//var rate = Math.floor(data.correct * 100 / data.total);
   				var rate = Math.floor(data.correctRate);
   				
   				$('#correctRate').attr('data-percent', rate);
@@ -152,6 +154,8 @@
 	}
 	
 	function loadCaptcha(){
+		var left = $('#amount').val();
+		$('#amount').val(left-1);
 		
 		$('#inputCaptcha').val('');
 		$("#imgCaptcha").attr("src", "${ContextPath}/images/loadCaptcha.bmp");
@@ -223,10 +227,14 @@
 							<i class="icon-heart" toggle="signHere"></i>
 						</div>
 						<div class="infobox-data">
-							<span class="infobox-data-number" id="checkIns">综合分:</span>
-							<!--<div class="infobox-content">请完成15次</div>-->
+							<!--<span class="infobox-data-number" id="checkIns">综合分:</span>-->
+							<span class="infobox-text">综合分</span>
+							<div class="infobox-content" id="score"></div>
 						</div>
 						<!-- <div class="stat stat-important">4%</div> -->
+						#if(${SCORE-RANK} != $null)
+						<div class="badge badge-success">排名：${SCORE-RANK.rank}</div>
+						#end
 					</div>
 					
 					<div class="infobox infobox-blue2"><!-- 验证码 -->
@@ -271,7 +279,7 @@
 
 				<div class="vspace-sm"></div>
 				
-				<div class="col-sm-6">
+				<div class="col-sm-5">
 					<div class="widget-box">
 						<div class="widget-header widget-header-flat widget-header-small">
 							<h5><i class="icon-signal"></i>校验码模拟练习器</h5>
@@ -351,7 +359,7 @@
 					</div><!-- /widget-box -->
 				</div><!-- /span -->
 				
-				<div class="col-sm-3" id="RankingList">
+				<div class="col-sm-4" id="RankingList">
 				</div>
 			</div><!-- /row -->
 

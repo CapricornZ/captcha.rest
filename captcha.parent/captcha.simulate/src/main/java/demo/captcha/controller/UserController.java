@@ -16,6 +16,7 @@ import demo.captcha.model.CaptchaExamClient;
 import demo.captcha.model.Ranking;
 import demo.captcha.model.rank.CaptchaRank;
 import demo.captcha.model.rank.RateRank;
+import demo.captcha.model.rank.ScoreRank;
 import demo.captcha.service.ICaptchaExamClientService;
 import demo.captcha.service.IRankService;
 
@@ -53,7 +54,9 @@ public class UserController {
 			if(rank instanceof CaptchaRank)
 				model.addAttribute("CAPTCHA-RANK", rank);
 			if(rank instanceof RateRank)
-				model.addAttribute("RATE-RANK", rank);;
+				model.addAttribute("RATE-RANK", rank);
+			if(rank instanceof ScoreRank)
+				model.addAttribute("SCORE-RANK", rank);
 		}
 		int rate = 0;
 		if(client.getTotal() != 0)
@@ -66,8 +69,10 @@ public class UserController {
 	public String rankingList(Model model){
 		List<Ranking> rankCaptcha = this.rankService.topCaptcha(5);
 		List<Ranking> rankRate = this.rankService.topRate(5);
+		List<Ranking> rankScore = this.rankService.topScore(5);
 		model.addAttribute("CAPTCHA", rankCaptcha);
 		model.addAttribute("RATE", rankRate);
+		model.addAttribute("SCORE", rankScore);
 		
 		if(rankCaptcha != null && rankCaptcha.size()>0)
 			model.addAttribute("lastUpdate", rankCaptcha.get(0).getUpdateTime());

@@ -40,6 +40,15 @@ public class RankService extends Service implements IRankService {
 		query.setMaxResults(num);
 		return query.list();
 	}
+	
+	@Override
+	public List<Ranking> topScore(int num) {
+		
+		String hql = "from ScoreRank";
+		Query query = this.getSession().createQuery(hql +  " order by rank");
+		query.setMaxResults(num);
+		return query.list();
+	}
 
 	@Override
 	public List<Ranking> getRankByOwner(CaptchaExamClient owner) {

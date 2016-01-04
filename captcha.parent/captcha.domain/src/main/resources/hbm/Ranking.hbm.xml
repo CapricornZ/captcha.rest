@@ -22,5 +22,8 @@
         <subclass name="demo.captcha.model.rank.RateRank" discriminator-value="RATE">
         	<property name="correctRate"/>
         </subclass>
+        <subclass name="demo.captcha.model.rank.ScoreRank" discriminator-value="SCORE">
+        	<property name="score"/>
+        </subclass>
     </class>
 </hibernate-mapping>
