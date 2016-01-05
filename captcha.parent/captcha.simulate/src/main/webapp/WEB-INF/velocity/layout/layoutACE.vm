@@ -351,7 +351,8 @@
 		</script>
 		<script src="${ContextPath}/assets/js/bootstrap.min.js"></script>
 		<script src="${ContextPath}/assets/js/typeahead-bs2.min.js"></script>
-
+		<script type="text/javascript" src="${ContextPath}/js/bootstrap-dialog.min.js"></script>
+		
 		<!-- page specific plugin scripts -->
 
 		<!--[if lte IE 8]>

@@ -97,6 +97,14 @@
 			});
 		});
 		
+		$("a[data-toggle='ADMIN-BOARD']").click(function(){
+			BootstrapDialog.show({
+				title   : "管理员有话要说",
+				message : $('<div><img src="${ContextPath}/images/HELP.jpg" style="width:500px;"/></div>'),
+				onshow: function(dialogRef){ }
+			});
+		});
+		
 		$('#RankingList').load("${ContextPath}/web/user/rankingList");
 	});
 	
@@ -217,7 +225,8 @@
 				<button data-dismiss="alert" class="close" type="button">
 					<i class="icon-remove"></i>
 				</button>
-				$!{comment}
+				<center>$!{comment}</center>
+				<center><span style="color:#FF0000;" class="glyphicon glyphicon-question-sign"/><a href="#" data-toggle="ADMIN-BOARD" style="font-weight:bold;font-size:16px;color:#FF0000;">管理员有话要说</a></center>
 			</div>
 
 				<div class="col-sm-3 infobox-container">

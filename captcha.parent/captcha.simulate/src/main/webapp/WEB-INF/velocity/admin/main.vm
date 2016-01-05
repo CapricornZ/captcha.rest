@@ -20,15 +20,15 @@
 		//$("#sample-table-1").tablesorter();
 		//$('#sample-table-1').bootstrapTable();
 		
-		//$("a[data-toggle='DETAIL']").click(function(){
+		$("a[data-toggle='DETAIL']").click(function(){
 
-		//	var client = $(this).attr("client");
-		//	BootstrapDialog.show({
-		//		title   : "DETAIL",
-		//		message : $('<div></div>').load('detail/' + client),
-		//		onshow: function(dialogRef){ }
-	    //   	});
-		//});
+			var client = $(this).attr("client");
+			BootstrapDialog.show({
+				title   : "DETAIL",
+				message : $('<div></div>').load('detail/' + client),
+				onshow: function(dialogRef){ }
+	      	});
+		});
 	});
 </script>
 
