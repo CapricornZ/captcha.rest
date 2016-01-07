@@ -10,6 +10,11 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+/**
+ * 读标书&策略&机器
+ * @author martin
+ *
+ */
 public class ReadConfigXls {
 	
 	@SuppressWarnings("static-access")
@@ -51,10 +56,15 @@ public class ReadConfigXls {
 						XSSFCell pass = xssfRow.getCell(4);rows.add(this.getValue(pass));
 						XSSFCell from = xssfRow.getCell(5);rows.add(this.getValue(from));
 						
-						//POLICY
+						//POLICY1
 						XSSFCell priceTime = xssfRow.getCell(6);rows.add(this.getValue(priceTime));
 						XSSFCell priceDelta = xssfRow.getCell(7);rows.add(this.getValue(priceDelta));
 						XSSFCell submitTime = xssfRow.getCell(8);rows.add(this.getValue(submitTime));
+						
+						//POLICY2
+						XSSFCell priceTime2 = xssfRow.getCell(9);rows.add(this.getValue(priceTime2));
+						XSSFCell priceDelta2 = xssfRow.getCell(10);rows.add(this.getValue(priceDelta2));
+						XSSFCell submitTime2 = xssfRow.getCell(11);rows.add(this.getValue(submitTime2));
 
 						list.add(rows.toArray(new String[rows.size()]));
 						

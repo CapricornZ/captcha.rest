@@ -120,9 +120,12 @@
 			<th>标书号</th>
 			<th>密码</th>
 			<th>来源</th>
-			<th>出价时间</th>
-			<th>价格</th>
-			<th>提交时间</th>
+			<th>出价时间1</th>
+			<th>价格1</th>
+			<th>提交时间1</th>
+			<th>出价时间2</th>
+			<th>价格2</th>
+			<th>提交时间2</th>
 		</tr>
 	</thread>
 	<tbody toggle="content">
@@ -138,6 +141,9 @@
 		<td>${client[6]}</td>
 		<td>${client[7]}</td>
 		<td>${client[8]}</td>
+		<td>${client[9]}</td>
+		<td>${client[10]}</td>
+		<td>${client[11]}</td>
 	</tr>
 	#end
 	</tbody>

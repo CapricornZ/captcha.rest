@@ -1,5 +1,10 @@
 package demo.captcha.rs.model;
 
+/***
+ * 自定义策略配置
+ * @author martin
+ *
+ */
 public class Trigger {
 	
 	private int deltaPrice;

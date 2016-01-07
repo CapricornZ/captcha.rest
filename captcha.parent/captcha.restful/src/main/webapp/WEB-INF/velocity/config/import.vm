@@ -22,7 +22,7 @@
 </script>
 
 <div class="row">
-	<div class="col-md-9">
+	<div class="col-md-12">
 		<h4 class="header green lighter bigger">
 			<i class="icon-group blue"></i>Configs Import
 		</h4>
