@@ -3,7 +3,9 @@ package demo.captcha.rs.impl;
 import demo.captcha.model.Config;
 import demo.captcha.rs.IConfigService;
 import demo.captcha.rs.model.Assignment;
+import demo.captcha.rs.model.Policy;
 import demo.captcha.rs.model.Trigger;
+import demo.captcha.rs.model.TriggerV2;
 
 import java.util.List;
 
@@ -65,6 +67,19 @@ public class ConfigService implements IConfigService {
 	}
 	
 	@Override
+	public void assign(TriggerV2 trigger, String bidNo, String fromHost) {
+		
+		Config config = this.configService.queryByNo(bidNo);
+		Client client = this.clientService.queryByIP(fromHost);
+		String tips = new com.google.gson.Gson().toJson(trigger);
+		if(null != tips){
+			client.setTips(tips);
+			client.setMemo(this.format(trigger));
+		}
+		this.configService.saveOrUpdate(config, client);
+	}
+	
+	@Override
 	public void unAssign(String bidNo) {
 		
 		Config config = this.configService.queryByNo(bidNo);
@@ -79,6 +94,18 @@ public class ConfigService implements IConfigService {
 			sb.append(";\r\n验证码触发:" + trigger.getCaptchaTime());
 		if(null != trigger.getSubmitTime())
 			sb.append(";\r\n提交触发:" + trigger.getSubmitTime());
+		
+		return sb.toString();
+	}
+	
+	private String format(TriggerV2 trigger){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format("%s,价格:%s", trigger.getTriggers()[0].getPriceTime(), trigger.getTriggers()[0].getDeltaPrice()));
+		if(null != trigger.getTriggers()[0].getCaptchaTime())
+			sb.append(";\r\n验证码触发:" + trigger.getTriggers()[0].getCaptchaTime());
+		if(null != trigger.getTriggers()[0].getSubmitTime())
+			sb.append(";\r\n提交触发:" + trigger.getTriggers()[0].getSubmitTime());
 		
 		return sb.toString();
 	}

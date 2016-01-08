@@ -24,7 +24,7 @@
 <div class="row">
 	<div class="col-md-12">
 		<h4 class="header green lighter bigger">
-			<i class="icon-group blue"></i>Configs Import
+			<i class="glyphicon glyphicon-share"></i>
 		</h4>
 		<form class="form-horizontal" id="frm" action="#" method="POST" enctype="multipart/form-data">
 			<div class="form-group">

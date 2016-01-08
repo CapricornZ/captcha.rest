@@ -5,8 +5,9 @@ package demo.captcha.rs.model;
  * @author martin
  *
  */
-public class Trigger {
+public class Trigger implements ITrigger{
 	
+	private String category;
 	private int deltaPrice;
 	public String priceTime;
 	public String captchaTime;
@@ -27,4 +28,9 @@ public class Trigger {
 	
 	public int isSubmitReachPrice() { return submitReachPrice; }
 	public void setSubmitReachPrice(int submitReachPrice) { this.submitReachPrice = submitReachPrice; }
+	
+	@Override
+	public String getCategory() { return this.category; }
+	@Override
+	public void setCategory(String value) { this.category = value; }
 }

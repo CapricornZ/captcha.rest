@@ -17,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 import demo.captcha.model.Config;
 import demo.captcha.rs.model.Assignment;
 import demo.captcha.rs.model.Trigger;
+import demo.captcha.rs.model.TriggerV2;
 
 @WebService(endpointInterface="demo.captcha.restful.ConfigService", serviceName="ConfigService")
 @Path("/command/config")
@@ -42,9 +43,14 @@ public interface IConfigService {
 	void modify(Config config);
 	
 	@PUT
-	@Path("/{BIDNO}/client/{client}")
+	@Path("/{BIDNO}/client/{client}/triggerV1")
 	@Consumes(MediaType.APPLICATION_JSON)
 	void assign(Trigger trigger, @PathParam("BIDNO")String bidNo, @PathParam("client")String fromHost);
+	
+	@PUT
+	@Path("/{BIDNO}/client/{client}/triggerV2")
+	@Consumes(MediaType.APPLICATION_JSON)
+	void assign(TriggerV2 trigger, @PathParam("BIDNO")String bidNo, @PathParam("client")String fromHost);
 	
 	@DELETE
 	@Path("/{BIDNO}/client")

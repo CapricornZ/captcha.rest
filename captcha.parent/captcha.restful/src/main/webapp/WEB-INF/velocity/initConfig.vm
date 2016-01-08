@@ -7,8 +7,8 @@
 
 <script type="text/javascript" src="${ContextPath}/js/bootstrap.js"></script>
 <script type="text/javascript" src="${ContextPath}/js/bootstrap-dialog.min.js"></script>
-<script src="${ContextPath}/js/bootstrap-select.min.js"></script>
-<script src="${ContextPath}/js/jquery/jquery.tags.js"></script>
+<script type="text/javascript" src="${ContextPath}/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="${ContextPath}/js/jquery/jquery.tags.js"></script>
 
 <script>
 	$(function(){
