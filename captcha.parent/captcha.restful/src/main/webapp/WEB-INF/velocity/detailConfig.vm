@@ -85,7 +85,7 @@
 						'priceTime'  : $('#priceTime2').val(),
 						'submitTime' : $('#submitTime2').val()
 					}];
-				policy = {triggers, 'category' : 'V1'};
+				policy = {triggers, 'category' : 'V2'};
 			}
 
 			$.ajax({
