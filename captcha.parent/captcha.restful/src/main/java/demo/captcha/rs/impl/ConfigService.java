@@ -3,7 +3,6 @@ package demo.captcha.rs.impl;
 import demo.captcha.model.Config;
 import demo.captcha.rs.IConfigService;
 import demo.captcha.rs.model.Assignment;
-import demo.captcha.rs.model.Policy;
 import demo.captcha.rs.model.Trigger;
 import demo.captcha.rs.model.TriggerV2;
 
