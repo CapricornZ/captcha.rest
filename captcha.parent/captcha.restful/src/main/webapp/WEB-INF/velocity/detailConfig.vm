@@ -77,10 +77,12 @@
 				
 				endPoint += "/triggerV2";
 				var triggers = [{
+						'category'   : 'V1',
 						'deltaPrice' : $('#deltaPrice1').val(),
 						'priceTime'  : $('#priceTime1').val(),
 						'submitTime' : $('#submitTime1').val()
 					},{
+						'category'   : 'V1',
 						'deltaPrice' : $('#deltaPrice2').val(),
 						'priceTime'  : $('#priceTime2').val(),
 						'submitTime' : $('#submitTime2').val()
