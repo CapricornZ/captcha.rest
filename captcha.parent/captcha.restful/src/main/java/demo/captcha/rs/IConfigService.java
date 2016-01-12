@@ -15,9 +15,12 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import demo.captcha.model.Config;
-import demo.captcha.rs.model.Assignment;
+import demo.captcha.rs.model.AssignmentV1;
+import demo.captcha.rs.model.AssignmentV2;
+import demo.captcha.rs.model.AssignmentV3;
 import demo.captcha.rs.model.Trigger;
 import demo.captcha.rs.model.TriggerV2;
+import demo.captcha.rs.model.TriggerV3;
 
 @WebService(endpointInterface="demo.captcha.restful.ConfigService", serviceName="ConfigService")
 @Path("/command/config")
@@ -52,12 +55,27 @@ public interface IConfigService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	void assign(TriggerV2 trigger, @PathParam("BIDNO")String bidNo, @PathParam("client")String fromHost);
 	
+	@PUT
+	@Path("/{BIDNO}/client/{client}/triggerV3")
+	@Consumes(MediaType.APPLICATION_JSON)
+	void assign(TriggerV3 trigger, @PathParam("BIDNO")String bidNo, @PathParam("client")String fromHost);
+	
 	@DELETE
 	@Path("/{BIDNO}/client")
 	void unAssign(@PathParam("BIDNO")String bidNo);
 	
 	@POST
-	@Path("/assignments")
+	@Path("/assignments/v3")
 	@Consumes(MediaType.APPLICATION_JSON)
-	void newAssignment(List<Assignment> assignments);
+	void newAssignmentV3(List<AssignmentV3> assignments);
+	
+	@POST
+	@Path("/assignments/v2")
+	@Consumes(MediaType.APPLICATION_JSON)
+	void newAssignmentV2(List<AssignmentV2> assignments);
+	
+	@POST
+	@Path("/assignments/v1")
+	@Consumes(MediaType.APPLICATION_JSON)
+	void newAssignmentV1(List<AssignmentV1> assignments);
 }

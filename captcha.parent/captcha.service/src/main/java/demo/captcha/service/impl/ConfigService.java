@@ -1,5 +1,7 @@
 package demo.captcha.service.impl;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -8,12 +10,20 @@ import org.hibernate.Session;
 
 import demo.captcha.model.Client;
 import demo.captcha.model.Config;
-import demo.captcha.rs.model.Assignment;
+import demo.captcha.rs.model.AssignmentV1;
+import demo.captcha.rs.model.AssignmentV2;
+import demo.captcha.rs.model.AssignmentV3;
+import demo.captcha.rs.model.TriggerV2;
+import demo.captcha.rs.model.TriggerV3;
+import demo.captcha.rs.model.V3Common;
 import demo.captcha.service.IConfigService;
 import demo.captcha.service.Service;
 
 public class ConfigService extends Service implements IConfigService {
     
+	private String storePath;
+	public void setStorePath(String storePath){ this.storePath = storePath; }
+	
 	@Override
 	public Config saveOrUpdate(Config config) {
 		
@@ -137,10 +147,36 @@ public class ConfigService extends Service implements IConfigService {
 	}
 
 	@Override
-	public void assignment(List<Assignment> assignments){
+	public void assignmentV2(List<AssignmentV2> assignments){
 		
 		com.google.gson.Gson gson = new com.google.gson.Gson();
-		for(Assignment assign : assignments){
+		for(AssignmentV2 assign : assignments){
+			
+			TriggerV2 tV2 = assign.getTrigger();
+			String trigger = gson.toJson(assign.getTrigger());
+			this.assignment(assign.getConfig(), assign.getHost(), trigger);
+		}
+	}
+	
+	@Override
+	public void assignmentV3(List<AssignmentV3> assignments){
+		
+		V3Common v3Comm = this.getCommonV3();
+		com.google.gson.Gson gson = new com.google.gson.Gson();
+		for(AssignmentV3 assign : assignments){
+			
+			TriggerV3 tV3 = assign.getTrigger();
+			tV3.setCommon(v3Comm);
+			String trigger = gson.toJson(assign.getTrigger());
+			this.assignment(assign.getConfig(), assign.getHost(), trigger);
+		}
+	}
+	
+	@Override
+	public void assignmentV1(List<AssignmentV1> assignments){
+		
+		com.google.gson.Gson gson = new com.google.gson.Gson();
+		for(AssignmentV1 assign : assignments){
 			
 			String trigger = gson.toJson(assign.getTrigger());
 			this.assignment(assign.getConfig(), assign.getHost(), trigger);
@@ -161,5 +197,34 @@ public class ConfigService extends Service implements IConfigService {
 			session.save(config);
 			session.update(objClient);
 		}
+	}
+
+	
+	@Override
+	public V3Common getCommonV3(){
+		
+		String path = this.storePath;
+		String v3Common = "{\"checkTime\":\"11:29:48\"}";
+		java.io.FileInputStream fis;
+		try {
+			fis = new java.io.FileInputStream(path + "v3.common");
+			v3Common = org.apache.commons.io.IOUtils.toString(fis);
+			fis.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		V3Common v3 = new com.google.gson.Gson().fromJson(v3Common, V3Common.class);
+		return v3;
+	}
+
+	@Override
+	public void setCommonV3(V3Common v3) throws IOException {
+		
+		String path = this.storePath;
+		java.io.FileOutputStream fos = new java.io.FileOutputStream(path + "v3.common");
+		org.apache.commons.io.IOUtils.write(new com.google.gson.Gson().toJson(v3), fos);		
 	}
 }

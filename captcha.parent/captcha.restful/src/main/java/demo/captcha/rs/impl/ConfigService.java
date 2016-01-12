@@ -2,9 +2,12 @@ package demo.captcha.rs.impl;
 
 import demo.captcha.model.Config;
 import demo.captcha.rs.IConfigService;
-import demo.captcha.rs.model.Assignment;
+import demo.captcha.rs.model.AssignmentV1;
+import demo.captcha.rs.model.AssignmentV2;
+import demo.captcha.rs.model.AssignmentV3;
 import demo.captcha.rs.model.Trigger;
 import demo.captcha.rs.model.TriggerV2;
+import demo.captcha.rs.model.TriggerV3;
 
 import java.util.List;
 
@@ -79,6 +82,18 @@ public class ConfigService implements IConfigService {
 	}
 	
 	@Override
+	public void assign(TriggerV3 trigger, String bidNo, String fromHost) {
+		
+		Config config = this.configService.queryByNo(bidNo);
+		Client client = this.clientService.queryByIP(fromHost);
+		trigger.setCommon(this.configService.getCommonV3());
+		String tips = new com.google.gson.Gson().toJson(trigger);
+		if(null != tips)
+			client.setTips(tips);
+		this.configService.saveOrUpdate(config, client);
+	}
+	
+	@Override
 	public void unAssign(String bidNo) {
 		
 		Config config = this.configService.queryByNo(bidNo);
@@ -109,9 +124,19 @@ public class ConfigService implements IConfigService {
 		return sb.toString();
 	}
 
+	
 	@Override
-	public void newAssignment(List<Assignment> assigns) {
-		
-		this.configService.assignment(assigns);
+	public void newAssignmentV1(List<AssignmentV1> assigns) {
+		this.configService.assignmentV1(assigns);
+	}
+	
+	@Override
+	public void newAssignmentV2(List<AssignmentV2> assigns) {
+		this.configService.assignmentV2(assigns);
+	}
+	
+	@Override
+	public void newAssignmentV3(List<AssignmentV3> assignments) {
+		this.configService.assignmentV3(assignments);
 	}
 }

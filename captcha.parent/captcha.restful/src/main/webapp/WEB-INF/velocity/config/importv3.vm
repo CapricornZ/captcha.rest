@@ -1,0 +1,47 @@
+#set( $ContextPath = ${request.contextPath} )
+#set( $layout = "layout/layoutBlank.vm" )
+
+<script>
+	$(function(){
+		$("#commonV3").click(function(){
+			BootstrapDialog.show({
+				title   : "CustomV3 Common Config",
+	            message : $('<div></div>').load('${ContextPath}/web/command/config/common/v3')
+	        });
+		});
+		
+		$("#uploadV3").click(function(){
+			
+			var formData = new FormData();
+	        formData.append('dataFile', $('input[type=file]')[0].files[0]);
+	        console.log("form data " + formData);
+	        $.ajax({
+	        	url  : 'uploadXls/v3',
+	            data : formData,
+	            processData : false,
+	            contentType : false,
+	            type : 'POST',
+	            success : function(data) { $("#editV3").html(data); },
+	            error : function(err) { alert(err); }
+	        });
+		});
+	});
+</script>
+
+<div class="row">
+	<div class="col-md-12">
+		<h4 class="header green lighter bigger">
+			<i class="glyphicon glyphicon-share"></i>
+		</h4>
+		<form class="form-horizontal" id="frm" action="#" method="POST" enctype="multipart/form-data">
+			<div class="form-group">
+				<div class="col-md-4">
+					<input type="file" name="dataFile" id="dataFile" class="form-control" placeholder="apply.xlsx" style="width:250px;"/>
+				</div>
+				<button type="button" class="btn btn-sm btn-primary" id="uploadV3"><span class="icon-share"></span>UPLOAD</button>
+				<button type="button" class="btn btn-sm btn-success" id="commonV3"><span class="icon-share"></span>V3Common</button>
+			</div>
+		</form>
+		<div class="col-md-12" id="editV3"></div>
+	</div>
+</div><!-- row -->

@@ -15,7 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * @author martin
  *
  */
-public class ReadConfigXls {
+public class ReadConfigXlsV2 {
 	
 	@SuppressWarnings("static-access")
     private String getValue(XSSFCell hssfCell) {

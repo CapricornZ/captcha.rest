@@ -72,7 +72,7 @@
 		});
 		
 		$("#BATCH").click(function(){
-			
+
 			var totalUsers = new Array();
 			$("#example1 tbody[toggle='content'] tr").each(function(){
 				var client = {

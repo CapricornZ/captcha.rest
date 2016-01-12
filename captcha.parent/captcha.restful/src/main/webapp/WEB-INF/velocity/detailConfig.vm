@@ -59,19 +59,19 @@
 			endPoint += "/client/" + $("#clientEdit").val();
 			if("tab_v1" == policyType){
 			
-				endPoint += "/triggerV1";			
+				endPoint += "/triggerV1";
 				policy = {
 					'category'   : 'V1',
-					'deltaPrice' : $('#deltaPrice').val(),
-					'priceTime'  : $('#priceTime').val(),
+					'deltaPrice' : $('div[toggle*="V1"] #deltaPrice').val(),
+					'priceTime'  : $('div[toggle*="V1"] #priceTime').val(),
 				};
 		
-				if($('#checkCaptchaTime').is(':checked'))
-					policy.captchaTime = $('#captchaTime').val();
-				if($('#checkSubmitTime').is(':checked'))
-					policy.submitTime = $('#submitTime').val();
-				if($('#checkReachPrice').is(':checked'))
-					policy.submitReachPrice = $('#submitReachPrice').val();
+				if($('div[toggle*="V1"] #checkCaptchaTime').is(':checked'))
+					policy.captchaTime = $('div[toggle*="V1"] #captchaTime').val();
+				if($('div[toggle*="V1"] #checkSubmitTime').is(':checked'))
+					policy.submitTime = $('div[toggle*="V1"] #submitTime').val();
+				if($('div[toggle*="V1"] #checkReachPrice').is(':checked'))
+					policy.submitReachPrice = $('div[toggle*="V1"] #submitReachPrice').val();
 			}
 			if("tab_v2" == policyType){
 				
@@ -88,6 +88,16 @@
 						'submitTime' : $('#submitTime2').val()
 					}];
 				policy = {triggers, 'category' : 'V2'};
+			}
+			if("tab_v3" == policyType){
+
+				endPoint += "/triggerV3";
+				policy = {
+					'category'   : 'V3',
+					'deltaPrice' : $('div[toggle*="V3"] #deltaPrice').val(),
+					'priceTime'  : $('div[toggle*="V3"] #priceTime').val(),
+					'submitTime' : $('div[toggle*="V3"] #submitTime').val()
+				};
 			}
 
 			$.ajax({
@@ -135,36 +145,36 @@
 				
 				$("[toggle*='V1']").addClass("active");
 				trigger = tips;
-				$('#deltaPrice').val(trigger.deltaPrice);
-				$('#priceTime').val(trigger.priceTime);
+				$('div[toggle*="V1"] #deltaPrice').val(trigger.deltaPrice);
+				$('div[toggle*="V1"] #priceTime').val(trigger.priceTime);
 				if(trigger.captchaTime != null){
-					$('#checkCaptchaTime').attr('checked', true);
-					$('#captchaTime').attr('disabled', false);
-					$('#captchaTime').val(trigger.captchaTime);
+					$('div[toggle*="V1"] #checkCaptchaTime').attr('checked', true);
+					$('div[toggle*="V1"] #captchaTime').attr('disabled', false);
+					$('div[toggle*="V1"] #captchaTime').val(trigger.captchaTime);
 				} else {
-					$('#checkCaptchaTime').attr('checked', false);
-					$('#captchaTime').attr('disabled', true);
-					$('#captchaTime').val('00:00:00');
+					$('div[toggle*="V1"] #checkCaptchaTime').attr('checked', false);
+					$('div[toggle*="V1"] #captchaTime').attr('disabled', true);
+					$('div[toggle*="V1"] #captchaTime').val('00:00:00');
 				}
 				
 				if(trigger.submitTime != null){
-					$('#checkSubmitTime').attr('checked', true);
-					$('#submitTime').attr('disabled', false);
-					$('#submitTime').val(trigger.submitTime);
+					$('div[toggle*="V1"] #checkSubmitTime').attr('checked', true);
+					$('div[toggle*="V1"] #submitTime').attr('disabled', false);
+					$('div[toggle*="V1"] #submitTime').val(trigger.submitTime);
 				} else {
-					$('#checkSubmitTime').attr('checked', false);
-					$('#submitTime').attr('disabled', true);
-					$('#submitTime').val('00:00:00');
+					$('div[toggle*="V1"] #checkSubmitTime').attr('checked', false);
+					$('div[toggle*="V1"] #submitTime').attr('disabled', true);
+					$('div[toggle*="V1"] #submitTime').val('00:00:00');
 				}
 				
 				if(tips.submitReachPrice != null && trigger.submitReachPrice > 0){
-					$('#checkReachPrice').attr('checked', true);
-					$('#submitReachPrice').attr('disabled', false);
-					$('#submitReachPrice').val(trigger.submitReachPrice);
+					$('div[toggle*="V1"] #checkReachPrice').attr('checked', true);
+					$('div[toggle*="V1"] #submitReachPrice').attr('disabled', false);
+					$('div[toggle*="V1"] #submitReachPrice').val(trigger.submitReachPrice);
 				} else {
-					$('#checkReachPrice').attr('checked', false);
-					$('#submitReachPrice').attr('disabled', true);
-					$('#submitReachPrice').val();
+					$('div[toggle*="V1"] #checkReachPrice').attr('checked', false);
+					$('div[toggle*="V1"] #submitReachPrice').attr('disabled', true);
+					$('div[toggle*="V1"] #submitReachPrice').val();
 				}
 			}//V1
 			
@@ -180,6 +190,16 @@
 				$('#deltaPrice2').val(triggers[1].deltaPrice);
 				$('#submitTime2').val(triggers[1].submitTime);
 			}//V2
+			
+			if("V3" == tips.category){//V3
+			
+				$("[toggle*='V3']").addClass("active");
+				triggers = tips.triggers;
+				trigger = tips;
+				$('div[toggle*="V3"] #deltaPrice').val(trigger.deltaPrice);
+				$('div[toggle*="V3"] #priceTime').val(trigger.priceTime);
+				$('div[toggle*="V3"] #submitTime').val(trigger.submitTime);
+			}
 		}
 		else{
 			$("#POLICY").hide();
@@ -263,6 +283,7 @@
 <ul class="nav nav-pills  col-md-2">
 	<li toggle="V1"><a href="#tab_v1" data-toggle="pill">V1</a></li>
 	<li toggle="V2"><a href="#tab_v2" data-toggle="pill">V2</a></li>
+	<li toggle="V3"><a href="#tab_v3" data-toggle="pill">V3</a></li>
 </ul>
 <div class="tab-content col-md-10">
 		<!-- TAB POLICY V1 -->
@@ -339,6 +360,25 @@
 				</div>
 			</fieldset>
         </div><!-- end TAB POLICY V2 -->
+        <!-- TAB POLICY V3 -->
+        <div class="tab-pane" toggle='POLICY V3' id="tab_v3">
+        	<div class="form-group" toggle='TIPS'>
+				<label class="col-sm-4 control-label" for="priceTime">触发时间</label>
+				<div class="controls col-sm-2">
+					<input class="form-control" toggle="OPS TIMER" id="priceTime" type="text" placeholder="触发时间" style="width:100px;height:30px;" value="11:29:48"/>
+				</div>
+				<label class="col-sm-2 control-label" for="deltaPrice">加价</label>
+				<div class="controls col-sm-2">
+					<input class="form-control" toggle="OPS PRICE" id="deltaPrice" type="text" placeholder="0600" style="width:100px;height:30px;" value="0600"/>
+				</div>
+			</div>
+			<div class="form-group" toggle="TIPS">
+				<label class="col-sm-4 control-label" for="submitTime">提交触发时间</label>
+				<div class="control col-sm-8">
+					<input class="form-control" toggle="OPS TIMER" id="submitTime" type="text" placeholder="触发时间" style="width:100px;height:30px;" value="11:29:52"/>
+				</div>
+			</div>
+        </div><!-- end TAB POLICY V3 -->
 </div><!-- END tab content -->
 		</div>
 		

@@ -3,18 +3,18 @@
 
 <script>
 	$(function(){
-		$("#upload").click(function(){
+		$("#uploadV1").click(function(){
 			
 			var formData = new FormData();
 	        formData.append('dataFile', $('input[type=file]')[0].files[0]);
 	        console.log("form data " + formData);
 	        $.ajax({
-	        	url  : 'uploadXls',
+	        	url  : 'uploadXls/v1',
 	            data : formData,
 	            processData : false,
 	            contentType : false,
 	            type : 'POST',
-	            success : function(data) { $("#edit").html(data); },
+	            success : function(data) { $("#editV1").html(data); },
 	            error : function(err) { alert(err); }
 	        });
 		});
@@ -31,9 +31,9 @@
 				<div class="col-md-4">
 					<input type="file" name="dataFile" id="dataFile" class="form-control" placeholder="apply.xlsx" style="width:250px;"/>
 				</div>
-				<button type="button" class="btn btn-sm btn-primary" id="upload"><span class="icon-share"></span>UPLOAD</button>
+				<button type="button" class="btn btn-sm btn-primary" id="uploadV1"><span class="icon-share"></span>UPLOAD</button>
 			</div>
 		</form>
-		<div class="col-md-12" id="edit"></div>
+		<div class="col-md-12" id="editV1"></div>
 	</div>
 </div><!-- row -->

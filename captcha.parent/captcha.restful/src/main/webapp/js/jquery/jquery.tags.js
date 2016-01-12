@@ -109,6 +109,6 @@
 })(jQuery);
 
 $(function () {
-    $('head').append($('<style>.form-tags span, .input-tags {padding: .3em .6em .3em; display: inline-block;font-size: 14px;margin: 4px 4px 0 0;line-height: 26px;font-weight: normal;}.input-tags {width: auto;}</style>'));
+    $('head').append($('<style>.form-tags span, .input-tags {padding: .3em .6em .3em; display: inline-block;font-size: 14px;margin: 4px 4px 0 0;line-height: 20px;font-weight: normal;}.input-tags {width: auto;}</style>'));
     $('[data-toggle="tags"]').tags();
 });

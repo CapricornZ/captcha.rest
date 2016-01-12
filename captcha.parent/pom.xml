@@ -239,7 +239,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<host>127.0.0.1</host>
+				<host>192.168.1.17</host>
 				<port>9990</port>
 				<username>jboss</username>
 				<password>Pass2010</password>
@@ -287,8 +287,6 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-			
-			
 		</plugins>
 	</build>
 </project>

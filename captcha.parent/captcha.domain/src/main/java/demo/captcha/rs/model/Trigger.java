@@ -9,9 +9,9 @@ public class Trigger implements ITrigger{
 	
 	private String category;
 	private int deltaPrice;
-	public String priceTime;
-	public String captchaTime;
-	public String submitTime;
+	private String priceTime;
+	private String captchaTime;
+	private String submitTime;
 	public int submitReachPrice;
 	
 	public int getDeltaPrice() { return deltaPrice; }

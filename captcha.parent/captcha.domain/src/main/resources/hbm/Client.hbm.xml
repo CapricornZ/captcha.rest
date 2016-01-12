@@ -14,7 +14,7 @@
             <generator class="assigned"/>
         </id>
         <property name="code" column="code"/>
-        <property name="tips" column="tips"/>
+        <property name="tips" column="tips" length="2048"/>
         <property name="memo" column="memo"/>
         <property name="expireTime" type="java.sql.Timestamp" column="expireTime"/>
         <property name="updateTime" type="java.sql.Timestamp" column="updateTime"/>

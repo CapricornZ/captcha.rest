@@ -115,7 +115,7 @@
 						$.ajax({
 						    url : endPoint,
 			    			type: 'PUT',
-			    			data:JSON.stringify(opsParam),
+			    			data: JSON.stringify(opsParam),
 							contentType: 'application/json;charset=utf-8;',
 							error: function(msg) { alert("error"); },
 							complete: function(msg) { console.log("complete"); },

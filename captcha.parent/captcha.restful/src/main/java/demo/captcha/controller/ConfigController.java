@@ -9,23 +9,26 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import demo.captcha.model.Client;
 import demo.captcha.model.Config;
 import demo.captcha.rs.model.ConfigHtml;
+import demo.captcha.rs.model.V3Common;
 import demo.captcha.service.IClientService;
 import demo.captcha.service.IConfigService;
-import demo.captcha.util.ReadConfigXls;
-import demo.captcha.util.ReadExcel;
+import demo.captcha.util.ReadConfigXlsV1;
+import demo.captcha.util.ReadConfigXlsV2;
 
 @RequestMapping(value = "/command/config")
 @Controller
 public class ConfigController {
-
+	
 	private IConfigService configService;
 	public void setConfigService(IConfigService configService) { this.configService = configService; }
 	
@@ -58,11 +61,6 @@ public class ConfigController {
 		return "config/manage";
 	}
 	
-	@RequestMapping(value = "/import", method=RequestMethod.GET)
-	public String initImport(Model model){
-		return "config/import";
-	}
-	
 	@RequestMapping(value = "/create", method=RequestMethod.GET)
 	public String initCreate(Model model){
 		return "config/create";
@@ -78,13 +76,47 @@ public class ConfigController {
 		return "detailConfig";
 	}
 	
-	@RequestMapping(value = "/uploadXls")
-	public String publish(@RequestParam("dataFile")MultipartFile file, 
+	@RequestMapping(value = "/common/v3", method=RequestMethod.GET)
+	public String initCommon(Model model){
+		
+		V3Common v3 = this.configService.getCommonV3();
+		String v3Common = new com.google.gson.Gson().toJson(v3);
+		
+		model.addAttribute("v3Common", v3Common);
+		return "config/commonV3";
+	}
+	
+	@RequestMapping(value = "/common/v3", method=RequestMethod.PUT)
+	@ResponseBody
+	public String saveCommon(Model model, @RequestBody V3Common v3) throws IOException {
+		
+		this.configService.setCommonV3(v3);
+		return "success";
+	}
+	
+	@RequestMapping(value = "/import/{VERSION}", method=RequestMethod.GET)
+	public String initImport(Model model, @PathVariable("VERSION")String version){
+		return "config/import" + version.toLowerCase();
+	}
+	
+	@RequestMapping(value = "/uploadXls/{VERSION}")
+	public String publish(@RequestParam("dataFile")MultipartFile file,
+			@PathVariable("VERSION")String version, 
 			Model model, HttpServletRequest request) throws IOException{
 		
-		ReadConfigXls readExcel = new ReadConfigXls();
-		List<String[]> configs = readExcel.readXlsx(file.getInputStream());
-		model.addAttribute("configs", configs);
-		return "config/batchConfigs";
+		if("v1".equals(version.toLowerCase())){
+			
+			ReadConfigXlsV1 readExcel = new ReadConfigXlsV1();
+			List<String[]> configs = readExcel.readXlsx(file.getInputStream());
+			model.addAttribute("configs", configs);
+		}
+		if("v3".equals(version.toLowerCase())){
+			
+			ReadConfigXlsV2 readExcel = new ReadConfigXlsV2();
+			List<String[]> configs = readExcel.readXlsx(file.getInputStream());
+			model.addAttribute("configs", configs);
+		}
+		
+		return "config/batchConfigs" + version.toLowerCase();
 	}
 }

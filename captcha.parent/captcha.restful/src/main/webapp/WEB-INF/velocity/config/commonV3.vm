@@ -1,0 +1,47 @@
+#set( $ContextPath = ${request.contextPath} )
+#set( $layout = "layout/layoutBlank.vm" )
+
+<link rel="stylesheet" type="text/css" href="${ContextPath}/css/jsoneditor.css"></link>
+
+<script type="text/javascript" src="${ContextPath}/js/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="${ContextPath}/js/jquery/jquery.jsoneditor.js"></script>
+
+<script type="text/javascript">
+	$(function(){
+		var json = JSON.parse($('#jsonContent').html());
+		$('#editor').jsonEditor(json, {
+			change:function(){
+				$('#jsonContent').html(JSON.stringify(json));
+			}
+		});
+	});
+	
+	function saveJson(){
+		var json = $('#jsonContent').html();
+		$.ajax({
+		    url : "common/v3",
+			type: 'PUT',
+			data: json,
+			contentType: 'application/json;charset=utf-8;',
+			error: function(msg) { alert("error"); },
+			complete: function(msg) { console.log("complete"); },
+			success: function(msg) { alert(msg); }
+		});
+	}
+</script>
+
+<form class="form-horizontal" onsubmit="return false;">
+	<fieldset>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="jsonContent">jsonContent</label>
+			<div class="controls 10">
+				<textarea class="form-control" rows="1" style="height:10px;width:300px;visibility:hidden;" id="jsonContent">${v3Common}</textarea>
+			</div>
+			<div id="editor" class="json-editor" class="controls 10"></div>
+		</div>
+		<div class="form-actions">
+			<button class="btn btn-primary" type="submit" onclick="return saveJson();">保存修改</button>
+			<button class="btn">取消</button>
+		</div>
+	</fieldset>
+</form>
