@@ -86,7 +86,8 @@ public class ConfigService implements IConfigService {
 		
 		Config config = this.configService.queryByNo(bidNo);
 		Client client = this.clientService.queryByIP(fromHost);
-		trigger.setCommon(this.configService.getCommonV3());
+		if(null == trigger.getCommon())
+			trigger.setCommon(this.configService.getCommonV3());
 		String tips = new com.google.gson.Gson().toJson(trigger);
 		if(null != tips)
 			client.setTips(tips);

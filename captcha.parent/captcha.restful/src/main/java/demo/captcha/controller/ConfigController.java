@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import demo.captcha.model.Client;
 import demo.captcha.model.Config;
 import demo.captcha.rs.model.ConfigHtml;
+import demo.captcha.rs.model.TriggerV3;
 import demo.captcha.rs.model.V3Common;
 import demo.captcha.service.IClientService;
 import demo.captcha.service.IConfigService;
@@ -38,15 +39,7 @@ public class ConfigController {
 	@RequestMapping(value = "/init", method=RequestMethod.GET)
 	public String initConfig(Model model){
 		
-		/*List<Config> configs = this.configService.listAll();
-		List<ConfigHtml> configHtmls = new ArrayList<ConfigHtml>();
-		for(Config config : configs)
-			configHtmls.add(new ConfigHtml(config));
-		
-		model.addAttribute("configs", configHtmls);
-		return "preConfig";*/
-		
-		return "initConfig";
+		return "config/initConfig";
 	}
 	
 	@RequestMapping(value = "/manage", method=RequestMethod.GET)
@@ -63,6 +56,7 @@ public class ConfigController {
 	
 	@RequestMapping(value = "/create", method=RequestMethod.GET)
 	public String initCreate(Model model){
+		
 		return "config/create";
 	}
 	
@@ -73,7 +67,20 @@ public class ConfigController {
 		model.addAttribute("clients", clients);
 		Config config = this.configService.queryByNo(no);
 		model.addAttribute("config", config);
-		return "detailConfig";
+
+		if(config.getClient() != null && (config.getClient().getTips() != null || !config.getClient().getTips().equals(""))){
+			
+			com.google.gson.Gson gSon = new com.google.gson.Gson();
+			TriggerV3 triggerV3 = gSon.fromJson(config.getClient().getTips(), TriggerV3.class);
+			String v3Common = gSon.toJson(triggerV3.getCommon());
+			model.addAttribute("v3Common", v3Common);
+		} else {
+			
+			V3Common v3 = this.configService.getCommonV3();
+			String v3Common = new com.google.gson.Gson().toJson(v3);
+			model.addAttribute("v3Common", v3Common);
+		}
+		return "config/detailConfig";
 	}
 	
 	@RequestMapping(value = "/common/v3", method=RequestMethod.GET)

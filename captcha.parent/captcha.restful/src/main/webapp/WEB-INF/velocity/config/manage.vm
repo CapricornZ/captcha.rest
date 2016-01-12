@@ -1,7 +1,7 @@
 #set( $ContextPath = ${request.contextPath} )
 #set( $layout = "layout/layoutBlank.vm" )
 
-<link rel="stylesheet" href="${ContextPath}/css/bootstrap-table.css">
+<link rel="stylesheet" type="text/css" href="${ContextPath}/css/bootstrap-table.css">
 
 <script src="${ContextPath}/js/bootstrap-table.js"></script>
 <script src="${ContextPath}/js/bootstrap-table-multiple-sort.js"></script>
@@ -9,73 +9,77 @@
 <script src="${ContextPath}/js/tableExport.js"></script>
 
 <script>
+	function removeObj(ctrl){
+	
+		var elementTR = $(ctrl).parent().parent();
+		var configID = $(ctrl).attr("config");
+		var endPoint = "${ContextPath}/rest/service/command/config/" + configID;
+		BootstrapDialog.show({
+            message: "确定要删除？",
+            buttons:[{
+            	label : '是',
+            	cssClass: 'btn-primary',
+            	action: function(dialogItself){
+
+		  			$.ajax({
+		  				url  : endPoint,
+		  				type : 'DELETE',
+		  				cache: false,
+						contentType: 'application/json; charset=utf-8',
+						success: function(json) {
+							alert("SUCCESS");
+							console.log(" reponse :"+ json);
+							elementTR.remove();
+		                },
+		                error: function(msg) { alert("error"); }
+		  			});
+            		dialogItself.close();
+            	}
+            },{
+            	label : '否',
+            	action: function(dialogItself){
+            		dialogItself.close();
+            	}
+            }]
+        });
+	}
+
+	function unbind(ctrl){
+		var elementTD = $(ctrl).parent();
+		var configID = $(ctrl).attr("config");
+		var endPoint = "${ContextPath}/rest/service/command/config/" + configID + "/client";
+		$.ajax({
+			url  : endPoint,
+			type : 'DELETE',
+			cache: false,
+			contentType: 'application/json; charset=utf-8',
+			success: function(json) {
+				alert("SUCCESS");
+				console.log(" reponse :"+ json);
+				elementTD.html("");
+            },
+            error: function(msg) { alert("error"); }
+		});
+	}
+	
+	function modifyObj(ctrl){
+
+		var configID = $(ctrl).attr("config");
+		BootstrapDialog.show({
+			title   : "标书配置",
+            message : $('<div></div>').load('${ContextPath}/web/command/config/detail/' + configID + '.do')
+        });
+	}
+	
 	$(function(){		
 		$('#configs').bootstrapTable();
-		
-		//对话框查看，修改标书
-		$("a[toggle='MODIFY']").click(function(){
-  		
-  			var configID = $(this).attr("config");
-  			BootstrapDialog.show({
-				title   : "标书配置",
-	            message : $('<div></div>').load('${ContextPath}/web/command/config/detail/' + configID + '.do')
-	        });
-  		});
-  		
+
   		//解绑标书<-->机器
   		$("button[toggle='UNBIND']").click(function(){
-  		
-  			var elementTD = $(this).parent();
-  			var configID = $(this).attr("config");
-  			var endPoint = "${ContextPath}/rest/service/command/config/" + configID + "/client";
-  			$.ajax({
-  				url  : endPoint,
-  				type : 'DELETE',
-  				cache: false,
-				contentType: 'application/json; charset=utf-8',
-				success: function(json) {
-					alert("SUCCESS");
-					console.log(" reponse :"+ json);
-					elementTD.html("");
-                },
-                error: function(msg) { alert("error"); }
-  			});
   		});
   		
   		//删除标书
   		$("button[toggle='DEL']").click(function(){
-
-			var elementTR = $(this).parent().parent();
-  			var configID = $(this).attr("config");
-  			var endPoint = "${ContextPath}/rest/service/command/config/" + configID;
-			BootstrapDialog.show({
-	            message: "确定要删除？",
-	            buttons:[{
-	            	label : '是',
-	            	cssClass: 'btn-primary',
-	            	action: function(dialogItself){
-
-			  			$.ajax({
-			  				url  : endPoint,
-			  				type : 'DELETE',
-			  				cache: false,
-							contentType: 'application/json; charset=utf-8',
-							success: function(json) {
-								alert("SUCCESS");
-								console.log(" reponse :"+ json);
-								elementTR.remove();
-			                },
-			                error: function(msg) { alert("error"); }
-			  			});
-	            		dialogItself.close();
-	            	}
-	            },{
-	            	label : '否',
-	            	action: function(dialogItself){
-	            		dialogItself.close();
-	            	}
-	            }]
-	        });
   		});
   		
   		$("#createConfig").click(function(){
@@ -145,7 +149,7 @@
 		#foreach(${config} in ${configs})
 		<tr config="${config.no}" toggle="row">
 			<td align="right">$!{velocityCount}</td>
-			<td><a href='#' config='${config.no}' toggle='MODIFY'>${config.no}</a></td>
+			<td><a href='#' config='${config.no}' toggle='MODIFY' onclick="return modifyObj(this);">${config.no}</a></td>
 			<td>$!{config.passwd}</td>
 			<td>$!{config.pid}</td>
 			<td>$!{config.pname}</td>
@@ -153,13 +157,13 @@
 			<td>$!{config.client.tips}</td>
 			<td>
 				#if(${config.client} != $null)
-					<button config="${config.no}" class="btn btn-sm btn-danger" toggle="UNBIND"><span class="glyphicon glyphicon-ban-circle"/></button>
+					<button config="${config.no}" class="btn btn-sm btn-danger" toggle="UNBIND" onclick="return unbind(this);"><span class="glyphicon glyphicon-ban-circle"/></button>
 					<span>${config.client.ip}
 					#if(${config.client.isOnline})<img src='${ContextPath}/img/online.ico'/>#else<img src='${ContextPath}/img/offline.ico'/>#end</span>
 				#end
 			</td>
 			<td>
-				<button class="btn btn-danger btn-sm" type="button" config="${config.no}" toggle="DEL"><span class="glyphicon glyphicon-remove"/></button>
+				<button class="btn btn-danger btn-sm" type="button" config="${config.no}" toggle="DEL" onclick="return removeObj(this);"><span class="glyphicon glyphicon-remove"/></button>
 			</td>
 		</tr>
 		#end

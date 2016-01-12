@@ -25,5 +25,5 @@ public interface IConfigService {
 	void assignmentV3(List<AssignmentV3> assignments);
 	
 	V3Common getCommonV3();
-	void setCommonV3(V3Common v3)  throws IOException;
+	void setCommonV3(V3Common v3) throws IOException;
 }
