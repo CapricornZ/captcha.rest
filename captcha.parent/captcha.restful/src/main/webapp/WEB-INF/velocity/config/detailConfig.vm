@@ -124,10 +124,12 @@
 	#end
 	$(function(){
 		var json = JSON.parse($('#jsonContent').html());
+		if(json == null){
+			json = {"checkTime":"11:29:48","triggers":[{"delta":500,"submits":[{"submitTime":"10:03:53","percent":50},{"submitTime":"10:03:54","percent":75},{"submitTime":"10:03:55","percent":100}]}]};
+			$('#jsonContent').html(JSON.stringify(json));
+		}
 		$('#editor').jsonEditor(json, {
-			change:function(){
-				$('#jsonContent').html(JSON.stringify(json));
-			}
+			change:function(){ $('#jsonContent').html(JSON.stringify(json)); }
 		});
 		
 		$("input[toggle*='PRICE']").mask("9999", {placeholder:"0600"});
