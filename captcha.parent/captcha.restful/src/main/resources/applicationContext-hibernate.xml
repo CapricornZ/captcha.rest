@@ -77,7 +77,7 @@
 	</bean>
 	<bean id="configService" class="demo.captcha.service.impl.ConfigService">
 		<property name="sessionFactory" ref="sessionFactory"/>
-		<property name="storePath" value="/home/martin/"/>
+		<property name="storePath" value="${CONFIG.PATH}"/>
 	</bean>
 	<bean id="operationService" class="demo.captcha.service.impl.OperationService">
 		<property name="sessionFactory" ref="sessionFactory"/>

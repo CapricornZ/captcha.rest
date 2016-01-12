@@ -17,6 +17,7 @@
   				<value>classpath:simulate.properties</value>
   				<value>classpath:real.properties</value>
   				<value>classpath:moni.properties</value>
+  				<value>classpath:config.properties</value>
   			</list>
   		</property>
 	</bean>
