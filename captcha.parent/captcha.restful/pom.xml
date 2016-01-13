@@ -258,7 +258,7 @@
 							<resources>
 								<resource>
 									<!-- 指定resources插件处理哪个目录下的资源文件 -->
-									<directory>../src/main/deploy/${environment.path}/</directory>
+									<directory>src/main/deploy/${environment.path}/</directory>
 									<includes>
 										<include>*.properties</include>
 									</includes>

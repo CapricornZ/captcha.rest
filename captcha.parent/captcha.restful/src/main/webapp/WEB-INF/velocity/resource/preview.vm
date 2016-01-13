@@ -28,8 +28,10 @@
             success : function(data) { 
             	
             	var array = data.split(",");
-            	if(data.startWith("SUCCESS"))
+            	if(data.startWith("SUCCESS")){
             		$("#repository").html(array[1]);
+            		$("#repository").attr('href', array[1]);
+            	}
             	alert(data);
             },
             error : function(err) { alert(err); }

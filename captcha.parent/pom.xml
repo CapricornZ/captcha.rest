@@ -262,16 +262,16 @@
 		</profile>
 		
 		<profile>
-			<id>Simulate</id>
+			<id>PRD</id>
 			<properties>
-				<environment.path>Simulate</environment.path>
+				<environment.path>prd</environment.path>
 			</properties>
 		</profile>
 
 		<profile>
-			<id>Real</id>
+			<id>DEV</id>
 			<properties>
-				<environment.path>Real</environment.path>
+				<environment.path>dev</environment.path>
 			</properties>
 		</profile>
 	</profiles>
