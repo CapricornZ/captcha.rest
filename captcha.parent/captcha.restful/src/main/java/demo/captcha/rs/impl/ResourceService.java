@@ -1,7 +1,10 @@
 package demo.captcha.rs.impl;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -62,6 +65,13 @@ public class ResourceService implements IResourceService, ApplicationContextAwar
 			entry.setDescription(entries.get(i).getDescription());
 			entry.setUrl(entries.get(i).getUrl());
 		}
+	}
+
+	@Override
+	public void uploadAttachment(Attachment attachment) throws IOException {
+		
+		java.io.File destFile = new java.io.File("/home/martin/attach.bmp");
+		attachment.transferTo(destFile);
 	}
 
 }

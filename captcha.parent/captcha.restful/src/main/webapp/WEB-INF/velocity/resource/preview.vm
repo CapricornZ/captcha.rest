@@ -5,6 +5,37 @@
 <script type="text/javascript" src="${ContextPath}/js/jquery/jquery-1.11.2.min.js"></script>
 
 <script type="text/javascript">
+	String.prototype.startWith=function(str){
+		var reg=new RegExp("^"+str);
+		return reg.test(this);
+	}
+	
+	String.prototype.endWith=function(str){
+		var reg=new RegExp(str+"$");
+		return reg.test(this);
+	}
+
+	function uploadAttachment(){
+			
+		var formData = new FormData();
+        formData.append('dataFile', $('input[type=file]')[0].files[0]);
+        $.ajax({
+        	url  : 'attachment/${CATEGORY}',
+            data : formData,
+            processData : false,
+            contentType : false,
+            type : 'POST',
+            success : function(data) { 
+            	
+            	var array = data.split(",");
+            	if(data.startWith("SUCCESS"))
+            		$("#repository").html(array[1]);
+            	alert(data);
+            },
+            error : function(err) { alert(err); }
+        });
+	}
+	
 	$(function(){
 		$("button[toggle='ENTRIES-MODIFY']").click(function(){
 			
@@ -131,21 +162,32 @@
 	<div class="row"><!--fluid-->
 		<div class="col-md-5"><!--Sidebar content-->
 			<div class="form-horizontal" id="ENTRIES">
-				<legend>
-					<small>入口地址</small>
-					<button class="btn btn-primary btn-sm" toggle="ENTRIES-MODIFY">修改</button>
-				</legend>
+				<legend><small>入口地址</small></legend>
 				#foreach(${entry} in ${ENTRIES})
 				<div class="form-group">
     				<label class="col-sm-3 control-label">${entry.description}</label>
-    				<div class="col-sm-9">
+    				<div class="col-sm-6">
       					<input type="text" class="form-control" placeholder="${entry.description}" value="${entry.url}">
     				</div>
+    				#if(${velocityCount} == 1)
+  					<button class="btn btn-primary btn-sm" toggle="ENTRIES-MODIFY">修改</button>
+  					#end
   				</div>
   				#end
   			</div>
 		</div>
-		<div class="col-md-7"><!--Sidebar content-->
+		<div class="col-md-2"><!--Sidebar content--></div>
+		<div class="col-md-5"><!--Sidebar content-->
+			<div class="form-horizontal">
+				<legend><small>字库样本</small><a href="${URL}" id="repository">${URL}</a></legend>
+				<div class="form-group">
+    				<label class="col-sm-3 control-label"></label>
+    				<div class="col-sm-6">
+      					<input type="file" name="dataFile" id="dataFile" class="form-control" placeholder="apply.xlsx"/>
+    				</div>
+    				<button class="btn btn-primary btn-sm" toggle="" onclick="return uploadAttachment();">更新</button>
+  				</div>
+  			</div>
 		</div>
 	</div>
 	<div class="row"><!--fluid-->	

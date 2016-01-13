@@ -12,7 +12,16 @@
 	
 	<bean id="GLOBAL-REAL" class="demo.captcha.rs.model.GlobalConfig">
 		<property name="tag" value="${real.tag}"/>
-		<property name="repository" value="/real.zip"/>
+		<!--<property name="repository" value="${HTTP.URL}captcha.restful/real.zip"/>-->
+		<property name="repository">
+			<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	            <property name="targetObject" ref="localConfig" />
+	            <property name="targetMethod" value="getProperty" />
+	            <property name="arguments">
+	            	<list><value>real.url</value></list>
+	            </property>
+	        </bean>
+		</property>
 		<property name="dynamic" value="${real.dynamic}"/>
 		<property name="orcConfigs">
 			<list>

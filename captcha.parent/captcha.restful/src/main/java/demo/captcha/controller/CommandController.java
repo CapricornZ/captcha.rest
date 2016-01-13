@@ -10,15 +10,18 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import demo.captcha.model.Warrant;
 import demo.captcha.rs.model.GlobalConfig;
 import demo.captcha.service.IWarrantService;
 import demo.captcha.service.Page;
+import demo.captcha.util.LocalConfig;
 
 @RequestMapping(value = "/command")
 @Controller
@@ -33,6 +36,12 @@ public class CommandController implements ApplicationContextAware {
 	private String storePath;
 	public void setStorePath(String storePath){ this.storePath = storePath; }
 	
+	private LocalConfig localConfig;
+	public void setLocalConfig(LocalConfig config){ this.localConfig = config; }
+	
+	private String absoluteUrl;
+	public void setAbsoluteUrl(String value){ this.absoluteUrl = value; }
+	
 	private GlobalConfig globalConfigReal;
 	public void setGlobalConfigREAL(GlobalConfig resource){ this.globalConfigReal = resource; }
 	
@@ -44,8 +53,7 @@ public class CommandController implements ApplicationContextAware {
 	
 	@RequestMapping(value="/prePublish", method={RequestMethod.GET,RequestMethod.POST})
 	public String prePublish(Model model, HttpServletRequest request){
-		
-		//String path=request.getSession().getServletContext().getRealPath("/");
+
 		String path = this.storePath;
 		String version = "DEFAULT";
 		java.io.FileInputStream fis;
@@ -55,11 +63,10 @@ public class CommandController implements ApplicationContextAware {
 			java.io.InputStreamReader isr = new java.io.InputStreamReader(fis);
 			java.io.BufferedReader br = new java.io.BufferedReader(isr);
 			version = br.readLine();
+			br.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -67,9 +74,9 @@ public class CommandController implements ApplicationContextAware {
 		return "publish";
 	}
 	@RequestMapping(value = "/publish", method={RequestMethod.POST})
-	public String publish(@RequestParam("dataFile")MultipartFile file, @RequestParam("version")String version, Model model, HttpServletRequest request){
-				
-		//String path=request.getSession().getServletContext().getRealPath("/");
+	public String publish(@RequestParam("dataFile")MultipartFile file, 
+			@RequestParam("version")String version, Model model, HttpServletRequest request){
+
 		String path = this.storePath;
 		try {
 			java.io.FileOutputStream fos = new java.io.FileOutputStream(path + "Release.zip");
@@ -84,10 +91,8 @@ public class CommandController implements ApplicationContextAware {
 			osw.flush();
 			fos.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "forward:prePublish";
@@ -108,6 +113,7 @@ public class CommandController implements ApplicationContextAware {
 		if("real".equals(category)){
 			
 			model.addAttribute("TAG", this.globalConfigReal.getTag());
+			model.addAttribute("URL", this.globalConfigReal.getRepository());
 			model.addAttribute("PRICE", this.context.getBean("PRICE-real"));
 			model.addAttribute("TIPS0", this.context.getBean("TIPS0-real"));
 			model.addAttribute("TIPS1", this.context.getBean("TIPS1-real"));
@@ -120,6 +126,7 @@ public class CommandController implements ApplicationContextAware {
 		} else {
 			
 			model.addAttribute("TAG", this.globalConfigSimulate.getTag());
+			model.addAttribute("URL", this.globalConfigSimulate.getRepository());
 			model.addAttribute("PRICE", this.context.getBean("PRICE-simulate"));
 			model.addAttribute("TIPS0", this.context.getBean("TIPS0-simulate"));
 			model.addAttribute("TIPS1", this.context.getBean("TIPS1-simulate"));
@@ -132,5 +139,40 @@ public class CommandController implements ApplicationContextAware {
 		}
 		
 		return "resource/preview";
+	}
+	
+	@RequestMapping(value = "/resource/attachment/{VERSION}")
+	@ResponseBody
+	public String publishResource(@RequestParam("dataFile")MultipartFile file,
+			@PathVariable("VERSION")String version) throws IOException{
+		
+		String rtn = "SUCCESS,";
+		String path = this.storePath;
+		String url = this.absoluteUrl;
+		try {
+
+			url = this.absoluteUrl + file.getOriginalFilename();
+			java.io.FileOutputStream fos = new java.io.FileOutputStream(path + file.getOriginalFilename());			
+			byte[] content = file.getBytes();
+			fos.write(content);
+			fos.flush();
+			fos.close();
+
+			rtn += url;
+			if(version.equals("real")){
+				this.globalConfigReal.setRepository(url);
+				this.localConfig.setProperty("real.url", url);
+			} else if (version.equals("simulate")){
+				this.globalConfigSimulate.setRepository(url);
+				this.localConfig.setProperty("simulate.url", url);
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			rtn = "ERROR," + e;
+		} catch (IOException e) {
+			e.printStackTrace();
+			rtn = "ERROR," + e;
+		}
+		return rtn;
 	}
 }

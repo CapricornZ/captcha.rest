@@ -10,7 +10,16 @@
 	
 	<bean id="GLOBAL-SIMULATE" class="demo.captcha.rs.model.GlobalConfig">
 		<property name="tag" value="${simulate.tag}"/>
-		<property name="repository" value="/simulate.zip"/>
+		<!-- <property name="repository" value="${HTTP.URL}captcha.restful/simulate.zip"/> -->
+		<property name="repository">
+			<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	            <property name="targetObject" ref="localConfig" />
+	            <property name="targetMethod" value="getProperty" />
+	            <property name="arguments">
+	            	<list><value>simulate.url</value></list>
+	            </property>
+	        </bean>
+		</property>
 		<property name="dynamic" value="${simulate.dynamic}"/>
 		<property name="orcConfigs">
 			<list>

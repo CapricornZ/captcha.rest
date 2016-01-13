@@ -87,5 +87,15 @@
 	</bean>
 	<bean id="warrantService" class="demo.captcha.service.impl.WarrantService">
 		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>	
+	</bean>
+	
+	<bean class="demo.captcha.util.LocalConfig" id="localConfig">
+		<constructor-arg name="storePath" value="${HTTP.PATH}" />
+		<property name="defaults">
+			<map>
+				<entry key="simulate.url" value="${HTTP.URL}captcha.restful/simulate.zip"/>
+				<entry key="real.url" value="${HTTP.URL}captcha.restful/real.zip"/>
+			</map>
+		</property>
+	</bean>
 </beans>

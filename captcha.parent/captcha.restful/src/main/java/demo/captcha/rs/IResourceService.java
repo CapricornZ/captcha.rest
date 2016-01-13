@@ -1,11 +1,15 @@
 package demo.captcha.rs;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.jws.WebService;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+
+import org.apache.cxf.jaxrs.ext.multipart.Attachment;
+import org.apache.cxf.jaxrs.ext.multipart.Multipart;
 
 import demo.captcha.rs.model.Entry;
 import demo.captcha.rs.model.OrcConfig;
@@ -26,4 +30,8 @@ public interface IResourceService {
 	@PUT
 	@Path("/{CATEGORY}/entries")
 	void modifyEntries(List<Entry> entries, @PathParam("CATEGORY")String category);
+	
+	@PUT
+	@Path("/{CATEGORY}/attachment")
+	void uploadAttachment(@Multipart(value="dataFile")Attachment attachment) throws IOException;
 }
