@@ -190,6 +190,7 @@ public class ConfigService extends Service implements IConfigService {
 		Client objClient = (Client)session.get(Client.class, client);
 		if( null != objClient ){
 			config.setClient(objClient);
+			config.setUpdateTime(new Date());
 			
 			objClient.setTips(trigger);
 			objClient.setConfig(config);
