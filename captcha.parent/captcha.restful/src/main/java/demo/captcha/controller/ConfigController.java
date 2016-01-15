@@ -68,7 +68,7 @@ public class ConfigController {
 		Config config = this.configService.queryByNo(no);
 		model.addAttribute("config", config);
 
-		if(config.getClient() != null && (config.getClient().getTips() != null || !config.getClient().getTips().equals(""))){
+		if(config.getClient() != null && (config.getClient().getTips() != null && !"".equals(config.getClient().getTips()))){
 			
 			com.google.gson.Gson gSon = new com.google.gson.Gson();
 			TriggerV3 triggerV3 = gSon.fromJson(config.getClient().getTips(), TriggerV3.class);
