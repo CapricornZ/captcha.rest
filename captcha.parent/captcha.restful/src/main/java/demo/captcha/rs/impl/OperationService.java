@@ -6,6 +6,7 @@ import demo.captcha.model.BidStep1Operation;
 import demo.captcha.model.BidStep2Operation;
 import demo.captcha.model.Client;
 import demo.captcha.model.LoginOperation;
+import demo.captcha.model.Operation;
 import demo.captcha.rs.IOperationService;
 import demo.captcha.service.IClientService;
 
@@ -19,6 +20,12 @@ public class OperationService implements IOperationService {
 	private IClientService clientService;
 	public void setClientService(IClientService clientServ){
 		this.clientService = clientServ;
+	}
+	
+	@Override
+	public List<Operation> queryOperation(String env) {
+
+		return this.operationService.filterBy(env);
 	}
 
 	@Override

@@ -18,8 +18,8 @@ public class LoginOperation extends Operation{
 	public void update(Operation ops) {
 		
 		LoginOperation other = (LoginOperation)ops;
-		this.setStartTime(other.getStartTime());
-		this.setExpireTime(other.getExpireTime());
-		this.setUrl(other.getUrl());
+		//this.setStartTime(other.getStartTime());
+		//this.setExpireTime(other.getExpireTime());
+		//this.setUrl(other.getUrl());
 	}
 }

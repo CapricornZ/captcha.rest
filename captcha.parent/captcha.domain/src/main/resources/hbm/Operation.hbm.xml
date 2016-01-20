@@ -4,7 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="demo.captcha.model.Operation" table="Operations">
+    <class name="demo.captcha.model.Operation" table="operations">
     	<cache usage="read-write"/>
         <id name="id" type="java.lang.Integer">
             <column name="id"/>
@@ -12,7 +12,8 @@
         </id>
         <discriminator column="type" />
         <property name="tag"/>
-        <property name="content" column="jsonContent" length="512"/>
+        <property name="env"/>
+        <property name="content" column="jsonContent" length="1024"/>
         <property name="startTime" type="java.sql.Timestamp" column="startTime"/>
         <property name="expireTime" type="java.sql.Timestamp" column="expireTime"/>
         <property name="updateTime" type="java.sql.Timestamp" column="updateTime"/>

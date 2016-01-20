@@ -20,9 +20,7 @@ public class Client {
 	private String tips;
 	
 	@Override
-	public int hashCode() {
-		return 0;
-	}
+	public int hashCode() { return 0; }
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -32,7 +30,6 @@ public class Client {
 			return other.ip.equals(this.ip);
 		}
 		return false;
-		
 	}
 	
 	public Client(){

@@ -1,21 +1,31 @@
 package demo.captcha.rs;
 
+import java.util.List;
+
 import javax.jws.WebService;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import demo.captcha.model.BidStep1Operation;
 import demo.captcha.model.BidStep2Operation;
 import demo.captcha.model.LoginOperation;
+import demo.captcha.model.Operation;
 
 @WebService(endpointInterface="demo.captcha.restful.OperationService", serviceName="OperationService")
 @Path("/command/operation")
 public interface IOperationService {
+	
+	@GET
+	@Path("/filter/{ENV}")
+	@Produces({MediaType.APPLICATION_JSON})
+	List<Operation> queryOperation(@PathParam("ENV")String env);
 	
 	@DELETE
 	@Path("/{operationID}")

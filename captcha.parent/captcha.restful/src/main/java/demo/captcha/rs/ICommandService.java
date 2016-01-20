@@ -22,12 +22,14 @@ public interface ICommandService {
 	@POST
 	@Path("/keepAlive")
 	@Produces({MediaType.APPLICATION_JSON})
-	Client keepAlive(@QueryParam("ip")String fromHost);
+	Client keepAlive(@QueryParam("ip")String fromHost,
+			@QueryParam("ENV")String env);
 	
 	@GET
 	@Path("/global/{CATEGORY}")
 	@Produces({MediaType.APPLICATION_JSON})
-	GlobalConfig queryResource(@QueryParam("fromHost")String fromHost, @PathParam("CATEGORY")String category);
+	GlobalConfig queryResource(@QueryParam("fromHost")String fromHost, 
+			@PathParam("CATEGORY")String category);
 	
 	@POST
 	@Path("/register/{HOST}")

@@ -138,8 +138,8 @@ public class ClientService extends Service implements IClientService {
 			
 			Config config = client.getConfig();
 			if(null != config){
-				config.setClient(null);
-				this.getSession().update(config);
+				//config.setClient(null);
+				//this.getSession().update(config);
 				
 				client.setConfig(null);
 				this.getSession().update(client);
@@ -163,12 +163,12 @@ public class ClientService extends Service implements IClientService {
     		
     		if(null == tmpClient.getConfig() || !tmpClient.getConfig().equals(config)){
     			
-    			config.setClient(tmpClient);
+    			//config.setClient(tmpClient);
     			config.setUpdateTime(new Date());
     			this.getSession().merge(config);
     			
     			if(tmpClient.getConfig() != null){
-    				tmpClient.getConfig().setClient(null);
+    				//tmpClient.getConfig().setClient(null);
     				this.getSession().update(tmpClient.getConfig());
     			}
     			tmpClient.setConfig(config);

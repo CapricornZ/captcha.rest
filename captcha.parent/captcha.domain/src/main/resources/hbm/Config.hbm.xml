@@ -4,7 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="demo.captcha.model.Config" table="Configs">
+    <class name="demo.captcha.model.Config" table="configs">
     	<cache usage="read-write"/>
         <id name="no" type="java.lang.String" length="15">
             <column name="no"/>
@@ -14,7 +14,10 @@
         <property name="pid" type="java.lang.String" column="pid"/>
         <property name="pname" type="java.lang.String" column="pname"/>
         <property name="tags" type="java.lang.String" column="tags"/>
+        <property name="policy" type="java.lang.String" column="policy" length="2048"/>
         <property name="updateTime" type="java.sql.Timestamp" column="updateTime"/>
+        <!--
         <many-to-one name="client" class="demo.captcha.model.Client" lazy="false" column="client_id" unique="true"/>
+        -->
     </class>
 </hibernate-mapping>

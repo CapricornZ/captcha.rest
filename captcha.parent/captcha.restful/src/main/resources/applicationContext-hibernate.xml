@@ -16,12 +16,15 @@
 	</bean> -->
 	
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
-
-		<property name="driverClassName" value="org.h2.Driver" />
+	
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/captcha?useUnicode=true&amp;characterEncoding=UTF-8" />
+		
+		<!-- <property name="driverClassName" value="org.h2.Driver" /> -->
 		<!-- <property name="url" value="jdbc:h2:mem:test;MODE=MYSQL;DB_CLOSE_DELAY=-1" /> -->
 		<!-- <property name="url" value="jdbc:h2:file:~/demo.captcha;MODE=MYSQL;DB_CLOSE_DELAY=-1" /> -->
-		<property name="url" value="jdbc:h2:tcp://localhost/~/demo.captcha;MODE=MYSQL;DB_CLOSE_DELAY=-1" />
-		<property name="username" value="root" />
+		<!-- <property name="url" value="jdbc:h2:tcp://localhost/~/demo.captcha;MODE=MYSQL;DB_CLOSE_DELAY=-1" /> -->
+		<property name="username" value="admin" />
 		<property name="password" value="123456" />
 		<!-- druid 连接池的 -->
 		<property name="filters" value="stat" />

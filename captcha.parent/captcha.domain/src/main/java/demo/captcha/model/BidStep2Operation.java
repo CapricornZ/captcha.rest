@@ -20,9 +20,11 @@ public class BidStep2Operation extends Operation {
 	public void update(Operation ops) {
 		
 		BidStep2Operation other = (BidStep2Operation)ops;
-		this.setStartTime(other.getStartTime());
-		this.setExpireTime(other.getExpireTime());
+		//this.setStartTime(other.getStartTime());
+		//this.setExpireTime(other.getExpireTime());
 		this.setContent(other.getContent());
-		this.setPrice(other.getPrice());
+		this.setEnv(other.getEnv());
+		this.setTag(other.getTag());
+		//this.setPrice(other.getPrice());
 	}
 }

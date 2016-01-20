@@ -53,42 +53,41 @@ public class ConfigService extends Service implements IConfigService {
 		if(null == client){
 			
 			Config pConfig = (Config) this.getSession().get(Config.class, config.getNo());
-			oClient = pConfig.getClient();
+			//oClient = pConfig.getClient();
 			
 			pConfig.setPasswd(config.getPasswd());
 			pConfig.setPid(config.getPid());
 			pConfig.setPname(config.getPname());
 			pConfig.setTags(config.getTags());
+			pConfig.setPolicy(config.getPolicy());
 			pConfig.setUpdateTime(new Date());
 			
 			this.getSession().saveOrUpdate(pConfig);
 			
-			if( null != oClient && !oClient.equals(client)){
+			//if( null != oClient && !oClient.equals(client)){
 				
-				oClient.setConfig(null);
-				oClient.setTips(null);
-				oClient.setMemo(null);
-				this.getSession().update(oClient);
-			}
+				//oClient.setConfig(null);
+				//oClient.setTips(null);
+				//oClient.setMemo(null);
+				//this.getSession().update(oClient);
+			//}
 		} else {
 
-			oClient = config.getClient();		
-			if( null != oClient && !oClient.equals(client)){
+			//oClient = config.getClient();		
+			//if( null != oClient && !oClient.equals(client)){
 				
-				oClient.setConfig(null);
-				oClient.setTips(null);
-				oClient.setMemo(null);
-				this.getSession().update(oClient);
-			}
+				//oClient.setConfig(null);
+				//oClient.setTips(null);
+				//oClient.setMemo(null);
+				//this.getSession().update(oClient);
+			//}
 			
 			config.setUpdateTime(new Date());
-			config.setClient(client);
+			//config.setClient(client);
 			this.getSession().saveOrUpdate(config);
 			
 			client.setConfig(config);
-			this.getSession().update(client);
-			
-			
+			//this.getSession().update(client);
 		}
 				
 		return config;
@@ -105,13 +104,13 @@ public class ConfigService extends Service implements IConfigService {
 	public void delete(String config) {
 		
 		Config cfg = (Config) this.getSession().get(Config.class, config);
-		if(null != cfg.getClient()){
+		//if(null != cfg.getClient()){
 			
-			cfg.getClient().setConfig(null);
-			cfg.getClient().setTips(null);
-			cfg.getClient().setMemo(null);
-			this.getSession().update(cfg.getClient());
-		}
+			//cfg.getClient().setConfig(null);
+			//cfg.getClient().setTips(null);
+			//cfg.getClient().setMemo(null);
+			//this.getSession().update(cfg.getClient());
+		//}
 		this.getSession().delete(cfg);
 	}
 
@@ -125,9 +124,9 @@ public class ConfigService extends Service implements IConfigService {
 	public Config removeClient(Config config) {
 		
 		Config pConfig = (Config) this.getSession().get(Config.class, config.getNo());
-		Client oClient = pConfig.getClient();
+		//Client oClient = pConfig.getClient();
 		
-		pConfig.setClient(null);
+		//pConfig.setClient(null);
 		pConfig.setPasswd(config.getPasswd());
 		pConfig.setPid(config.getPid());
 		pConfig.setPname(config.getPname());
@@ -136,13 +135,13 @@ public class ConfigService extends Service implements IConfigService {
 		
 		this.getSession().saveOrUpdate(pConfig);
 		
-		if( null != oClient ){
+		//if( null != oClient ){
 			
-			oClient.setConfig(null);
-			oClient.setTips(null);
-			oClient.setMemo(null);
-			this.getSession().update(oClient);
-		}
+			//oClient.setConfig(null);
+			//oClient.setTips(null);
+			//oClient.setMemo(null);
+			//this.getSession().update(oClient);
+		//}
 		return pConfig;
 	}
 
@@ -154,7 +153,7 @@ public class ConfigService extends Service implements IConfigService {
 			
 			TriggerV2 tV2 = assign.getTrigger();
 			String trigger = gson.toJson(assign.getTrigger());
-			this.assignment(assign.getConfig(), assign.getHost(), trigger);
+			this.assignment(assign.getConfig(), trigger);
 		}
 	}
 	
@@ -168,7 +167,7 @@ public class ConfigService extends Service implements IConfigService {
 			TriggerV3 tV3 = assign.getTrigger();
 			tV3.setCommon(v3Comm);
 			String trigger = gson.toJson(assign.getTrigger());
-			this.assignment(assign.getConfig(), assign.getHost(), trigger);
+			this.assignment(assign.getConfig(), trigger);
 		}
 	}
 	
@@ -179,25 +178,26 @@ public class ConfigService extends Service implements IConfigService {
 		for(AssignmentV1 assign : assignments){
 			
 			String trigger = gson.toJson(assign.getTrigger());
-			this.assignment(assign.getConfig(), assign.getHost(), trigger);
+			this.assignment(assign.getConfig(), trigger);
 		}
 	}
 	
 	
-	private void assignment(Config config, String client, String trigger) {
+	private void assignment(Config config, String trigger) {
 		
 		Session session = this.getSession();
-		Client objClient = (Client)session.get(Client.class, client);
-		if( null != objClient ){
-			config.setClient(objClient);
+		//Client objClient = (Client)session.get(Client.class, client);
+		//if( null != objClient ){
+			//config.setClient(objClient);
 			config.setUpdateTime(new Date());
+			config.setPolicy(trigger);
 			
-			objClient.setTips(trigger);
-			objClient.setConfig(config);
+			//objClient.setTips(trigger);
+			//objClient.setConfig(config);
 			
 			session.save(config);
-			session.update(objClient);
-		}
+			//session.update(objClient);
+		//}
 	}
 
 	

@@ -2,13 +2,19 @@ package demo.captcha.rs.model;
 
 import java.util.List;
 
+import demo.captcha.model.Operation;
+
 public class GlobalConfig {
 
+	private List<Operation> operations;
 	private List<IOrcConfig> orcConfigs;
 	private String url;
 	private String tag;
 	private Boolean dynamic;
 	private List<Entry> entries;
+	
+	public List<Operation> getOperations() { return operations; }
+	public void setOperations(List<Operation> operations) { this.operations = operations; }
 	
 	public void setDynamic(Boolean value){ this.dynamic = value; }
 	public Boolean getDynamic(){return this.dynamic;}

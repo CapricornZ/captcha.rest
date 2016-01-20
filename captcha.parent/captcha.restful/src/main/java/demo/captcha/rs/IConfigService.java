@@ -46,19 +46,19 @@ public interface IConfigService {
 	void modify(Config config);
 	
 	@PUT
-	@Path("/{BIDNO}/client/{client}/triggerV1")
+	@Path("/{BIDNO}/triggerV1")
 	@Consumes(MediaType.APPLICATION_JSON)
-	void assign(Trigger trigger, @PathParam("BIDNO")String bidNo, @PathParam("client")String fromHost);
+	void assign(Trigger trigger, @PathParam("BIDNO")String bidNo);
 	
 	@PUT
-	@Path("/{BIDNO}/client/{client}/triggerV2")
+	@Path("/{BIDNO}/triggerV2")
 	@Consumes(MediaType.APPLICATION_JSON)
-	void assign(TriggerV2 trigger, @PathParam("BIDNO")String bidNo, @PathParam("client")String fromHost);
+	void assign(TriggerV2 trigger, @PathParam("BIDNO")String bidNo);
 	
 	@PUT
-	@Path("/{BIDNO}/client/{client}/triggerV3")
+	@Path("/{BIDNO}/triggerV3")
 	@Consumes(MediaType.APPLICATION_JSON)
-	void assign(TriggerV3 trigger, @PathParam("BIDNO")String bidNo, @PathParam("client")String fromHost);
+	void assign(TriggerV3 trigger, @PathParam("BIDNO")String bidNo);
 	
 	@DELETE
 	@Path("/{BIDNO}/client")

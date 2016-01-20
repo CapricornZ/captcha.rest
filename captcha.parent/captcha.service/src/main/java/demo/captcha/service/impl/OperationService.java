@@ -64,12 +64,12 @@ public class OperationService extends Service implements IOperationService {
 		return query.list();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Operation queryByID(int opsID) {
 		Query query = this.getSession().createQuery("from Operation where id=:id");
 		query.setParameter("id", opsID);
-		@SuppressWarnings("rawtypes")
-		List result = query.list();
+		List<Operation> result = query.list();
 		
 		return (Operation)(result.size()>0?result.get(0):null);
 	}
@@ -105,5 +105,15 @@ public class OperationService extends Service implements IOperationService {
 			session.merge(operation);
 		}
 		//this.getSessionFactory().getCache().evictCollection("Client.operation", operationID);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Operation> filterBy(String env) {
+		
+		Query query = this.getSession().createQuery("from Operation where env=:env");
+		query.setCacheable(true);
+		query.setParameter("env", env);
+		return query.list();
 	}
 }

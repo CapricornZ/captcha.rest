@@ -56,49 +56,40 @@ public class ConfigService implements IConfigService {
 	}
 
 	@Override
-	public void assign(Trigger trigger, String bidNo, String fromHost) {
+	public void assign(Trigger trigger, String bidNo) {
 
 		Config config = this.configService.queryByNo(bidNo);
-		Client client = this.clientService.queryByIP(fromHost);
 		String tips = new com.google.gson.Gson().toJson(trigger);
-		if(null != tips){
-			client.setTips(tips);
-			client.setMemo(this.format(trigger));
-		}
-		this.configService.saveOrUpdate(config, client);
+		config.setPolicy(tips);
+		this.configService.saveOrUpdate(config, null);
 	}
 	
 	@Override
-	public void assign(TriggerV2 trigger, String bidNo, String fromHost) {
+	public void assign(TriggerV2 trigger, String bidNo) {
 		
 		Config config = this.configService.queryByNo(bidNo);
-		Client client = this.clientService.queryByIP(fromHost);
 		String tips = new com.google.gson.Gson().toJson(trigger);
-		if(null != tips){
-			client.setTips(tips);
-			client.setMemo(this.format(trigger));
-		}
-		this.configService.saveOrUpdate(config, client);
+		config.setPolicy(tips);
+		this.configService.saveOrUpdate(config, null);
 	}
 	
 	@Override
-	public void assign(TriggerV3 trigger, String bidNo, String fromHost) {
+	public void assign(TriggerV3 trigger, String bidNo) {
 		
 		Config config = this.configService.queryByNo(bidNo);
-		Client client = this.clientService.queryByIP(fromHost);
 		if(null == trigger.getCommon())
 			trigger.setCommon(this.configService.getCommonV3());
 		String tips = new com.google.gson.Gson().toJson(trigger);
-		if(null != tips)
-			client.setTips(tips);
-		this.configService.saveOrUpdate(config, client);
+		config.setPolicy(tips);
+		this.configService.saveOrUpdate(config, null);
 	}
 	
 	@Override
 	public void unAssign(String bidNo) {
 		
 		Config config = this.configService.queryByNo(bidNo);
-		this.configService.removeClient(config);
+		config.setPolicy(null);
+		this.configService.saveOrUpdate(config, null);
 	}
 	
 	private String format(Trigger trigger){

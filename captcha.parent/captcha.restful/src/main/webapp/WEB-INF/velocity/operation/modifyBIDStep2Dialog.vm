@@ -9,8 +9,36 @@
 <script type="text/javascript">
 	$(function(){
 
-		$("#startTimeInput").mask("9999-99-99 99:99:99",{placeholder:"yyyy-mm-dd hh:MM:ss"});
-		$("#expireTimeInput").mask("9999-99-99 99:99:99",{placeholder:"yyyy-mm-dd hh:MM:ss"});
+		$("#advance").click(function(){
+			
+			$("#jsonContent").css("visibility","");
+			$("#jsonContent").css("height","100px");
+			
+			$("#editor").css("height","10px");
+			$("#editor").css("visibility","hidden");
+			$("#advance").css("visibility","hidden");
+			$("#normal").css("visibility","");
+		});
+		
+		$("#normal").click(function(){
+			
+			$("#editor").css("visibility","");
+			$("#editor").css("height","");
+			
+			$("#jsonContent").css("height","10px");
+			$("#jsonContent").css("visibility","hidden");
+			$("#normal").css("visibility","hidden");
+			$("#advance").css("visibility","");
+		});
+		
+		$("#jsonContent").blur(function(){
+
+			var json = JSON.parse($('#jsonContent').val());
+			console.log(json);
+			$('#editor').jsonEditor(json, {
+				change:function(){ $('#jsonContent').val(JSON.stringify(json)); }
+			});
+		});
 		
 		$("#startTimeInput").blur(function(){
 			
@@ -31,24 +59,47 @@
 			$('#expireTimeInput').val(expire);
 		});
 
-		var json = JSON.parse($('#jsonContent').html());
+		var json = JSON.parse($('#jsonContent').val());
 		$('#editor').jsonEditor(json, {
-			change:function(){
-				$('#jsonContent').html(JSON.stringify(json));
-			}
+			change:function(){ $('#jsonContent').val(JSON.stringify(json)); }
 		});
 	});
 </script>
 
 <form class="form-horizontal" onsubmit="return false;">
-	<legend>BID</legend>
+	<legend>BID-Step2</legend>
 	<fieldset>
 		<div class="form-group">
-			<label class="control-label col-sm-2" for="operationID">OperationID</label>
-			<div class="controls col-sm-10">
+			<label class="control-label col-sm-2" for="operationID">ID</label>
+			<div class="controls col-sm-4">
 				<input id="operationID" class="input-mini uneditable-input" disabled style="height:30px;" type="text" value="${operation.id}">
 			</div>
 		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">类型</label>
+			<div class="controls col-sm-4">
+				<input class="input-mini uneditable-input" disabled style="height:30px;" type="text" value="${operation.type}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="">类型</label>
+			<div class="controls col-sm-10">
+				<div class="input-group">
+					<span class="input-group-addon">@</span>
+					<input id="tagInput" class="form-control" style="width:200px;height:30px;" type="text" placeholder="类型" value="${operation.tag}"></input>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="">环境</label>
+			<div class="controls col-sm-10">
+				<div class="input-group">
+					<span class="input-group-addon">@</span>
+					<input id="envInput" class="form-control" style="width:200px;height:30px;" type="text" placeholder="环境" value="${operation.env}"></input>
+				</div>
+			</div>
+		</div>
+		<!--
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="startTimeInput">触发时间</label>
 			<div class="controls col-sm-10">
@@ -83,13 +134,24 @@
 				</select>
 			</div>
 		</div>
+		-->
 		<div class="form-group">
-			<label class="control-label col-sm-2" for="jsonContent">jsonContent</label>
-			<div class="controls 10">
-				<textarea class="form-control" rows="1" style="height:10px;width:300px;visibility:hidden;" id="jsonContent">${operation.content}</textarea>
+			<label class="control-label col-sm-2" for="jsonContent">坐标配置&nbsp</label>
+			<div class="controls col-sm-10">
+				<textarea id="jsonContent" class="form-control" rows="5" style="height:10px;width:300px;visibility:hidden;">${operation.content}</textarea>
+				<a href='#' id="normal" style="visibility:hidden;">json</a>
+				<div id="editor" class="json-editor"></div>
+				<a href='#' id="advance">plain</a>
 			</div>
-			<div id="editor" class="json-editor" class="controls 10"></div>
 		</div>
+		<!--<div class="form-actions">
+			<div class="col-sm-7"></div>
+			<div class="col-sm-5">
+				<button class="btn btn-primary" type="submit" id="MODIFY">保存</button>
+				<button class="btn">取消</button>
+			</div>
+		</div>-->
+		<!--
 		<div class="form-group">
 			<label class="control-label" for="jsonContent">分配の客户端</label>
 			<div class="controls">
@@ -98,19 +160,8 @@
 						<th>HOST/IP</th>
 						<th>更新时间</th>
 					</tr>
-					#foreach(${client} in ${operation.clients})
-					<tr>
-						<td>${client.ip}</td>
-						<td>${client.updateTime}</td>
-					</tr>
-					#end
 				</table>
 			</div>
-		</div>
-		<!--
-		<div class="form-actions">
-			<button class="btn btn-primary" type="submit" id="MODIFY">保存修改</button>
-			<button class="btn">取消</button>
 		</div>
 		-->
 	</fieldset>

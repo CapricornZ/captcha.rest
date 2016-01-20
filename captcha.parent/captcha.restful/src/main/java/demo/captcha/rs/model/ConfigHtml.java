@@ -13,13 +13,13 @@ public class ConfigHtml {
 		this.config = config;
 	}
 	
-	public ClientHtml getClient(){
+	//public ClientHtml getClient(){
 		
-		if( null != this.config.getClient() )
-			return new ClientHtml(this.config.getClient());
-		else
-			return null;
-	}
+	//	if( null != this.config.getClient() )
+	//		return new ClientHtml(this.config.getClient());
+	//	else
+	//		return null;
+	//}
 	
 	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getUpdateTime() { return this.config.getUpdateTime(); }
@@ -33,5 +33,7 @@ public class ConfigHtml {
 	public String getPid() { return this.config.getPid(); }
 	
 	public String getTags() { return this.config.getTags(); }
+	
+	public String getPolicy() { return this.config.getPolicy(); }
 	
 }

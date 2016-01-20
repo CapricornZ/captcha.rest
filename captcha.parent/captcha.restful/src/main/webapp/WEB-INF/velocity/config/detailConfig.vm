@@ -37,90 +37,89 @@
 		});
 	}
 	
-	function assign(){
-
-		var host = $('#clientEdit').children('option:selected').val();
-		if(host == ''){//删除分配
+	function unAssign(){
 		
-			var endPoint = "${ContextPath}/rest/service/command/config/" + $('#configID').val() + "/client";
-			$.ajax({
-				url  : endPoint,
-				type : 'DELETE',
-				cache: false,
-				success: function(json) {
-					alert("SUCCESS");
-					console.log(" reponse :"+ json);
-	            },
-	            error: function(msg) { alert("error"); },
-			});
-		} else {//分配
-
-			var policyType = $("div[toggle*='POLICY'].active").attr('id');
-			var policy = {};
-			var endPoint = "${ContextPath}/rest/service/command/config/" + $('#configID').val();
-			endPoint += "/client/" + $("#clientEdit").val();
-			if("tab_v1" == policyType){
-			
-				endPoint += "/triggerV1";
-				policy = {
-					'category'   : 'V1',
-					'deltaPrice' : $('div[toggle*="V1"] #deltaPrice').val(),
-					'priceTime'  : $('div[toggle*="V1"] #priceTime').val(),
-				};
-		
-				if($('div[toggle*="V1"] #checkCaptchaTime').is(':checked'))
-					policy.captchaTime = $('div[toggle*="V1"] #captchaTime').val();
-				if($('div[toggle*="V1"] #checkSubmitTime').is(':checked'))
-					policy.submitTime = $('div[toggle*="V1"] #submitTime').val();
-				if($('div[toggle*="V1"] #checkReachPrice').is(':checked'))
-					policy.submitReachPrice = $('div[toggle*="V1"] #submitReachPrice').val();
-			}
-			if("tab_v2" == policyType){
-				
-				endPoint += "/triggerV2";
-				var triggers = [{
-						'category'   : 'V1',
-						'deltaPrice' : $('#deltaPrice1').val(),
-						'priceTime'  : $('#priceTime1').val(),
-						'submitTime' : $('#submitTime1').val()
-					},{
-						'category'   : 'V1',
-						'deltaPrice' : $('#deltaPrice2').val(),
-						'priceTime'  : $('#priceTime2').val(),
-						'submitTime' : $('#submitTime2').val()
-					}];
-				policy = {triggers, 'category' : 'V2'};
-			}
-			if("tab_v3" == policyType){
-				
-				var v3Common = $('#jsonContent').html();
-				endPoint += "/triggerV3";
-				policy = {
-					'category'   : 'V3',
-					'deltaPrice' : $('div[toggle*="V3"] #deltaPrice').val(),
-					'priceTime'  : $('div[toggle*="V3"] #priceTime').val(),
-					'submitTime' : $('div[toggle*="V3"] #submitTime').val(),
-					'common'     : JSON.parse(v3Common)
-				};
-			}
-
-			$.ajax({
-				url  : endPoint,
-				type : 'PUT',
-				cache: false,
-				data : JSON.stringify(policy),
-				contentType: 'application/json; charset=utf-8',
-				success: function(json) {
-					alert("SUCCESS");
-					console.log(" reponse :"+ json);
-	            },
-	            error: function(msg) { alert("error"); },
-			});
-		}
+		var endPoint = "${ContextPath}/rest/service/command/config/" + $('#configID').val() + "/client";
+		$.ajax({
+			url  : endPoint,
+			type : 'DELETE',
+			cache: false,
+			success: function(json) {
+				alert("SUCCESS");
+				console.log(" reponse :"+ json);
+            },
+            error: function(msg) { alert("error"); },
+		});
 	}
 	
-	#if(${config.client.tips})
-	var tips = $!{config.client.tips};
+	function assign(){
+
+		var policyType = $("div[toggle*='POLICY'].active").attr('id');
+		var policy = {};
+		var endPoint = "${ContextPath}/rest/service/command/config/" + $('#configID').val();
+		if("tab_v1" == policyType){
+		
+			endPoint += "/triggerV1";
+			policy = {
+				'category'   : 'V1',
+				'deltaPrice' : $('div[toggle*="V1"] #deltaPrice').val(),
+				'priceTime'  : $('div[toggle*="V1"] #priceTime').val(),
+			};
+	
+			if($('div[toggle*="V1"] #checkCaptchaTime').is(':checked'))
+				policy.captchaTime = $('div[toggle*="V1"] #captchaTime').val();
+			if($('div[toggle*="V1"] #checkSubmitTime').is(':checked'))
+				policy.submitTime = $('div[toggle*="V1"] #submitTime').val();
+			if($('div[toggle*="V1"] #checkReachPrice').is(':checked'))
+				policy.submitReachPrice = $('div[toggle*="V1"] #submitReachPrice').val();
+		}
+		if("tab_v2" == policyType){
+			
+			endPoint += "/triggerV2";
+			var triggers = [{
+					'category'   : 'V1',
+					'deltaPrice' : $('#deltaPrice1').val(),
+					'priceTime'  : $('#priceTime1').val(),
+					'submitTime' : $('#submitTime1').val()
+				},{
+					'category'   : 'V1',
+					'deltaPrice' : $('#deltaPrice2').val(),
+					'priceTime'  : $('#priceTime2').val(),
+					'submitTime' : $('#submitTime2').val()
+				}];
+			policy = {triggers, 'category' : 'V2'};
+		}
+		if("tab_v3" == policyType){
+			
+			var v3Common = $('#jsonContent').html();
+			endPoint += "/triggerV3";
+			policy = {
+				'category'   : 'V3',
+				'deltaPrice' : $('div[toggle*="V3"] #deltaPrice').val(),
+				'priceTime'  : $('div[toggle*="V3"] #priceTime').val(),
+				'submitTime' : $('div[toggle*="V3"] #submitTime').val(),
+				'common'     : JSON.parse(v3Common)
+			};
+		}
+
+		$.ajax({
+			url  : endPoint,
+			type : 'PUT',
+			cache: false,
+			data : JSON.stringify(policy),
+			contentType: 'application/json; charset=utf-8',
+			success: function(json) {
+				alert("SUCCESS");
+				console.log(" reponse :"+ json);
+            },
+            error: function(msg) { alert("error"); },
+		});
+	}
+	
+	#if(${config.policy})
+	var tips = $!{config.policy};
+	#else
+	var tips = '';
 	#end
 	$(function(){
 		var json = JSON.parse($('#jsonContent').html());
@@ -150,9 +149,11 @@
 		$("#checkReachPrice").click(function(){ $('#submitReachPrice').attr("disabled", !$(this).is(':checked')); });
 		
 		//init UI
-		if($('#clientEdit').children('option:selected').val() != ''){
+		//if($('#clientEdit').children('option:selected').val() != ''){
+		console.log(tips);
+		if(tips != ""){
+			
 			var trigger;
-			$("#POLICY").show();
 			if("V1" == tips.category){//V1
 				
 				$("[toggle*='V1']").addClass("active");
@@ -161,7 +162,7 @@
 				$('div[toggle*="V1"] #priceTime').val(trigger.priceTime);
 				if(trigger.captchaTime != null){
 					$('div[toggle*="V1"] #checkCaptchaTime').attr('checked', true);
-					$('div[toggle*="V1"] #captchaTime').attr('disabled', false);
+					$('div[toggle*=http://m.webtoons.com/zh-hans/thriller/tales-of-the-unusual/list?title_no=296&&serviceZone=CHINA"V1"] #captchaTime').attr('disabled', false);
 					$('div[toggle*="V1"] #captchaTime').val(trigger.captchaTime);
 				} else {
 					$('div[toggle*="V1"] #checkCaptchaTime').attr('checked', false);
@@ -214,7 +215,7 @@
 			}
 		}
 		else{
-			$("#POLICY").hide();
+			//$("#POLICY").hide();
 		}
 
 		if(strTags != "")
@@ -288,6 +289,7 @@
 			</div>
 			<div class="control col-sm-3">
 				<input type="button" class="btn btn-sm btn-primary" onclick="return assign();" value="设置"></input>
+				<input type="button" class="btn btn-sm btn-default" onclick="return unAssign();" value="取消"></input>
 			</div>
 		</div>
 		

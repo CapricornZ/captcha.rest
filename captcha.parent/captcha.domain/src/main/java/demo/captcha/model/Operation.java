@@ -19,6 +19,7 @@ public abstract class Operation {
 	private String content;
 	private Date updateTime;
 	private String tag;
+	private String env;
 	
 	@JsonIgnore
 	private List<Client> clients;
@@ -52,10 +53,11 @@ public abstract class Operation {
 	public String getTag() { return tag; }
 	public void setTag(String tag) { this.tag = tag; }
 	
+	public String getEnv() { return env; }
+	public void setEnv(String env) { this.env = env; }
+	
 	@JsonIgnore
-	public String getTips(){
-		return "这个方法还没有实现";
-	}
+	public String getTips(){ return "这个方法还没有实现"; }
 	
 	public abstract void update(Operation ops);
 }

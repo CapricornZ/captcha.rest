@@ -98,6 +98,7 @@
         	</bean>
         	<bean class="demo.captcha.rs.impl.CommandService">
         		<property name="clientService" ref="clientService"/>
+        		<property name="operationService" ref="operationService"/>
         		<property name="warrantService" ref="warrantService"/>
         		<property name="globalConfigREAL" ref="GLOBAL-REAL"/>
         		<property name="globalConfigSIMULATE" ref="GLOBAL-SIMULATE"/>

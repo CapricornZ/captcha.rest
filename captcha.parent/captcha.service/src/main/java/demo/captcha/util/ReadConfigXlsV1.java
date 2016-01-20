@@ -47,19 +47,19 @@ public class ReadConfigXlsV1 {
 				if (xssfRow != null) {
 					try{
 						List<String> rows = new ArrayList<String>();
-						XSSFCell host = xssfRow.getCell(0);rows.add(this.getValue(host));
+						//XSSFCell host = xssfRow.getCell(0);rows.add(this.getValue(host));
 						
 						//标书信息
-						XSSFCell userName = xssfRow.getCell(1);rows.add(this.getValue(userName));
-						XSSFCell identity = xssfRow.getCell(2);rows.add(this.getValue(identity));
-						XSSFCell bid = xssfRow.getCell(3);rows.add(this.getValue(bid));
-						XSSFCell pass = xssfRow.getCell(4);rows.add(this.getValue(pass));
-						XSSFCell from = xssfRow.getCell(5);rows.add(this.getValue(from));
+						XSSFCell userName = xssfRow.getCell(0);rows.add(this.getValue(userName));
+						XSSFCell identity = xssfRow.getCell(1);rows.add(this.getValue(identity));
+						XSSFCell bid = xssfRow.getCell(2);rows.add(this.getValue(bid));
+						XSSFCell pass = xssfRow.getCell(3);rows.add(this.getValue(pass));
+						XSSFCell from = xssfRow.getCell(4);rows.add(this.getValue(from));
 						
 						//POLICY1
-						XSSFCell priceTime = xssfRow.getCell(6);rows.add(this.getValue(priceTime));
-						XSSFCell priceDelta = xssfRow.getCell(7);rows.add(this.getValue(priceDelta));
-						XSSFCell submitTime = xssfRow.getCell(8);rows.add(this.getValue(submitTime));
+						XSSFCell priceTime = xssfRow.getCell(5);rows.add(this.getValue(priceTime));
+						XSSFCell priceDelta = xssfRow.getCell(6);rows.add(this.getValue(priceDelta));
+						XSSFCell submitTime = xssfRow.getCell(7);rows.add(this.getValue(submitTime));
 
 						list.add(rows.toArray(new String[rows.size()]));
 						

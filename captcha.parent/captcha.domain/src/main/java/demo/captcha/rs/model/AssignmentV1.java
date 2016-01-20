@@ -4,12 +4,8 @@ import demo.captcha.model.Config;
 
 public class AssignmentV1 {
 	
-	private String host;
 	private Trigger trigger;
 	private Config config;
-	
-	public String getHost() { return host; }
-	public void setHost(String host) { this.host = host; }
 	
 	public Trigger getTrigger() { return trigger; }
 	public void setTrigger(Trigger trigger) { this.trigger = trigger; }

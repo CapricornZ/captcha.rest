@@ -141,7 +141,6 @@
 				<th data-field="name" data-sortable="true">姓名</th>
 				<th data-field="tags">来源</th>
 				<th data-field="tips" data-visible="false">策略</th>
-				<th data-field="host" data-sortable="true">HOST</th>
 				<th>OPS</th>
 			</tr>
 		</thead>
@@ -154,14 +153,7 @@
 			<td>$!{config.pid}</td>
 			<td>$!{config.pname}</td>
 			<td>$!{config.tags}</td>
-			<td>$!{config.client.tips}</td>
-			<td>
-				#if(${config.client} != $null)
-					<button config="${config.no}" class="btn btn-sm btn-danger" toggle="UNBIND" onclick="return unbind(this);"><span class="glyphicon glyphicon-ban-circle"/></button>
-					<span>${config.client.ip}
-					#if(${config.client.isOnline})<img src='${ContextPath}/img/online.ico'/>#else<img src='${ContextPath}/img/offline.ico'/>#end</span>
-				#end
-			</td>
+			<td>$!{config.policy}</td>
 			<td>
 				<button class="btn btn-danger btn-sm" type="button" config="${config.no}" toggle="DEL" onclick="return removeObj(this);"><span class="glyphicon glyphicon-remove"/></button>
 			</td>

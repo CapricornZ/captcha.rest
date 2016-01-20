@@ -2,7 +2,6 @@ package demo.captcha.model;
 
 import java.util.Date;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
@@ -16,19 +15,22 @@ public class Config {
 	private String pid;
 	private String pname;
 	private String tags;
+	private String policy;
 	private Date updateTime;
-	@JsonIgnore
-	private Client client;
+	//@JsonIgnore
+	//private Client client;
+	//public String getRenderClient(){
+	//	if( null != client )
+	//		return client.getIp();
+	//	else
+	//		return "";
+	//}
 	
-	public String getRenderClient(){
-		if( null != client )
-			return client.getIp();
-		else
-			return "";
-	}
-	
-	public Client getClient() { return client; }
-	public void setClient(Client client) { this.client = client; }
+	public String getPolicy() { return policy; }
+	public void setPolicy(String policy) { this.policy = policy; }
+
+	//public Client getClient() { return client; }
+	//public void setClient(Client client) { this.client = client; }
 	
 	public String getPname() { return pname; }
 	public void setPname(String pname) { this.pname = pname; }

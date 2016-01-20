@@ -7,7 +7,7 @@
 	<filter-def name="tagFilter">
 		<filter-param name="tagParam" type="string"/>
 	</filter-def>
-    <class name="demo.captcha.model.Client" table="Clients">
+    <class name="demo.captcha.model.Client" table="clients">
     	<cache usage="read-write"/>
         <id name="ip" type="java.lang.String" length="15">
             <column name="IP"/>
