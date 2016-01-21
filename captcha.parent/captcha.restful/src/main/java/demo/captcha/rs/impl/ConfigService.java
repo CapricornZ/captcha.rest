@@ -8,6 +8,7 @@ import demo.captcha.rs.model.AssignmentV3;
 import demo.captcha.rs.model.Trigger;
 import demo.captcha.rs.model.TriggerV2;
 import demo.captcha.rs.model.TriggerV3;
+import demo.captcha.rs.model.V3Common;
 
 import java.util.List;
 
@@ -130,5 +131,11 @@ public class ConfigService implements IConfigService {
 	@Override
 	public void newAssignmentV3(List<AssignmentV3> assignments) {
 		this.configService.assignmentV3(assignments);
+	}
+
+	@Override
+	public V3Common queryV3Common() {
+		
+		return this.configService.getCommonV3();
 	}
 }

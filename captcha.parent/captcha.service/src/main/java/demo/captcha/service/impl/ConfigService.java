@@ -13,7 +13,6 @@ import demo.captcha.model.Config;
 import demo.captcha.rs.model.AssignmentV1;
 import demo.captcha.rs.model.AssignmentV2;
 import demo.captcha.rs.model.AssignmentV3;
-import demo.captcha.rs.model.TriggerV2;
 import demo.captcha.rs.model.TriggerV3;
 import demo.captcha.rs.model.V3Common;
 import demo.captcha.service.IConfigService;
@@ -21,6 +20,7 @@ import demo.captcha.service.Service;
 
 public class ConfigService extends Service implements IConfigService {
     
+	private V3Common v3Common;
 	private String storePath;
 	public void setStorePath(String storePath){ this.storePath = storePath; }
 	
@@ -49,7 +49,6 @@ public class ConfigService extends Service implements IConfigService {
 	@Override
 	public Config saveOrUpdate(Config config, Client client) {
 
-		Client oClient = null;
 		if(null == client){
 			
 			Config pConfig = (Config) this.getSession().get(Config.class, config.getNo());
@@ -150,8 +149,7 @@ public class ConfigService extends Service implements IConfigService {
 		
 		com.google.gson.Gson gson = new com.google.gson.Gson();
 		for(AssignmentV2 assign : assignments){
-			
-			TriggerV2 tV2 = assign.getTrigger();
+
 			String trigger = gson.toJson(assign.getTrigger());
 			this.assignment(assign.getConfig(), trigger);
 		}
@@ -204,6 +202,9 @@ public class ConfigService extends Service implements IConfigService {
 	@Override
 	public V3Common getCommonV3(){
 		
+		if(this.v3Common != null)
+			return this.v3Common;
+		
 		String path = this.storePath;
 		String v3Common = "{\"checkTime\":\"11:29:48\"}";
 		java.io.FileInputStream fis;
@@ -218,6 +219,7 @@ public class ConfigService extends Service implements IConfigService {
 		}
 		
 		V3Common v3 = new com.google.gson.Gson().fromJson(v3Common, V3Common.class);
+		this.v3Common = v3;
 		return v3;
 	}
 
@@ -225,6 +227,7 @@ public class ConfigService extends Service implements IConfigService {
 	public void setCommonV3(V3Common v3) throws IOException {
 		
 		String path = this.storePath;
+		this.v3Common = v3;
 		java.io.FileOutputStream fos = new java.io.FileOutputStream(path + "v3.common");
 		org.apache.commons.io.IOUtils.write(new com.google.gson.Gson().toJson(v3), fos);		
 	}

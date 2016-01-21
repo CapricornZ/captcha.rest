@@ -43,13 +43,9 @@ public class CommandService implements ICommandService {
 		List<Operation> operations = this.operationService.filterBy(env);
 		client.setOperation(operations);
 		
-		//if(client.getOperation() != null){
-		//	for(Operation op : client.getOperation())
-		//		logger.debug("\tOPS : {}", op.getTips());
-		//}
 		return client;
 	}
-
+	
 	@Override
 	public GlobalConfig queryResource(String fromHost, String category) {
 		

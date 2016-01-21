@@ -21,6 +21,7 @@ import demo.captcha.rs.model.AssignmentV3;
 import demo.captcha.rs.model.Trigger;
 import demo.captcha.rs.model.TriggerV2;
 import demo.captcha.rs.model.TriggerV3;
+import demo.captcha.rs.model.V3Common;
 
 @WebService(endpointInterface="demo.captcha.restful.ConfigService", serviceName="ConfigService")
 @Path("/command/config")
@@ -78,4 +79,9 @@ public interface IConfigService {
 	@Path("/assignments/v1")
 	@Consumes(MediaType.APPLICATION_JSON)
 	void newAssignmentV1(List<AssignmentV1> assignments);
+	
+	@GET
+	@Path("/common/v3")
+	@Produces({MediaType.APPLICATION_JSON})
+	V3Common queryV3Common();
 }
