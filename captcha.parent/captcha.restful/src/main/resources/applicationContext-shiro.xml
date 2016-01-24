@@ -78,6 +78,7 @@
 	        	/rest/service/command/keepAlive=authcBasic,roles[user]
 	        	/rest/service/command/warrant=authcBasic,roles[admin]
 	        	/rest/service/command/config/*=authcBasic,roles[user]
+	        	/rest/service/command/config/common/*=authcBasic,roles[user]
 	        	/rest/**=authcBasic,roles[admin]
 	        </value>  
 	    </property>

@@ -150,7 +150,7 @@
 		var inputVal = $('#inputCaptcha').val();
 		var cost = endTime.getTime() - startTime.getTime();
 		var reqParam = { cost : cost, correct : correct==inputVal};
-		$('#BID-CAPTCHA-RESULT').html(correct!=inputVal ? '<img src="${ContextPath}/images/Error_easyicon.net.ico"/>' : '<img src="${ContextPath}/images/OK_easyicon.net.ico"/>');
+		$('#BID-CAPTCHA-RESULT').html(correct!=inputVal ? '<img style="height:30px;" src="${ContextPath}/images/Error_easyicon.net.ico"/>' : '<img style="height:30px;" src="${ContextPath}/images/OK_easyicon.net.ico"/>');
 		jQuery.ajax({
 			type : "POST",
   			url  : "${ContextPath}/rest/service/exam/client/${currentUser}/record",
@@ -287,43 +287,12 @@
 
 				<div class="vspace-sm"></div>
 				
-				<div class="col-sm-5">
+				<div class="col-sm-5" style="background: no-repeat url(../../images/bids.bmp);">
 					<div class="widget-box">
-						<div class="widget-header widget-header-flat widget-header-small">
-							<h5><i class="icon-signal"></i>校验码模拟练习器</h5>
-							
-							<!-- 
-							<div class="widget-toolbar no-border">
-								<button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown">
-									本周<i class="icon-angle-down icon-on-right bigger-110"></i>
-								</button>
-								<ul class="dropdown-menu pull-right dropdown-125 dropdown-lighter dropdown-caret">
-									<li class="active">
-										<a href="#" class="blue">
-											<i class="icon-caret-right bigger-110">&nbsp;</i>本周
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<i class="icon-caret-right bigger-110 invisible">&nbsp;</i>上周
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<i class="icon-caret-right bigger-110 invisible">&nbsp;</i>本月
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<i class="icon-caret-right bigger-110 invisible">&nbsp;</i>上月
-										</a>
-									</li>
-								</ul>
-							</div>
-							 -->
+						<div style="height:60px;">
+							<!--<h5><i class="icon-signal"></i>校验码模拟练习器</h5>-->
 						</div>
-
-						<div class="widget-body">
+						<div>
 							<div class="widget-main">
 								<div id="piechart-placeholder">
 									<p align="center" style="font-size:18px;">您的出价为：<span id="userGivePrice">83300</span>元</p>
@@ -331,13 +300,13 @@
 										<input type="text" style="text-align:center;padding:4px 4px;margin-right:25px;border:2px solid blue" id="inputCaptcha" size="10">
 										<img style="font-size:16px;" alt="正在获取校验码" src="${ContextPath}/images/loadCaptcha.bmp" id="imgCaptcha">
 									</p>
-									<p align="center" id="BID-CAPTCHA-TIP" style="font-size:16px; margin-top: 10px;font-family:'SimSun';"></p>
+									<p align="center" id="BID-CAPTCHA-TIP" style="font-size:16px; margin-top: 20px;font-family:'SimSun';"></p>
 									<p align="center" id="BID-CAPTCHA-RESULT" style="font-size:16px; margin-top: 10px;font-family:'SimSun';"><img/></p>
-									<p align="center" style="font-family:'SimSun'; margin-top: 30px;">
-						         		<button id="btnStart" style="margin-right:35px; width:120px;" type="button" class="btn btn-app btn-sm btn-primary">开&nbsp;&nbsp;&nbsp;始</button>
-						         		<button id="btnEnd" disabled="disabled" style="margin-left: 35px; width:120px;" type="button" class="btn btn-app btn-sm btn-primary">结&nbsp;&nbsp;&nbsp;束</button>
+									<p align="center" style="font-family:'SimSun'; margin-top: 25px;">
+						         		<button id="btnStart" style="margin-right:35px; width:120px;" type="button" class="btn btn-app btn-xs btn-primary">开&nbsp;&nbsp;&nbsp;始</button>
+						         		<button id="btnEnd" disabled="disabled" style="margin-left: 35px; width:120px;" type="button" class="btn btn-app btn-xs btn-primary">结&nbsp;&nbsp;&nbsp;束</button>
 						         	</p>
-									<p align="center">
+									<p align="center" style="margin-top:30px;">
 									  <label for="amount">模拟次数：</label>
 									  <input type="text" id="amount" style="width:80px;border:0; color:#f6931f; font-weight:bold;">
 									</p>
