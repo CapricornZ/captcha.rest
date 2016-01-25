@@ -151,7 +151,7 @@
 		var inputVal = $('#inputCaptcha').val();
 		var cost = endTime.getTime() - startTime.getTime();
 		var reqParam = { cost : cost, correct : correct==inputVal};
-		$('#BID-CAPTCHA-RESULT').html(correct!=inputVal ? '<img style="height:30px;" src="${ContextPath}/images/Error_easyicon.net.ico"/>' : '<img style="height:30px;" src="${ContextPath}/images/OK_easyicon.net.ico"/>');
+		$('#BID-CAPTCHA-RESULT').html(correct!=inputVal ? '<img style="height:30px;" src="${ContextPath}/images/Error.ico"/>' : '<img style="height:30px;" src="${ContextPath}/images/OK.ico"/>');
 		jQuery.ajax({
 			type : "POST",
   			url  : "${ContextPath}/rest/service/exam/client/${currentUser}/record",

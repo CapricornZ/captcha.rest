@@ -18,11 +18,11 @@ public class ReadExcel {
 	@SuppressWarnings("static-access")
     private String getValue(XSSFCell hssfCell) {
         if (hssfCell.getCellType() == hssfCell.CELL_TYPE_BOOLEAN) {
-            return String.valueOf(hssfCell.getBooleanCellValue());
+            return String.valueOf(hssfCell.getBooleanCellValue()).trim();
         } else if (hssfCell.getCellType() == hssfCell.CELL_TYPE_NUMERIC) {
-            return String.valueOf(hssfCell.getNumericCellValue());
+            return String.valueOf(hssfCell.getNumericCellValue()).trim();
         } else {
-            return String.valueOf(hssfCell.getStringCellValue());
+            return String.valueOf(hssfCell.getStringCellValue()).trim();
         }
     }
 	
