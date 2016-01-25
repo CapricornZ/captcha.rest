@@ -66,6 +66,7 @@
 		});
 		
 		$('#btnStart').click(function(){
+
 			count = 1;
 			loadCaptcha();
 			$(this).attr('disabled', 'disabled');
@@ -220,16 +221,16 @@
 			<!-- PAGE CONTENT BEGINS -->
 			<div class="row">
 				<div class="space-6"></div>
-			
-			<div class="alert alert-block alert-success">
-				<button data-dismiss="alert" class="close" type="button">
-					<i class="icon-remove"></i>
-				</button>
-				<center>$!{comment}</center>
-				<center><span style="color:#FF0000;" class="glyphicon glyphicon-question-sign"/><a href="#" data-toggle="ADMIN-BOARD" style="font-weight:bold;font-size:16px;color:#FF0000;">管理员有话要说</a></center>
-			</div>
 
-				<div class="col-sm-3 infobox-container">
+				<div class="alert alert-block alert-success">
+					<button data-dismiss="alert" class="close" type="button">
+						<i class="icon-remove"></i>
+					</button>
+					<center>$!{comment}</center>
+					<center><span style="color:#FF0000;" class="glyphicon glyphicon-question-sign"/><a href="#" data-toggle="ADMIN-BOARD" style="font-weight:bold;font-size:16px;color:#FF0000;">管理员有话要说</a></center>
+				</div>
+
+				<div class="col-sm-3 infobox-container" style="width:260px;">
 					<div class="infobox infobox-red">
 						<div class="infobox-icon" style="cursor:pointer;">
 							<i class="icon-heart" toggle="signHere"></i>
@@ -287,9 +288,10 @@
 
 				<div class="vspace-sm"></div>
 				
-				<div class="col-sm-5" style="background: no-repeat url(../../images/bids.bmp);">
+				<div class="col-sm-5" style="width:500px;background: no-repeat url(../../images/bids.bmp);">
 					<div class="widget-box">
 						<div style="height:60px;">
+						<!--<div class="widget-header widget-header-flat widget-header-small">-->
 							<!--<h5><i class="icon-signal"></i>校验码模拟练习器</h5>-->
 						</div>
 						<div>
@@ -301,7 +303,7 @@
 										<img style="font-size:16px;" alt="正在获取校验码" src="${ContextPath}/images/loadCaptcha.bmp" id="imgCaptcha">
 									</p>
 									<p align="center" id="BID-CAPTCHA-TIP" style="font-size:16px; margin-top: 20px;font-family:'SimSun';"></p>
-									<p align="center" id="BID-CAPTCHA-RESULT" style="font-size:16px; margin-top: 10px;font-family:'SimSun';"><img/></p>
+									<p align="center" id="BID-CAPTCHA-RESULT" style="font-size:16px; margin-top: 10px;font-family:'SimSun';"></p>
 									<p align="center" style="font-family:'SimSun'; margin-top: 25px;">
 						         		<button id="btnStart" style="margin-right:35px; width:120px;" type="button" class="btn btn-app btn-xs btn-primary">开&nbsp;&nbsp;&nbsp;始</button>
 						         		<button id="btnEnd" disabled="disabled" style="margin-left: 35px; width:120px;" type="button" class="btn btn-app btn-xs btn-primary">结&nbsp;&nbsp;&nbsp;束</button>
