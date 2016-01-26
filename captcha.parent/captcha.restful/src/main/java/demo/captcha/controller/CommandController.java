@@ -106,41 +106,6 @@ public class CommandController implements ApplicationContextAware {
 		return "warrant/preview";
 	}
 	
-	@RequestMapping(value = "/resource/preview", method={RequestMethod.GET})
-	public String previewResource(Model model, @RequestParam("category")String category){
-
-		model.addAttribute("CATEGORY", category);
-		if("real".equals(category)){
-			
-			model.addAttribute("TAG", this.globalConfigReal.getTag());
-			model.addAttribute("URL", this.globalConfigReal.getRepository());
-			model.addAttribute("PRICE", this.context.getBean("PRICE-real"));
-			model.addAttribute("TIPS0", this.context.getBean("TIPS0-real"));
-			model.addAttribute("TIPS1", this.context.getBean("TIPS1-real"));
-			model.addAttribute("LOADING", this.context.getBean("LOADING-real"));
-			model.addAttribute("CAPTCHA", this.context.getBean("CAPTCHA-real"));
-			model.addAttribute("LOGIN", this.context.getBean("LOGIN-real"));
-			model.addAttribute("PRICE-SM", this.context.getBean("PRICE-sm-real"));
-			model.addAttribute("TIME", this.context.getBean("TIME-real"));
-			model.addAttribute("ENTRIES", this.globalConfigReal.getEntries());
-		} else {
-			
-			model.addAttribute("TAG", this.globalConfigSimulate.getTag());
-			model.addAttribute("URL", this.globalConfigSimulate.getRepository());
-			model.addAttribute("PRICE", this.context.getBean("PRICE-simulate"));
-			model.addAttribute("TIPS0", this.context.getBean("TIPS0-simulate"));
-			model.addAttribute("TIPS1", this.context.getBean("TIPS1-simulate"));
-			model.addAttribute("LOADING", this.context.getBean("LOADING-simulate"));
-			model.addAttribute("CAPTCHA", this.context.getBean("CAPTCHA-simulate"));
-			model.addAttribute("LOGIN", this.context.getBean("LOGIN-simulate"));
-			model.addAttribute("TIME", this.context.getBean("TIME-simulate"));
-			model.addAttribute("PRICE-SM", this.context.getBean("PRICE-sm-simulate"));
-			model.addAttribute("ENTRIES", this.globalConfigSimulate.getEntries());
-		}
-		
-		return "resource/preview";
-	}
-	
 	@RequestMapping(value = "/resource/attachment/{VERSION}")
 	@ResponseBody
 	public String publishResource(@RequestParam("dataFile")MultipartFile file,

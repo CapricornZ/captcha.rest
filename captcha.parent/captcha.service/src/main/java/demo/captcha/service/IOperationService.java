@@ -9,7 +9,8 @@ public interface IOperationService {
 
 	Operation saveOrUpdate(Operation operation);
 	List<Operation> listAll();
-	List<Operation> filterBy(String env);
+	List<Operation> filterByEnv(String env);
+	List<Operation> filterByTag(String tag);
 	Operation queryByID(int opsID);
 	void deleteByID(int opsID);
 	

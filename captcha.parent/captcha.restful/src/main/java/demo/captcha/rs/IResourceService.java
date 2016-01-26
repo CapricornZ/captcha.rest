@@ -12,12 +12,17 @@ import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.ext.multipart.Multipart;
 
 import demo.captcha.rs.model.Entry;
+import demo.captcha.rs.model.GlobalConfig;
 import demo.captcha.rs.model.OrcConfig;
 import demo.captcha.rs.model.OrcTipConfig;
 
 @WebService(endpointInterface="demo.captcha.restful.ResourceService", serviceName="ResourceService")
 @Path("/command/resource")
 public interface IResourceService {
+	
+	@PUT
+	@Path("/{ID}")
+	void modifyResource(GlobalConfig gc, @PathParam("ID")int id) throws Exception;
 
 	@PUT
 	@Path("/{CATEGORY}/orc/tip/{ID}")

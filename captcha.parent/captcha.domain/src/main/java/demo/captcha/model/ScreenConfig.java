@@ -8,6 +8,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import demo.captcha.util.CustomDateDeserializer;
 import demo.captcha.util.CustomDateSerializer;
 
+@Deprecated
 public class ScreenConfig {
 
 	private int id;

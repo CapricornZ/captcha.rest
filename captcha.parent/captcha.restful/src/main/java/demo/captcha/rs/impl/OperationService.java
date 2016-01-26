@@ -25,7 +25,7 @@ public class OperationService implements IOperationService {
 	@Override
 	public List<Operation> queryOperation(String env) {
 
-		return this.operationService.filterBy(env);
+		return this.operationService.filterByEnv(env);
 	}
 
 	@Override

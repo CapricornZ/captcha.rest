@@ -91,6 +91,9 @@
 	<bean id="warrantService" class="demo.captcha.service.impl.WarrantService">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
+	<bean id="resourceService" class="demo.captcha.service.impl.ResourceService">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
 	
 	<bean class="demo.captcha.util.LocalConfig" id="localConfig">
 		<constructor-arg name="storePath" value="${HTTP.PATH}" />

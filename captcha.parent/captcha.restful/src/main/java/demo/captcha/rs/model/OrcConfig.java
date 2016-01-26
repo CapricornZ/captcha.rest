@@ -1,5 +1,7 @@
 package demo.captcha.rs.model;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 public class OrcConfig implements IOrcConfig {
 	
 	private int[] index;
@@ -10,6 +12,8 @@ public class OrcConfig implements IOrcConfig {
 
 	public int[] getIndex() { return index; }
 	public void setIndex(int[] offsetX) { this.index = offsetX; }
+	
+	@JsonIgnore
 	public String getRenderIndex(){
 		
 		StringBuilder sb = new StringBuilder();
@@ -35,6 +39,7 @@ public class OrcConfig implements IOrcConfig {
 	public void setMinNearSpots(int minNearSpots) { this.minNearSpots = minNearSpots; }
 	
 	@Override
+	@JsonIgnore
 	public String getCategory() {
 		return "OrcConfig";
 	}

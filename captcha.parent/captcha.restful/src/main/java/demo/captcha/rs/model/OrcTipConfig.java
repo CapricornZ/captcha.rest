@@ -1,5 +1,7 @@
 package demo.captcha.rs.model;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 public class OrcTipConfig implements IOrcConfig{
 
 	private OrcConfig configTip;
@@ -12,6 +14,7 @@ public class OrcTipConfig implements IOrcConfig{
 	public void setConfigNo(OrcConfig config1) { this.configNo = config1; }
 
 	@Override
+	@JsonIgnore
 	public String getCategory() {
 		return "OrcTipConfig";
 	}

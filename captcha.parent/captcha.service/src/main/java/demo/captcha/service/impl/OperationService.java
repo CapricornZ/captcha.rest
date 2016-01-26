@@ -109,11 +109,21 @@ public class OperationService extends Service implements IOperationService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Operation> filterBy(String env) {
+	public List<Operation> filterByEnv(String env) {
 		
 		Query query = this.getSession().createQuery("from Operation where env=:env");
 		query.setCacheable(true);
 		query.setParameter("env", env);
+		return query.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Operation> filterByTag(String tag) {
+		
+		Query query = this.getSession().createQuery("from Operation where tag=:tag");
+		query.setCacheable(true);
+		query.setParameter("tag", tag);
 		return query.list();
 	}
 }

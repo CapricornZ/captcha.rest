@@ -104,6 +104,12 @@
 		<property name="operationService" ref="operationService"/>
 	</bean>
 	
+	<bean class="demo.captcha.controller.ResourceController">
+		<property name="resourceService" ref="resourceService"/>
+		<property name="globalConfigREAL" ref="GLOBAL-REAL"/>
+		<property name="globalConfigSIMULATE" ref="GLOBAL-SIMULATE"/>
+	</bean>
+	
 	<bean class="demo.captcha.controller.CommandController">
 		<property name="globalConfigREAL" ref="GLOBAL-REAL"/>
 		<property name="globalConfigSIMULATE" ref="GLOBAL-SIMULATE"/>

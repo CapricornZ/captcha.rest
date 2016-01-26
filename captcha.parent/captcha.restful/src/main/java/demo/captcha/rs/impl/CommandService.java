@@ -40,7 +40,7 @@ public class CommandService implements ICommandService {
 		logger.info("KEEPALIVE : accept from 【fromHost:{}, environment:{}】", fromHost, env);
 		Client client = new Client(fromHost);
 		client = this.clientService.saveOrUpdate(client);
-		List<Operation> operations = this.operationService.filterBy(env);
+		List<Operation> operations = this.operationService.filterByEnv(env);
 		client.setOperation(operations);
 		
 		return client;
@@ -49,7 +49,8 @@ public class CommandService implements ICommandService {
 	@Override
 	public GlobalConfig queryResource(String fromHost, String category) {
 		
-		logger.info("CONFIG : init Global({}) from 【{}】", category, fromHost);
+		logger.info("CONFIG : init Global({}) from 【fromHost:{}, tag:{}】", category, fromHost, category);
+		List<Operation> operations = this.operationService.filterByTag(category);
 		if("simulate".equals(category)){
 			
 			GlobalConfig gc = this.globalConfigSIMULATE;
@@ -57,6 +58,7 @@ public class CommandService implements ICommandService {
 		} else {
 			
 			GlobalConfig gc = this.globalConfigREAL;
+			System.out.println(new com.google.gson.Gson().toJson(gc));
 			return gc;
 		}
 	}

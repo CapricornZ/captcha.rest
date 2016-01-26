@@ -1,16 +1,24 @@
 package demo.captcha.rs.impl;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.StringWriter;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import demo.captcha.model.Resource;
 import demo.captcha.rs.IResourceService;
 import demo.captcha.rs.model.Entry;
+import demo.captcha.rs.model.GlobalConfig;
 import demo.captcha.rs.model.OrcConfig;
 import demo.captcha.rs.model.OrcTipConfig;
 
@@ -19,6 +27,9 @@ public class ResourceService implements IResourceService, ApplicationContextAwar
 	private ApplicationContext context;
 	@Override
 	public void setApplicationContext(ApplicationContext context) throws BeansException { this.context = context; }
+	
+	private demo.captcha.service.IResourceService resourceService;
+	public void setResourceService(demo.captcha.service.IResourceService service){ this.resourceService = service; }
 	
 	@Override
 	public void modifyTipConfig(OrcTipConfig config, String category, String id) {
@@ -72,6 +83,24 @@ public class ResourceService implements IResourceService, ApplicationContextAwar
 		
 		java.io.File destFile = new java.io.File("/home/martin/attach.bmp");
 		attachment.transferTo(destFile);
+	}
+
+	@Override
+	public void modifyResource(GlobalConfig gc, int id) throws Exception {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		StringWriter sw = new StringWriter();    
+		JsonGenerator gen = new JsonFactory().createJsonGenerator(sw); 
+		mapper.writeValue(gen, gc);
+		gen.close();
+		String json = sw.toString(); 
+		
+		Resource resource = this.resourceService.queryByID(id);
+		//String json = new com.google.gson.Gson().toJson(gc);
+		resource.setContent(json);
+		resource.setUpdateTime(new Date());
+		this.resourceService.update(resource);
+		System.out.println(gc);
 	}
 
 }
