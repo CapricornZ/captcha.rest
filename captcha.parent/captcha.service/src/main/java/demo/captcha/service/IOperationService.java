@@ -11,6 +11,7 @@ public interface IOperationService {
 	List<Operation> listAll();
 	List<Operation> filterByEnv(String env);
 	List<Operation> filterByTag(String tag);
+	List<Operation> filterByEnvAndTag(String tag, String env);
 	Operation queryByID(int opsID);
 	void deleteByID(int opsID);
 	

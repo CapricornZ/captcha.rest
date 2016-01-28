@@ -29,7 +29,7 @@ public interface ICommandService {
 	@Path("/global/{CATEGORY}")
 	@Produces({MediaType.APPLICATION_JSON})
 	GlobalConfig queryResource(@QueryParam("fromHost")String fromHost, 
-			@PathParam("CATEGORY")String category);
+			@PathParam("CATEGORY")String category, @QueryParam("env")String env) throws Exception;
 	
 	@POST
 	@Path("/register/{HOST}")

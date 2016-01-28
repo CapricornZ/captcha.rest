@@ -29,4 +29,15 @@ public class ResourceService extends Service implements IResourceService {
 		
 		this.getSession().update(resource);
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Resource> filterByTagAndEnv(String tag, String env) {
+		
+		Query query = this.getSession().createQuery("from Resource where tag=:tag and env=:env");
+		query.setCacheable(true);
+		query.setParameter("tag", tag);
+		query.setParameter("env", env);
+		return query.list();
+	}
 }

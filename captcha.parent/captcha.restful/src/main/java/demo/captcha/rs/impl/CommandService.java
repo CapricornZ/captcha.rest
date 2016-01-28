@@ -2,6 +2,7 @@ package demo.captcha.rs.impl;
 
 import java.util.List;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,8 +12,10 @@ import demo.captcha.rs.ICommandService;
 import demo.captcha.rs.model.GlobalConfig;
 import demo.captcha.service.IClientService;
 import demo.captcha.service.IOperationService;
+import demo.captcha.service.IResourceService;
 import demo.captcha.service.IWarrantService;
 import demo.captcha.model.Operation;
+import demo.captcha.model.Resource;
 
 public class CommandService implements ICommandService {
 	
@@ -26,6 +29,9 @@ public class CommandService implements ICommandService {
 	
 	private IWarrantService warrantService;
 	public void setWarrantService(IWarrantService service){ this.warrantService = service; }
+	
+	private IResourceService resourceService;
+	public void setResourceService(IResourceService service){ this.resourceService = service; }
 	
 	private GlobalConfig globalConfigREAL;
 	public void setGlobalConfigREAL(GlobalConfig resource){ this.globalConfigREAL = resource; }
@@ -47,18 +53,28 @@ public class CommandService implements ICommandService {
 	}
 	
 	@Override
-	public GlobalConfig queryResource(String fromHost, String category) {
+	public GlobalConfig queryResource(String fromHost, String category, String env) throws Exception {
 		
-		logger.info("CONFIG : init Global({}) from 【fromHost:{}, tag:{}】", category, fromHost, category);
-		List<Operation> operations = this.operationService.filterByTag(category);
-		if("simulate".equals(category)){
+		if(env == null){
 			
-			GlobalConfig gc = this.globalConfigSIMULATE;
-			return gc;
+			logger.info("CONFIG : init Global({}) from 【fromHost:{}, tag:{}】", category, fromHost, category);
+			//List<Operation> operations = this.operationService.filterByTag(category);
+			if("simulate".equals(category)){
+				
+				GlobalConfig gc = this.globalConfigSIMULATE;
+				return gc;
+			} else {
+				
+				GlobalConfig gc = this.globalConfigREAL;
+				return gc;
+			}
 		} else {
 			
-			GlobalConfig gc = this.globalConfigREAL;
-			System.out.println(new com.google.gson.Gson().toJson(gc));
+			logger.info("CONFIG : init Global({}) from 【fromHost:{}, tag:{}, env:{}】", category, fromHost, category, env);
+			
+			List<Resource> resources = this.resourceService.filterByTagAndEnv(category, env);
+			ObjectMapper mapper = new ObjectMapper();
+			GlobalConfig gc = mapper.readValue(resources.get(0).getContent(), GlobalConfig.class);
 			return gc;
 		}
 	}
