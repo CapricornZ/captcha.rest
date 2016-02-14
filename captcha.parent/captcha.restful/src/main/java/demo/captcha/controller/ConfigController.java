@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.http.client.ClientProtocolException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.druid.util.Base64;
+
 import demo.captcha.model.Client;
 import demo.captcha.model.Config;
 import demo.captcha.rs.model.ConfigHtml;
@@ -23,6 +26,7 @@ import demo.captcha.rs.model.TriggerV3;
 import demo.captcha.rs.model.V3Common;
 import demo.captcha.service.IClientService;
 import demo.captcha.service.IConfigService;
+import demo.captcha.util.BidHelper;
 import demo.captcha.util.ReadConfigXlsV1;
 import demo.captcha.util.ReadConfigXlsV2;
 
@@ -58,6 +62,26 @@ public class ConfigController {
 	public String initCreate(Model model){
 		
 		return "config/create";
+	}
+	
+	@RequestMapping(value = "/queryResp/{configNO}", method=RequestMethod.GET)
+	public String queryResp(Model model, @PathVariable("configNO")String no) throws ClientProtocolException, IOException{
+		
+		Config config = this.configService.queryByNo(no);
+		model.addAttribute("config", config);
+		
+		BidHelper.Captcha captcha = BidHelper.changeCaptcha();
+		String base64Captcha = Base64.byteArrayToBase64(captcha.getCaptcha());
+		model.addAttribute("base64Captcha", base64Captcha);
+		model.addAttribute("sessionID", captcha.getSessionID());
+		return "config/queryResp";
+	}
+	
+	@RequestMapping(value = "/queryResp/{configNO}/response", method=RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String ajaxResp(@PathVariable("configNO")String no, String pass, String code, String sessionID) throws ClientProtocolException, IOException{
+		String rtn = BidHelper.queryResponse(sessionID, no, pass, code);
+		return rtn;
 	}
 	
 	@RequestMapping(value = "/detail/{configNO}", method=RequestMethod.GET)

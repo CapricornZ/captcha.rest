@@ -9,6 +9,15 @@
 <script src="${ContextPath}/js/tableExport.js"></script>
 
 <script>
+	function queryResp(ctrl){
+	
+		var configID = $(ctrl).attr("config");
+		BootstrapDialog.show({
+			title   : "查询",
+            message : $('<div></div>').load('${ContextPath}/web/command/config/queryResp/' + configID + '.do')
+        });
+	}
+	
 	function removeObj(ctrl){
 	
 		var elementTR = $(ctrl).parent().parent();
@@ -156,6 +165,7 @@
 			<td>$!{config.policy}</td>
 			<td>
 				<button class="btn btn-danger btn-sm" type="button" config="${config.no}" toggle="DEL" onclick="return removeObj(this);"><span class="glyphicon glyphicon-remove"/></button>
+				<button class="btn btn-primary btn-sm" type="button" config="${config.no}" toggle="DEL" onclick="return queryResp(this);"><span class="glyphicon glyphicon-zoom-in"/></button>
 			</td>
 		</tr>
 		#end

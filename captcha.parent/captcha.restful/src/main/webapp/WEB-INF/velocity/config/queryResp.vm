@@ -1,0 +1,209 @@
+#set( $ContextPath = ${request.contextPath} )
+#set( $layout = "layout/layoutBlank.vm" )
+
+<link rel="stylesheet" href="${ContextPath}/css/bootstrap.css" >
+<link rel="stylesheet" type="text/css" href="${ContextPath}/css/bootstrap-select.min.css"/>
+<link rel="stylesheet" type="text/css" href="${ContextPath}/css/jsoneditor.css"></link>
+
+<script type="text/javascript" src="${ContextPath}/js/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="${ContextPath}/js/jquery/jquery.cookie.js"></script>
+<script type="text/javascript" src="${ContextPath}/js/jquery/jquery.maskedinput.js"></script>
+<script type="text/javascript" src="${ContextPath}/js/jquery/jquery.tags.js"></script>
+<script type="text/javascript" src="${ContextPath}/js/jquery/jquery.jsoneditor.js"></script>
+
+<script type="text/javascript" src="${ContextPath}/js/bootstrap-select.min.js"></script>
+
+<script>
+	function changeCodeImg() {
+        $("#ImgValiCode").attr("src", 'data:image/jpeg;base64,${base64Captcha}');
+    }
+    
+    function fetchResp(){
+    	var no = $("#configID").val();
+    	var pass = $("#pid").val();
+    	pass = pass.substr(pass.length-4, 4);    	
+    	var code = $("#inputCode").val();
+    	var session = $("#ImgValiCode").attr("session");
+    	
+    	$.ajax({
+			url  : "${ContextPath}/web/command/config/queryResp/" + no + "/response?sessionID=" + session + "&pass=" + pass + "&code=" + code,
+			type : 'GET',
+			//contentType: 'application/json; charset=utf-8',
+			success: function(json) { 
+
+				var res = $.parseJSON(json);
+				console.log(res);
+				if (res.code == '0') {
+					if (res.NeedPay == '1') {
+
+                        document.getElementById('loginsuccess').style.display = '';
+
+                        $('#title').html(res.ClientName + "，恭喜您成交了！");
+                        $('#denumber').html($('#configID').val());
+                        $('#times').html(res.used);
+                        $('#time').html(res.AucTime);
+                        document.getElementById('trtime').style.display = '';
+                        document.getElementById('trsuc').style.display = '';
+                        document.getElementById('trvalidate').style.display = 'none';
+
+                    } else {
+
+                        document.getElementById('loginsuccess').style.display = '';
+                        
+                        $('#title').html(res.ClientName + ",您没有成交");
+                        $('#denumber').html($('#configID').val());
+                        $('#times').html(res.used);
+                        $('#time').html(res.AucTime);
+                        
+                        document.getElementById('trtime').style.display = 'none';
+                        document.getElementById('trvalidate').style.display = '';
+                        document.getElementById('validatetime').innerHTML = res.validdate;
+                        document.getElementById('trsuc').style.display = 'none';
+                        if (res.rk != '') {
+
+                            document.getElementById('time').innerHTML = res.AucTime + "<br/>第" + res.rk + "位";
+                            document.getElementById('trtime').style.display = '';
+                        }
+                    }
+                    document.getElementById('dpublishtime').innerHTML = "数据发布日期：" + res.publishtime;
+				}
+				else if (res.code == '2') {
+
+                    document.getElementById('loginfail').style.display = '';
+                    document.getElementById('failnumber').innerHTML = document.getElementById('configID').value;
+
+                }
+                else if (res.code == '1') {
+                    alert(res.err);
+                } else if (res.code == '4') {
+                    alert(res.err);
+                }
+                else {
+                    alert(res.err);
+                }
+				console.log("success");
+			},
+            error: function(msg) {
+             
+            	console.log("error");
+            }
+		});
+    }
+    
+	$(function(){
+		changeCodeImg();
+	});
+</script>
+
+<form class="form-horizontal" onsubmit="return false;">
+	<fieldset>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="configID">验证码</label>
+			<div class="controls col-sm-5">
+				<div class="input-group">
+					<span class="input-group-addon">#</span>
+					<img session="${sessionID}" class="form-control" style="width:150px;padding:0px;" id="ImgValiCode" onclick="return changeCodeImg();"/>
+				</div>
+			</div>
+			<div class="controls col-sm-5">
+				<input id="inputCode" class="" style="width:100px;height:32px;" type="text" value=""/>
+				<button class="btn btn-sm btn-primary" onclick="return fetchResp();">fire</button>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="configID">投标号</label>
+			<div class="controls col-sm-10">
+				<div class="input-group">
+					<span class="input-group-addon">#</span>
+					<input id="configID" class="form-control" disabled style="width:200px;height:30px;" type="text" value="${config.no}">
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="password">投标密码</label>
+			<div class="controls col-sm-10">
+				<div class="input-group">
+					<span class="input-group-addon">#</span>
+					<input id="password" disabled class="form-control" style="width:200px;height:30px;" type="text" value="${config.passwd}"></input>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="pid">身份证</label>
+			<div class="controls col-sm-10">
+				<div class="input-group">
+					<span class="input-group-addon">#</span>
+					<input id="pid" class="form-control" disabled style="width:200px;height:30px;" type="text" value="${config.pid}"></input>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="pname">姓名</label>
+			<div class="controls col-sm-10">
+				<div class="input-group">
+					<span class="input-group-addon">#</span>
+					<input id="pname" disabled class="form-control" style="width:200px;height:30px;" type="text" value="${config.pname}"></input>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+	
+	<!-- -->
+	<div id="loginsuccess" class="Contextfont2" style="display:none;">
+        <table width="520" cellspacing="1" cellpadding="1" border="1" class="table4">
+            <tbody>
+            	<tr><td colspan="2" id="title" align="center"></td></tr>
+                <tr>
+                    <td class="tablefield">投标卡号：</td>
+                    <td id="denumber"></td>
+                </tr>
+                <tr>
+                    <td class="tablefield">参与投标次数：</td>
+                    <td id="times"></td>
+                </tr>
+                <tr id="trtime" style="display: none;">
+                    <td class="tablefield">本场出价时间：</td>
+                    <td id="time"> </td>
+                </tr> 
+                <tr id="trvalidate">
+                    <td class="tablefield">投标卡有效期：</td>
+                    <td id="validatetime"></td>
+                </tr>
+                <tr id="trsuc" style="display: none;">
+                    <td height="35" align="center" colspan="2"><strong><a class="chepaiweb" target="_top" href="https://live.alltobid.com/edupai/LimitBidSys/LimitBidLogin.aspx">私车额度投标拍卖成交网上支付结算</a></strong></td>
+                </tr>
+                <tr><td colspan="2" id="dpublishtime" align="center"></td></tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- -->
+    <div id="loginfail" class="Contextfont2" style="display:none;">
+        <p><font size="+1">投标卡（<span id="failnumber"></span>）或为以下情况之一：</font></p>
+        <br>
+        <table class="table1">
+            <tbody>
+                <tr><td><font size="+1" color="red">1. 为上一场拍卖会结束后的新增用户</font></td></tr>
+                <tr><td><font size="+1" color="red">2. 为已超过半年有效期的失效用户</font></td></tr>
+                <tr><td><font size="+1" color="red">3. 为已超过可投标次数的失效用户</font></td></tr>
+            </tbody>
+        </table>
+        <br>
+        <table class="table2">
+            <tbody>
+                <tr><td><font size="+1" color="red">请确认您输入的投标号、证件号后四位是否正确 </font></td></tr>
+                <tr><td><a class="Input02" onclick="javascript:inagain()">再次输入</a></td></tr>
+            </tbody>
+        </table>
+        <br>
+
+        <table width="600" class="table3">
+            <tbody>
+                <tr>
+                    <td align="center"><font size="+1">投标卡自登记之日起半年内有效（请查看您密码条右下方的有效期），有效期内可分别参加不同场次的个人非营业性客车额度拍卖会，最多可参加六次。属于第二或第三种情况的用户，请到我公司更换投标卡。</font></td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <font>如有疑问请致电本公司400-888-1220</font>
+    </div>
+</form>
