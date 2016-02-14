@@ -69,12 +69,15 @@ public class ConfigController {
 		
 		Config config = this.configService.queryByNo(no);
 		model.addAttribute("config", config);
-		
-		BidHelper.Captcha captcha = BidHelper.changeCaptcha();
-		String base64Captcha = Base64.byteArrayToBase64(captcha.getCaptcha());
-		model.addAttribute("base64Captcha", base64Captcha);
-		model.addAttribute("sessionID", captcha.getSessionID());
 		return "config/queryResp";
+	}
+	
+	@RequestMapping(value = "/queryResp/captcha", method=RequestMethod.GET)
+	@ResponseBody
+	public BidHelper.Captcha changeCaptcha() throws ClientProtocolException, IOException{
+
+		BidHelper.Captcha captcha = BidHelper.changeCaptcha();
+		return captcha;
 	}
 	
 	@RequestMapping(value = "/queryResp/{configNO}/response", method=RequestMethod.GET, produces = "text/html;charset=UTF-8")
