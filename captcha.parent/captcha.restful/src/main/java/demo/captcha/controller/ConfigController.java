@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.alibaba.druid.util.Base64;
-
 import demo.captcha.model.Client;
 import demo.captcha.model.Config;
 import demo.captcha.rs.model.ConfigHtml;

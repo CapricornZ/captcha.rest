@@ -12,6 +12,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import demo.captcha.model.Client;
+import demo.captcha.model.Config;
 import demo.captcha.model.Warrant;
 import demo.captcha.rs.model.GlobalConfig;
 
@@ -30,6 +31,11 @@ public interface ICommandService {
 	@Produces({MediaType.APPLICATION_JSON})
 	GlobalConfig queryResource(@QueryParam("fromHost")String fromHost, 
 			@PathParam("CATEGORY")String category, @QueryParam("env")String env) throws Exception;
+	
+	@GET
+	@Path("/bid/{BIDNO}")
+	@Produces({MediaType.APPLICATION_JSON})
+	Config query(@PathParam("BIDNO")String bidNo);
 	
 	@POST
 	@Path("/register/{HOST}")

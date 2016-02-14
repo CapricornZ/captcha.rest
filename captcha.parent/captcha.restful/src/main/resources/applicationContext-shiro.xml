@@ -76,9 +76,10 @@
 				/rest/service/command/register/*=anon
 	        	/rest/service/command/global/*=authcBasic,roles[user]
 	        	/rest/service/command/keepAlive=authcBasic,roles[user]
-	        	/rest/service/command/warrant=authcBasic,roles[admin]
-	        	/rest/service/command/config/*=authcBasic,roles[user]
+	        	/rest/service/command/bid/*=authcBasic,roles[user]
 	        	/rest/service/command/config/common/*=authcBasic,roles[user]
+	        	
+	        	/rest/service/command/warrant=authcBasic,roles[admin]
 	        	/rest/**=authcBasic,roles[admin]
 	        </value>  
 	    </property>

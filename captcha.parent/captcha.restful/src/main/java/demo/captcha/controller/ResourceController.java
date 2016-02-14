@@ -15,12 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import demo.captcha.model.Resource;
 import demo.captcha.rs.model.GlobalConfig;
-import demo.captcha.rs.model.IOrcConfig;
 import demo.captcha.service.IResourceService;
 
 @RequestMapping(value = "/command/resource")

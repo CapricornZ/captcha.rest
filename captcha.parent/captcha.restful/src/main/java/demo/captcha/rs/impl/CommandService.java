@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import demo.captcha.model.Client;
+import demo.captcha.model.Config;
 import demo.captcha.model.Warrant;
 import demo.captcha.rs.ICommandService;
 import demo.captcha.rs.model.GlobalConfig;
@@ -39,6 +40,8 @@ public class CommandService implements ICommandService {
 	private GlobalConfig globalConfigSIMULATE;
 	public void setGlobalConfigSIMULATE(GlobalConfig resource){ this.globalConfigSIMULATE = resource; }
 	
+	private demo.captcha.service.IConfigService configService;
+	public void setConfigService(demo.captcha.service.IConfigService configService) { this.configService = configService; }
 
 	@Override
 	public Client keepAlive(String fromHost, String env) {
@@ -100,5 +103,11 @@ public class CommandService implements ICommandService {
 		
 		logger.info("WARRANT : Modify");
 		this.warrantService.update(warrant);
+	}
+
+	@Override
+	public Config query(String bidNo) {
+		
+		return this.configService.queryByNo(bidNo);
 	}
 }

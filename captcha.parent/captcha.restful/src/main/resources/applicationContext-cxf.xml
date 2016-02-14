@@ -103,6 +103,7 @@
         		<property name="resourceService" ref="resourceService"/>
         		<property name="globalConfigREAL" ref="GLOBAL-REAL"/>
         		<property name="globalConfigSIMULATE" ref="GLOBAL-SIMULATE"/>
+        		<property name="configService" ref="configService"/>
         	</bean>
         	<bean class="demo.captcha.rs.impl.ResourceService">
         		<property name="resourceService" ref="resourceService"/>

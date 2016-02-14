@@ -62,9 +62,12 @@ public class ReadConfigXlsV2 {
 						XSSFCell submitTime = xssfRow.getCell(7);rows.add(this.getValue(submitTime));
 						
 						//POLICY2
-						XSSFCell priceTime2 = xssfRow.getCell(8);rows.add(this.getValue(priceTime2));
-						XSSFCell priceDelta2 = xssfRow.getCell(9);rows.add(this.getValue(priceDelta2));
-						XSSFCell submitTime2 = xssfRow.getCell(10);rows.add(this.getValue(submitTime2));
+						XSSFCell priceTime2 = xssfRow.getCell(8);
+						rows.add(this.getValue(priceTime2));
+						XSSFCell priceDelta2 = xssfRow.getCell(9);
+						rows.add(this.getValue(priceDelta2));
+						XSSFCell submitTime2 = xssfRow.getCell(10);
+						rows.add(this.getValue(submitTime2));
 
 						list.add(rows.toArray(new String[rows.size()]));
 						
