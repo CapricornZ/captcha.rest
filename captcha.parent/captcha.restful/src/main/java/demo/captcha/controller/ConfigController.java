@@ -143,7 +143,7 @@ public class ConfigController {
 			List<String[]> configs = readExcel.readXlsx(file.getInputStream());
 			model.addAttribute("configs", configs);
 		}
-		if("v3".equals(version.toLowerCase())){
+		if("v2".equals(version.toLowerCase()) || "v3".equals(version.toLowerCase())){
 			
 			ReadConfigXlsV2 readExcel = new ReadConfigXlsV2();
 			List<String[]> configs = readExcel.readXlsx(file.getInputStream());

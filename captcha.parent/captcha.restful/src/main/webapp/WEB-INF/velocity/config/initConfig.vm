@@ -53,11 +53,13 @@
 			<ul class="nav nav-tabs">
 			   <li><a id="init" href="#manage" url="manage.do" data-toggle="tab">manage.do</a></li>
 			   <li><a href="#importV1" url="import/v1" data-toggle="tab">import/v1</a></li>
+			   <li><a href="#importV2" url="import/v2" data-toggle="tab">import/v2</a></li>
 			   <li><a href="#importV3" url="import/v3" data-toggle="tab">import/v3</a></li>
 			</ul>
 			<div id="myTabContent" class="tab-content" style="height:70%;">
 				<div class="tab-pane fade in active" id="manage">LOADING...</div><!--div manage-->
    				<div class="tab-pane fade in" id="importV1"></div><!-- div import -->
+   				<div class="tab-pane fade in" id="importV2"></div><!-- div import -->
    				<div class="tab-pane fade in" id="importV3"></div><!-- div import -->
    			</div>
 		</div>
