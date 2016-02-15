@@ -23,6 +23,7 @@
 		var elementTR = $(ctrl).parent().parent();
 		var configID = $(ctrl).attr("config");
 		var endPoint = "${ContextPath}/rest/service/command/config/" + configID;
+		console.log(endPoint);
 		BootstrapDialog.show({
             message: "确定要删除？",
             buttons:[{

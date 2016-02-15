@@ -25,6 +25,7 @@
 	<div class="col-md-12">
 		<h4 class="header green lighter bigger">
 			<i class="glyphicon glyphicon-share"></i>
+			<a href="${ContextPath}/config(v1).xlsx">模板下载</a>
 		</h4>
 		<form class="form-horizontal" id="frm" action="#" method="POST" enctype="multipart/form-data">
 			<div class="form-group">
