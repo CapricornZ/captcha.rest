@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import demo.captcha.model.Client;
 import demo.captcha.model.Config;
 import demo.captcha.model.Warrant;
+import demo.captcha.rs.model.F9Common;
 import demo.captcha.rs.model.GlobalConfig;
 
 @WebService(endpointInterface="demo.captcha.restful.CommandService", serviceName="CommandService")
@@ -36,6 +37,16 @@ public interface ICommandService {
 	@Path("/bid/{BIDNO}")
 	@Produces({MediaType.APPLICATION_JSON})
 	Config query(@PathParam("BIDNO")String bidNo);
+	
+	@GET
+	@Path("/common/F9")
+	@Produces({MediaType.APPLICATION_JSON})
+	F9Common f9Common(@QueryParam("force") boolean reload);
+	
+	@PUT
+	@Path("/common/F9")
+	@Consumes({MediaType.APPLICATION_JSON})
+	void f9Common(F9Common f9Common);
 	
 	@POST
 	@Path("/register/{HOST}")

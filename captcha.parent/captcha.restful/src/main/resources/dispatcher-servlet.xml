@@ -117,5 +117,6 @@
 		<property name="storePath" value="${HTTP.PATH}"/>
 		<property name="absoluteUrl" value="${HTTP.URL}"/>
 		<property name="localConfig" ref="localConfig"/>
+		<property name="commandService" ref="commandService"/>
 	</bean>
 </beans>

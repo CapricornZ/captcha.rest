@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import demo.captcha.model.Warrant;
+import demo.captcha.rs.ICommandService;
+import demo.captcha.rs.model.F9Common;
 import demo.captcha.rs.model.GlobalConfig;
 import demo.captcha.service.IWarrantService;
 import demo.captcha.service.Page;
@@ -51,6 +53,9 @@ public class CommandController implements ApplicationContextAware {
 	private IWarrantService warrantService;
 	public void setWarrantService(IWarrantService service){ this.warrantService = service; }
 	
+	private ICommandService commandService;
+	public void setCommandService(ICommandService commandService) { this.commandService = commandService; }
+	
 	@RequestMapping(value="/prePublish", method={RequestMethod.GET,RequestMethod.POST})
 	public String prePublish(Model model, HttpServletRequest request){
 
@@ -64,15 +69,21 @@ public class CommandController implements ApplicationContextAware {
 			java.io.BufferedReader br = new java.io.BufferedReader(isr);
 			version = br.readLine();
 			br.close();
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
+		F9Common f9 = this.commandService.f9Common(true);
+		String f9Common = new com.google.gson.Gson().toJson(f9);
+		
 		model.addAttribute("VERSION", version);
+		model.addAttribute("F9Common", f9Common);
 		return "publish";
 	}
+	
 	@RequestMapping(value = "/publish", method={RequestMethod.POST})
 	public String publish(@RequestParam("dataFile")MultipartFile file, 
 			@RequestParam("version")String version, Model model, HttpServletRequest request){

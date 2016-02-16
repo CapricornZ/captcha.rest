@@ -77,14 +77,23 @@
 	        	/rest/service/command/global/*=authcBasic,roles[user]
 	        	/rest/service/command/keepAlive=authcBasic,roles[user]
 	        	/rest/service/command/bid/*=authcBasic,roles[user]
+	        	/rest/service/command/common/*=authcBasic,anyRoles[user,admin]
 	        	/rest/service/command/config/common/*=authcBasic,roles[user]
 	        	
 	        	/rest/service/command/warrant=authcBasic,roles[admin]
 	        	/rest/**=authcBasic,roles[admin]
 	        </value>  
 	    </property>
+	    <property name="filters">
+	    	<map>
+	    		<entry key="anyRoles" value-ref="anyRoles"/>
+	    	</map>
+	    </property>  
 	</bean>
 	
+	<!--自定义的Roles Filter-->  
+    <bean id="anyRoles" class="demo.captcha.security.RolesAuthorizationFilter" />
+    
 	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->  
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>  
  

@@ -1,5 +1,7 @@
 package demo.captcha.rs.impl;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
@@ -10,6 +12,7 @@ import demo.captcha.model.Client;
 import demo.captcha.model.Config;
 import demo.captcha.model.Warrant;
 import demo.captcha.rs.ICommandService;
+import demo.captcha.rs.model.F9Common;
 import demo.captcha.rs.model.GlobalConfig;
 import demo.captcha.service.IClientService;
 import demo.captcha.service.IOperationService;
@@ -42,6 +45,10 @@ public class CommandService implements ICommandService {
 	
 	private demo.captcha.service.IConfigService configService;
 	public void setConfigService(demo.captcha.service.IConfigService configService) { this.configService = configService; }
+
+	private F9Common f9Repo;
+	private String storePath;
+	public void setStorePath(String storePath) { this.storePath = storePath; }
 
 	@Override
 	public Client keepAlive(String fromHost, String env) {
@@ -108,6 +115,45 @@ public class CommandService implements ICommandService {
 	@Override
 	public Config query(String bidNo) {
 		
+		logger.info("Query BID : 【{}】", bidNo);
 		return this.configService.queryByNo(bidNo);
+	}
+
+	@Override
+	public F9Common f9Common(boolean reload) {
+
+		logger.info("Query F9 Policy : 【force reload:{}】", reload);
+		if(!reload && this.f9Repo != null)
+			return this.f9Repo;
+		
+		String path = this.storePath;
+		String f9Common = "{\"checkTime\":\"11:29:48\"}";
+		java.io.FileInputStream fis;
+		try {
+			fis = new java.io.FileInputStream(path + "f9.common");
+			f9Common = org.apache.commons.io.IOUtils.toString(fis);
+			fis.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		F9Common f9 = new com.google.gson.Gson().fromJson(f9Common, F9Common.class);
+		this.f9Repo = f9;
+		return this.f9Repo;
+	}
+
+	@Override
+	public void f9Common(F9Common f9Common) {
+		
+		String path = this.storePath;
+		this.f9Repo = f9Common;
+		try {
+			java.io.FileOutputStream fos = new java.io.FileOutputStream(path + "f9.common");
+			org.apache.commons.io.IOUtils.write(new com.google.gson.Gson().toJson(f9Common), fos);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
