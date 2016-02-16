@@ -4,14 +4,19 @@ public class F9Common {
 
 	public static class Action{
 		
-		private String submit;
+		//private String submit;
 		private int delta;
+		/*发生的比例*/
+		private int percent;
 
 		public int getDelta() { return delta; }
 		public void setDelta(int delta) { this.delta = delta; }
 		
-		public String getSubmit() { return submit; }
-		public void setSubmit(String submitTime) {this.submit = submitTime; }
+		//public String getSubmit() { return submit; }
+		//public void setSubmit(String submitTime) {this.submit = submitTime; }
+		
+		public int getPercent() { return percent; }
+		public void setPercent(int percent) { this.percent = percent; }
 	}
 	
 	public static class Trigger{
