@@ -9,13 +9,15 @@
 <script src="${ContextPath}/assets/js/jquery-1.10.2.min.js'></script>
 <![endif]-->
 
+<script src="${ContextPath}/assets/js/jquery.timers.js" type="text/javascript"></script>
+
 <script type="text/javascript">
 	var startTime;
 	var count;
 
 	jQuery(function(){
 		
-		init();
+		clear();
 		refresh();
 		
 		//签到
@@ -32,42 +34,39 @@
 	  		});
 		});
 		
-		$('#inputCaptcha').keydown(function (event) {
-
-		    if((event.keyCode >= 48 && event.keyCode <= 57)
-		    	|| (event.keyCode >=96 && event.keyCode <=105) 
+		$('#userInput').keydown(function(event){
+			if((event.keyCode >= 48 && event.keyCode <= 57)
+				|| (event.keyCode >=65 && event.keyCode <=90)
+		    	|| (event.keyCode >=97 && event.keyCode <=122) 
 		    	|| event.keyCode == 8 || event.keyCode == 46 || event.keyCode == 39 || event.keyCode == 37)
 		    	;
 		    else if (event.keyCode == 32 || event.keyCode == 13){
 
-				if($('#btnStart').attr('disabled') == 'disabled'){
-					submitResult();
-			    	max = $("#slider-range-min").slider("value");
-			    	if(count < max){
-				    	setTimeout(function(){
-				    		count ++ ;
-				    		loadCaptcha();
-						}, 1000);
-			    	} else {
-			    		init();
-			    		refresh();
-			    	}
-				}
+				submitResult();
+		    	if(count < 25){
+			    	setTimeout(function(){ showCaptcha(); }, 1000);
+		    	} else {
+
+		    		refresh();
+		    		clear();
+		    	}
+
 		    	event.preventDefault();
 		    }else
 		    	event.preventDefault();
 		});
 		
-		jQuery('#btnEnd').click(function(){
+		$('#start').click(function(){
+			
 			$(this).attr('disabled', 'disabled');
-			$('#btnStart').removeAttr('disabled');
-			init();
-			refresh();
+			$('#FINISH').html('0');
+			count = 1;
+			showCaptcha();
 		});
 		
 		$('#btnStart').click(function(){
 
-			count = 1;
+			count = 0;
 			loadCaptcha();
 			$(this).attr('disabled', 'disabled');
 			$('#btnEnd').removeAttr('disabled');
@@ -144,12 +143,27 @@
 		$('#BID-CAPTCHA-TIP').html("<font color='red'>1. 看清这里的验证码提示<br/>2. 然后输入正确的验证码<br/>3. 输入完毕后按【空格】</font>");
 	}
 	
+	function clear(){
+
+		$('#userInput').val('');
+		$('#start').removeAttr('disabled');
+		$('#captcha').attr('src', "");
+		$('#tip').html('校验码提示！');
+	}
+	
 	function submitResult(){
 	
 		endTime = new Date();
-		var correct = $('#imgCaptcha').attr('value');
-		var inputVal = $('#inputCaptcha').val();
 		var cost = endTime.getTime() - startTime.getTime();
+		
+		var correct = $('#captcha').attr('value');
+		var inputVal = $('#userInput').val();
+		
+		$('#captcha').removeAttr('value');
+		$('#captcha').attr('src', '');
+		$('#tip').html('验证码提示！');
+		$('#userInput').val('');
+		
 		var reqParam = { cost : cost, correct : correct==inputVal};
 		$('#BID-CAPTCHA-RESULT').html(correct!=inputVal ? '<img style="height:30px;" src="${ContextPath}/images/Error.jpg"/>' : '<img style="height:30px;" src="${ContextPath}/images/OK.jpg"/>');
 		jQuery.ajax({
@@ -160,6 +174,36 @@
   			success: function(data){ },
   			error:function(error){ }
 		});
+		
+		var finish = parseInt($('#FINISH').html());
+		$('#FINISH').html(finish+1);
+	}
+	
+	function showCaptcha(){
+		
+		count ++ ;
+		$('#BID-CAPTCHA-RESULT').html("");
+		jQuery.ajax({
+  			url : '${ContextPath}/rest/service/simulate/captcha',
+  			cache:false, 
+  			success: function(data){
+
+  				$("#tip").html(data.tip);
+  				$('#captcha').oneTime(500, function(){
+					
+					$("#captcha").attr("src", '${ContextPath}/' + data.url);
+  					$("#captcha").attr("value", data.value);
+				});
+  				startTime = new Date();
+  			},
+  			error:function(error){
+  				
+  				$("#captcha").attr("src", "#");
+  				$("#captcha").attr("value", "");
+  				$("#tip").html("获取验证码异常！");
+  			}
+		});
+		$('#userInput').focus();
 	}
 	
 	function loadCaptcha(){
@@ -288,55 +332,43 @@
 
 				<div class="vspace-sm"></div>
 				
-				<div class="col-sm-5" style="width:500px;background: no-repeat url(../../images/bids.bmp);">
-					<div class="widget-box">
-						<div style="height:60px;">
-						<!--<div class="widget-header widget-header-flat widget-header-small">-->
-							<!--<h5><i class="icon-signal"></i>校验码模拟练习器</h5>-->
+				<div class="col-sm-5">
+					<div class="panel panel-default">
+					  <div class="panel-heading">
+					  	<div class="row">
+					  		<div class="col-sm-8"><h5 class="panel-title">校验码练习器</h5></div>
+					  		<div class="col-sm-4" style="text-align:right;">
+					  			<span id="SPANQ">本次完成<span id="FINISH" class="badge">???</span></span>
+					  		</div>
+					  	</div>
+					  </div>
+					  <div class="panel-body">
+					  	<div class="alert alert-block alert-success">
+							<button data-dismiss="alert" class="close" type="button"><i class="icon-remove"></i></button>
+							<span style="color:blue;" class="glyphicon glyphicon-info-sign">操作须知!</span></br>
+							1. 首先看清<font color="red">校验码提示</font></br>
+							2. 按提示输入正确的校验码</br>
+							3. 输入完毕后按【空格】</br>
 						</div>
-						<div>
-							<div class="widget-main">
-								<div id="piechart-placeholder">
-									<p align="center" style="font-size:18px;">您的出价为：<span id="userGivePrice">83300</span>元</p>
-									<p align="center" style="font-size:18px; margin-top: 25px;">请输入校验码：
-										<input type="text" style="text-align:center;padding:4px 4px;margin-right:25px;border:2px solid blue" id="inputCaptcha" size="10">
-										<img style="font-size:16px;" alt="正在获取校验码" src="${ContextPath}/images/loadCaptcha.bmp" id="imgCaptcha">
-									</p>
-									<p align="center" id="BID-CAPTCHA-TIP" style="font-size:16px; margin-top: 20px;font-family:'SimSun';"></p>
-									<p align="center" id="BID-CAPTCHA-RESULT" style="font-size:16px; margin-top: 10px;font-family:'SimSun';"></p>
-									<p align="center" style="font-family:'SimSun'; margin-top: 25px;">
-						         		<button id="btnStart" style="margin-right:35px; width:120px;" type="button" class="btn btn-app btn-xs btn-primary">开&nbsp;&nbsp;&nbsp;始</button>
-						         		<button id="btnEnd" disabled="disabled" style="margin-left: 35px; width:120px;" type="button" class="btn btn-app btn-xs btn-primary">结&nbsp;&nbsp;&nbsp;束</button>
-						         	</p>
-									<p align="center" style="margin-top:30px;">
-									  <label for="amount">模拟次数：</label>
-									  <input type="text" id="amount" style="width:80px;border:0; color:#f6931f; font-weight:bold;">
-									</p>
-									<div id="slider-range-min"></div>
-								</div>
-
-								<div class="hr hr8 hr-double">
-								</div>
-
-								<div class="clearfix">
-									<div class="grid3"></div>
-									<div class="grid3">
-										<!-- 
-										<button class="btn btn-app btn-sm btn-default"><i class="icon-play-circle align-top bigger-125"></i>开始</button>
-										<button class="btn btn-app btn-sm btn-default"><i class="icon-play-circle align-top bigger-125"></i>结束</button>
-										 -->
-									</div>
-									<div class="grid3">
-										<!--<span class="grey">
-											<i class="icon-pinterest-sign icon-2x red"></i>&nbsp; pins
-										</span>
-										<h4 class="bigger pull-right">1,050</h4>-->
-									</div>
-								</div>
-							</div><!-- /widget-main -->
-						</div><!-- /widget-body -->
-					</div><!-- /widget-box -->
-				</div><!-- /span -->
+						<div style="text-align:center;">
+							<p style="text-align:center;">
+								<span style="height:52px;width:200px;color:red;font-size:large;margin-bottom:10px;border:2px solid #000000;text-align:center;display:inline-block;">
+									<img id="captcha" alt="验证码图片加载中..." height="48" width="196" border="2"/>
+								</span>
+							</p>
+						</div>
+						<div style="color:red;font-size:large;margin-bottom:10px;text-align:center;">
+							<label id="tip" style="font-size:16px; margin-top: 10px;font-family:'SimSun';">校验码提示！</label><br/>
+							<p align="center" id="BID-CAPTCHA-RESULT" style="font-size:16px; margin-top: 10px;font-family:'SimSun';"></p>
+							<input type="text" id="userInput" style="margin-bottom:10px;height:32px;text-align:center;"/>
+						</div>
+						<div style="text-align:center;font-family:'SimSun'; margin-top: 15px;">
+							<button id="start" class="btn btn-app btn-xs btn-primary" style="width:120px">开&nbsp;始&nbsp;测&nbsp;试</button>
+						</div>
+					  </div>
+					  <div class="panel-footer"></div>
+					</div>
+				</div>
 				
 				<div class="col-sm-4" id="RankingList">
 				</div>
