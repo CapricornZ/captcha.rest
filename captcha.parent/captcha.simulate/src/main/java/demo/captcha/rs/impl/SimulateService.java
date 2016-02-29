@@ -17,6 +17,8 @@ import demo.captcha.rs.ISimulator;
 import demo.captcha.rs.model.Captcha;
 import demo.captcha.rs.model.HeartBeat;
 import demo.captcha.service.ICaptchaExamClientService;
+import demo.captcha.simulate.CaptchaReq;
+import demo.captcha.simulate.Simulator;
 
 public class SimulateService implements ISimulator {
 
@@ -167,5 +169,20 @@ public class SimulateService implements ISimulator {
 		CaptchaExamClient client = this.clientService.queryByHost(host);
 		client.setUpdateTime(new Date());
 		return this.clientService.update(client);
+	}
+	
+	private Simulator simulator;
+	public void setSimulator(Simulator sim) { this.simulator = sim; }
+	
+	@Override
+	public CaptchaReq random() {
+		
+		System.out.println("Random CaptchaREQ");
+		try {
+			return this.simulator.generateCaptcha();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

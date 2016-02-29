@@ -10,7 +10,8 @@
 		<param-value>
 			classpath:applicationContext-cxf.xml,
 			classpath:applicationContext-shiro.xml,
-			classpath:applicationContext-hibernate.xml
+			classpath:applicationContext-hibernate.xml,
+			classpath:applicationContext-simulate.xml
 		</param-value>
 	</context-param>
 	<context-param>

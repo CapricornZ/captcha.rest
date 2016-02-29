@@ -73,6 +73,7 @@
         	<bean class="demo.captcha.rs.impl.SimulateService">
         		<property name="captchaExamClientService" ref="captchaExamClientService"/>
         		<property name="repository" ref="repository"/>
+        		<property name="simulator" ref="simulator"/>
         		<property name="policyGenerators">
         			<list>
         				<ref bean="JUN"/>

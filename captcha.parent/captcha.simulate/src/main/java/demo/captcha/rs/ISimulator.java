@@ -16,6 +16,7 @@ import demo.captcha.model.CaptchaExamClient;
 import demo.captcha.model.Warrant;
 import demo.captcha.rs.model.Captcha;
 import demo.captcha.rs.model.HeartBeat;
+import demo.captcha.simulate.CaptchaReq;
 
 @WebService(endpointInterface="demo.captcha.restful.ISimulator", serviceName="ISimulator")
 @Path("/simulate")
@@ -30,6 +31,11 @@ public interface ISimulator {
 	@Path("/captcha")
 	@Produces({MediaType.APPLICATION_JSON})
 	Captcha randomCaptcha();
+	
+	@GET
+	@Path("/captcha/random")
+	@Produces({MediaType.APPLICATION_JSON})
+	CaptchaReq random();
 	
 	@POST
 	@Path("/captcha")

@@ -187,14 +187,17 @@
 		count ++ ;
 		$('#BID-CAPTCHA-RESULT').html("");
 		jQuery.ajax({
-  			url : '${ContextPath}/rest/service/simulate/captcha',
-  			cache:false, 
+  			url  : '${ContextPath}/rest/service/simulate/captcha/random',
+  			cache: false, 
   			success: function(data){
 
-  				$("#tip").html(data.tip);
+				$("<img/>").appendTo($("#tip"));
+  				$("#tip img").attr("src", 'data:image/jpeg;base64,' + data.tip);
+  				//$("#tip").html(data.tip);
   				$('#captcha').oneTime(500, function(){
 					
-					$("#captcha").attr("src", '${ContextPath}/' + data.url);
+					$("#captcha").attr("src", 'data:image/jpeg;base64,' + data.captcha);
+					//$("#captcha").attr("src", '${ContextPath}/' + data.url);
   					$("#captcha").attr("value", data.value);
 				});
   				startTime = new Date();
@@ -220,12 +223,17 @@
 		$('#BID-CAPTCHA-RESULT').html("");
 		
 		jQuery.ajax({
-  			url : '${ContextPath}/rest/service/simulate/captcha',
+  			url  : '${ContextPath}/rest/service/simulate/captcha/random',
   			cache:false, 
   			success: function(data){
-  				$("#imgCaptcha").attr("src", '${ContextPath}/' + data.url);
+  				//$("#imgCaptcha").attr("src", '${ContextPath}/' + data.url);
+  				//$("#imgCaptcha").attr("value", data.value);
+  				//$("#BID-CAPTCHA-TIP").html(data.tip);
+  				
+  				$("#imgCaptcha").attr("src", 'data:image/jpeg;base64,' + data.captcha); 
   				$("#imgCaptcha").attr("value", data.value);
-  				$("#BID-CAPTCHA-TIP").html(data.tip);
+  				$("<img/>").appendTo($("#BID-CAPTCHA-TIP"));
+  				$("#BID-CAPTCHA-TIP img").attr("src", 'data:image/jpeg;base64,' + data.tip);
   				startTime = new Date();
   			},
   			error:function(error){
@@ -335,7 +343,7 @@
 
 				<div class="vspace-sm"></div>
 				
-				<div class="col-sm-5" style="width:600px;">
+				<div class="col-sm-5" style="width:520px;">
 					<div class="panel panel-default">
 					  <div class="panel-heading">
 					  	<div class="row">
