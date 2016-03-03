@@ -30,6 +30,20 @@
 	      	});
 		});
 	});
+	
+	function removeClient(obj){
+	
+		var client = $(obj).attr('client');
+		console.log("remove " + client);
+		jQuery.ajax({
+  			url    : '${ContextPath}/web/admin/delUser?userName=' + client,
+  			type   : 'DELETE',
+  			success: function(data){ 
+  				$('#sample-table-1').bootstrapTable('remove', {field: 'id', values: [client]});
+  			},
+  			error  : function(error){ }
+  		});
+	}
 </script>
 
 <div class="row">
@@ -37,26 +51,31 @@
 	<div class="col-sm-9">
 		<table id='sample-table-1'
                 data-search="true" data-show-multi-sort="true" data-show-export="true"
-                data-toggle="table" data-sort-name="score" data-sort-order="desc">             
+                data-toggle="table" data-sort-name="score" data-sort-order="desc" 
+                data-id-field="id">             
 		    <thead>
 		        <tr>
+		        	<th data-field="id">ID</th>
 		        	<th data-field="name" data-sortable="true">用户</th>
 		        	<th data-field="rate" data-sortable="true">准确率(%)</th>
 		            <th data-field="total" data-sortable="true">验证码总数(次)</th>
 		            <th data-field="avgCost" data-sortable="true">平均反应速度(ms)</th>
 		            <th data-field="score" data-sortable="true">综合分</th>
 		            <th data-field="lastUpdate" data-sortable="true">最后在线时间</th>
+		            <th data-field="operations">操作</th>
 		        </tr> 
 		    </thead> 
 		    <tbody>
 		    	#foreach(${client} in ${clients})
 		        <tr> 
+		        	<td>${client.host}</td>
 		            <td><a data-toggle="DETAIL" href="#" client='${client.host}'>${client.userName}</a></td> 
 		            <td>${client.correctRate}%</td>
 		            <td>${client.total}</td>
 		            <td>${client.avgCost}</td>
 		            <td>${client.totalScore}</td>
 		            <td>${client.updateTime}</td>
+		            <td><button class="btn btn-xs btn-danger" client="${client.host}" onclick="return removeClient(this);">删除</button></td>
 		        </tr>
 		        #end
 		    </tbody> 

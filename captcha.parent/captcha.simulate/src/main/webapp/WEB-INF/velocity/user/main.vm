@@ -38,9 +38,11 @@
 		});
 		
 		$('#userInput').keydown(function(event){
+			
+			console.log(event.keyCode);
 			if((event.keyCode >= 48 && event.keyCode <= 57)
-				|| (event.keyCode >=65 && event.keyCode <=90)
-		    	|| (event.keyCode >=97 && event.keyCode <=122) 
+		    	|| (event.keyCode >=65 && event.keyCode <=90)
+		    	|| (event.keyCode >=96 && event.keyCode <=105)
 		    	|| event.keyCode == 8 || event.keyCode == 46 || event.keyCode == 39 || event.keyCode == 37)
 		    	;
 		    else if (event.keyCode == 32 || event.keyCode == 13){
@@ -103,7 +105,8 @@
 		$("a[data-toggle='ADMIN-BOARD']").click(function(){
 			BootstrapDialog.show({
 				title   : "管理员有话要说",
-				message : $('<div><img src="${ContextPath}/images/HELP.jpg" style="width:500px;"/></div>'),
+				//message : $('<div><img src="${ContextPath}/images/HELP.jpg" style="width:500px;"/></div>'),
+				message: $('<div style="width:500px;"></div>').load("${ContextPath}/web/user/board"),
 				onshow: function(dialogRef){ }
 			});
 		});
@@ -168,7 +171,7 @@
 		$('#userInput').val('');
 		
 		var reqParam = { cost : cost, correct : correct==inputVal};
-		$('#BID-CAPTCHA-RESULT').html(correct!=inputVal ? '<img style="height:30px;" src="${ContextPath}/images/Error.jpg"/>' : '<img style="height:30px;" src="${ContextPath}/images/OK.jpg"/>');
+		$('#BID-CAPTCHA-RESULT').html(correct!=inputVal ? '<br/>' + correct + '<img style="height:30px;" src="${ContextPath}/images/Error.jpg"/>' : '<img style="height:30px;" src="${ContextPath}/images/OK.jpg"/>');
 		jQuery.ajax({
 			type : "POST",
   			url  : "${ContextPath}/rest/service/exam/client/${currentUser}/record",

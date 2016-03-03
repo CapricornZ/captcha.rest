@@ -39,6 +39,11 @@ public class UserController {
 		return "user/exam";
 	}
 	
+	@RequestMapping(value = "/board",method=RequestMethod.GET)
+	public String board(){
+		return "user/board";
+	}
+	
 	@RequestMapping(value = "/main",method=RequestMethod.GET)
 	public String main(Model model){
 		

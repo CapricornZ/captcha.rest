@@ -151,6 +151,16 @@ public class AdminController {
 		return client == null ? "true" : "false";
 	}
 	
+	@RequestMapping(value = "/delUser",method=RequestMethod.DELETE)
+	@ResponseBody
+	public String removeUser(@RequestParam("userName")String userName){
+		
+		CaptchaExamClient client = new CaptchaExamClient();
+		client.setHost(userName);
+		this.clientService.remove(client);
+		return "SUCCESS";
+	}
+	
 	@RequestMapping(value = "/exam/client",method=RequestMethod.GET)
 	@ResponseBody
 	public Object listClient(){

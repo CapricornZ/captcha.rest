@@ -13,6 +13,7 @@ public interface ICaptchaExamClientService {
 	CaptchaExamClient register(String host, Warrant warrant);
 	CaptchaExamClient save(CaptchaExamClient client);
 	void save(List<CaptchaExamClient> client);
+	void remove(CaptchaExamClient client);
 	
 	CaptchaExamClient update(CaptchaExamClient client);
 	
