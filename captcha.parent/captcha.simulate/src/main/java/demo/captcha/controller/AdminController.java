@@ -161,6 +161,16 @@ public class AdminController {
 		return "SUCCESS";
 	}
 	
+	@RequestMapping(value = "/clearRecord",method=RequestMethod.DELETE)
+	@ResponseBody
+	public String clearRecord(@RequestParam("userName")String userName){
+		
+		CaptchaExamClient client = new CaptchaExamClient();
+		client.setHost(userName);
+		this.clientService.blank(client);
+		return "SUCCESS";
+	}
+	
 	@RequestMapping(value = "/exam/client",method=RequestMethod.GET)
 	@ResponseBody
 	public Object listClient(){

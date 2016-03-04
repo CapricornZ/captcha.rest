@@ -180,6 +180,25 @@ public class CaptchaExamClientService extends Service implements ICaptchaExamCli
 	}
 	
 	@Override
+	public void blank(CaptchaExamClient client) {
+		
+		Query query = this.getSession().createQuery("delete from ExamRecord where client=:client");
+		query.setParameter("client", client);
+		query.executeUpdate();
+		query = this.getSession().createQuery("delete from Ranking where owner=:client");
+		query.setParameter("client", client);
+		query.executeUpdate();
+		
+		client = this.queryByHost(client.getHost());
+		client.setAvgCost(10);
+		client.setCorrectRate(0);
+		client.setCorrect(0);
+		client.setTotal(0);
+		client.setTotalScore(0);
+		this.update(client);
+	}
+	
+	@Override
 	public void save(List<CaptchaExamClient> clients) {
 		
 		Date now = new Date();

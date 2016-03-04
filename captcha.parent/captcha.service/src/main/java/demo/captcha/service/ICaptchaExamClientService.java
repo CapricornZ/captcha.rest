@@ -14,6 +14,7 @@ public interface ICaptchaExamClientService {
 	CaptchaExamClient save(CaptchaExamClient client);
 	void save(List<CaptchaExamClient> client);
 	void remove(CaptchaExamClient client);
+	void blank(CaptchaExamClient client);
 	
 	CaptchaExamClient update(CaptchaExamClient client);
 	

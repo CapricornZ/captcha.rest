@@ -34,21 +34,62 @@
 	function removeClient(obj){
 	
 		var client = $(obj).attr('client');
-		console.log("remove " + client);
-		jQuery.ajax({
-  			url    : '${ContextPath}/web/admin/delUser?userName=' + client,
-  			type   : 'DELETE',
-  			success: function(data){ 
-  				$('#sample-table-1').bootstrapTable('remove', {field: 'id', values: [client]});
-  			},
-  			error  : function(error){ }
-  		});
+		console.log("attemp to remove " + client);
+		BootstrapDialog.show({
+            message: "确定要删除用户账号？",
+            buttons:[{
+            	label : '是',
+            	cssClass: 'btn-primary',
+            	action: function(dialogItself){
+            		jQuery.ajax({
+			  			url    : '${ContextPath}/web/admin/delUser?userName=' + client,
+			  			type   : 'DELETE',
+			  			success: function(data){ 
+			  				$('#sample-table-1').bootstrapTable('remove', {field: 'id', values: [client]});
+			  			},
+			  			error  : function(error){ }
+			  		});
+            		dialogItself.close();
+            	}
+            },{
+            	label : '否',
+            	action: function(dialogItself){ dialogItself.close(); }
+            }]
+        });
+	}
+	
+	function blankClient(obj){
+	
+		var client = $(obj).attr('client');
+		console.log("attemp to clear " + client);
+		
+		BootstrapDialog.show({
+            message: "确定要清空用户数据？",
+            buttons:[{
+            	label : '是',
+            	cssClass: 'btn-primary',
+            	action: function(dialogItself){
+            		jQuery.ajax({
+			  			url    : '${ContextPath}/web/admin/clearRecord?userName=' + client,
+			  			type   : 'DELETE',
+			  			success: function(data){
+			  				alert("成功");
+			  			},
+			  			error  : function(error){ }
+			  		});
+            		dialogItself.close();
+            	}
+            },{
+            	label : '否',
+            	action: function(dialogItself){ dialogItself.close(); }
+            }]
+        });
 	}
 </script>
 
 <div class="row">
-	<div class="space-6"></div>
-	<div class="col-sm-9">
+
+	<div class="col-sm-11">
 		<table id='sample-table-1'
                 data-search="true" data-show-multi-sort="true" data-show-export="true"
                 data-toggle="table" data-sort-name="score" data-sort-order="desc" 
@@ -75,7 +116,14 @@
 		            <td>${client.avgCost}</td>
 		            <td>${client.totalScore}</td>
 		            <td>${client.updateTime}</td>
-		            <td><button class="btn btn-xs btn-danger" client="${client.host}" onclick="return removeClient(this);">删除</button></td>
+		            <td>
+		            	<button class="btn btn-xs btn-danger" client="${client.host}" onclick="return blankClient(this);">
+		            		<span class="glyphicon glyphicon-transfer"></span>
+		            	</button>
+		            	<button class="btn btn-xs btn-danger" client="${client.host}" onclick="return removeClient(this);">
+		            		<span class="glyphicon glyphicon-remove-circle"></span>
+		            	</button>
+		            </td>
 		        </tr>
 		        #end
 		    </tbody> 
