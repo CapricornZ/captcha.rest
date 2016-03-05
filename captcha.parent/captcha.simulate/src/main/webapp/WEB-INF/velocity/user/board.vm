@@ -1,7 +1,6 @@
 #set( $ContextPath = ${request.contextPath} )
 #set($layout="layout/layoutBlank.vm")
 
-<script src="${ContextPath}/assets/js/jquery-2.0.3.min.js"></script>
 <script src="${ContextPath}/assets/js/bootstrap.min.js"></script>
 		
 <div id="myCarousel" class="carousel slide">
